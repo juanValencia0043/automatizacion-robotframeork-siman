@@ -1,0 +1,28 @@
+[project]
+name = "siman-automation"
+version = "1.0.0"
+description = "Automatización de pruebas del e-commerce siman.com con Robot Framework"
+authors = [
+{ name = "Equipo QA Automation", email = "[qa-team@siman.com](mailto:qa-team@siman.com)" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+"robotframework==7.0",
+"robotframework-seleniumlibrary==6.3.0",
+"robotframework-requests==0.9.6",
+"robotframework-jsonlibrary==0.5",
+"robotframework-datadriver==1.10.0",
+"robotframework-pabot==3.3.1",
+"PyYAML==6.0.2",
+"python-dotenv==1.0.1",
+"allure-robotframework==3.1.1",
+"requests==2.32.3"
+]
+
+[tool.robotframework]
+outputdir = "results"
+log = "log.html"
+report = "report.html"
+output = "output.xml"
