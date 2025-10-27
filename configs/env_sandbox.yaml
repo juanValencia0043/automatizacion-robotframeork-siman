@@ -1,0 +1,10 @@
+# configs/env_sandbox.yaml
+
+base_url: "https://sv.siman.com"
+api_url: "https://api.siman.com"
+browser: "chrome"
+headless: false
+
+credentials:
+  user: "qa_user@siman.com"
+  password: "12345"
