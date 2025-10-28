@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.14.0 on win32)" generated="2025-10-27T20:50:59.756787" rpa="false" schemaversion="5">
+<suite id="s1" name="Siman Automation - prod" source="C:\Users\juan_valencia\OneDrive - Alsicorp\Documentos\automatizacion-robotframeork-siman\tests\smoke">
+<suite id="s1-s1" name="Open Homepage" source="C:\Users\juan_valencia\OneDrive - Alsicorp\Documentos\automatizacion-robotframeork-siman\tests\smoke\open_homepage.robot">
+<test id="s1-s1-t1" name="Test Checkout Small" line="11">
+<kw name="Open Browser To Checkout" owner="browser_keywords">
+<kw name="Set Variable If" owner="BuiltIn">
+<msg time="2025-10-27T20:51:00.362771" level="INFO">${checkout_url} = https://sv.siman.com/checkout/cart/add/?sku=8695234&amp;qty=1&amp;seller=1&amp;sc=1&amp;sku=8481414&amp;qty=1&amp;seller=1&amp;sc=1</msg>
+<var>${checkout_url}</var>
+<arg>'${cart_type}' == 'small'</arg>
+<arg>${CHECKOUT_PROD_SMALL}</arg>
+<arg>'${cart_type}' == 'small_mk'</arg>
+<arg>${CHECKOUT_PROD_SMALL_MK}</arg>
+<arg>'${cart_type}' == 'big'</arg>
+<arg>${CHECKOUT_PROD_BIG}</arg>
+<arg>'${cart_type}' == 'split_siman'</arg>
+<arg>${CHECKOUT_PROD_SPLIT_SIMAN}</arg>
+<arg>'${cart_type}' == 'split_siman_mk'</arg>
+<arg>${CHECKOUT_PROD_SPLIT_SIMAN_MK}</arg>
+<doc>Sets variable based on the given condition.</doc>
+<status status="PASS" start="2025-10-27T20:51:00.362507" elapsed="0.000299"/>
+</kw>
+<kw name="Open Browser With Options" owner="browser_keywords">
+<if>
+<branch type="IF" condition="'${BROWSER}' == 'chrome'">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2025-10-27T20:51:00.363683" level="INFO">${options} = &lt;selenium.webdriver.chrome.options.Options object at 0x000002C1A6CCFA10&gt;</msg>
+<var>${options}</var>
+<arg>sys.modules['selenium.webdriver'].ChromeOptions()</arg>
+<arg>sys, selenium.webdriver</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2025-10-27T20:51:00.363459" elapsed="0.000253"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--incognito</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-10-27T20:51:00.363956" elapsed="0.000096"/>
+</kw>
+<arg>${INCOGNITO_MODE}</arg>
+<arg>Call Method</arg>
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--incognito</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2025-10-27T20:51:00.363823" elapsed="0.000282"/>
+</kw>
+<status status="PASS" start="2025-10-27T20:51:00.363285" elapsed="0.000862"/>
+</branch>
+<branch type="ELSE IF" condition="'${BROWSER}' == 'firefox'">
+<kw name="Evaluate" owner="BuiltIn">
+<var>${options}</var>
+<arg>sys.modules['selenium.webdriver'].FirefoxOptions()</arg>
+<arg>sys, selenium.webdriver</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="NOT RUN" start="2025-10-27T20:51:00.364266" elapsed="0.000021"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<arg>${INCOGNITO_MODE}</arg>
+<arg>Call Method</arg>
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>-private</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="NOT RUN" start="2025-10-27T20:51:00.364366" elapsed="0.000019"/>
+</kw>
+<status status="NOT RUN" start="2025-10-27T20:51:00.364188" elapsed="0.000234"/>
+</branch>
+<status status="PASS" start="2025-10-27T20:51:00.363262" elapsed="0.001192"/>
+</if>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-extensions</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-10-27T20:51:00.364513" elapsed="0.000093"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-gpu</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-10-27T20:51:00.364685" elapsed="0.000121"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--no-sandbox</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-10-27T20:51:00.364906" elapsed="0.000162"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-dev-shm-usage</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-10-27T20:51:00.365213" elapsed="0.000147"/>
+</kw>
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-10-27T20:51:00.365874" level="INFO">Opening browser 'chrome' to base url 'https://sv.siman.com/checkout/cart/add/?sku=8695234&amp;qty=1&amp;seller=1&amp;sc=1&amp;sku=8481414&amp;qty=1&amp;seller=1&amp;sc=1'.</msg>
+<arg>${url}</arg>
+<arg>${BROWSER}</arg>
+<arg>options=${options}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-10-27T20:51:00.365523" elapsed="6.024339"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2025-10-27T20:51:06.390155" elapsed="0.101524"/>
+</kw>
+<arg>${checkout_url}</arg>
+<doc>Abre navegador con opciones configuradas</doc>
+<status status="PASS" start="2025-10-27T20:51:00.363065" elapsed="6.128769"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>✅ Carrito ${cart_type} cargado: ${checkout_url}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-10-27T20:51:06.492022" elapsed="0.000482"/>
+</kw>
+<arg>small</arg>
+<doc>Abre en modo incógnito según configuración</doc>
+<status status="PASS" start="2025-10-27T20:51:00.361844" elapsed="6.130804"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-27T20:51:06.493245" level="INFO">✅ Checkout small cargado correctamente</msg>
+<arg>✅ Checkout small cargado correctamente</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-27T20:51:06.493064" elapsed="0.000242"/>
+</kw>
+<kw name="Close Browser" owner="browser_keywords" type="TEARDOWN">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<kw name="Close Browser" owner="browser_keywords">
+<msg time="2025-10-27T20:51:06.566353" level="FAIL">Recursive execution stopped.</msg>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.564938" elapsed="0.001549">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.560699" elapsed="0.008943">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.558576" elapsed="0.012012">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.549407" elapsed="0.022152">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.545427" elapsed="0.030496">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.544943" elapsed="0.031515">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.544210" elapsed="0.032684">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.542231" elapsed="0.035096">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.541431" elapsed="0.036312">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.540882" elapsed="0.037267">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.539334" elapsed="0.039213">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.539049" elapsed="0.041703">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.538779" elapsed="0.042448">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.538494" elapsed="0.043389">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.537987" elapsed="0.044340">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.537703" elapsed="0.045098">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.536785" elapsed="0.046505">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.536343" elapsed="0.048619">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.535931" elapsed="0.049941">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.535676" elapsed="0.050954">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.535441" elapsed="0.052252">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.535194" elapsed="0.053160">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.534937" elapsed="0.054119">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.534686" elapsed="0.055373">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.534447" elapsed="0.056025">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.534210" elapsed="0.056743">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.533977" elapsed="0.057363">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.533703" elapsed="0.058144">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.533179" elapsed="0.059057">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.532737" elapsed="0.059931">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.532230" elapsed="0.060790">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.531983" elapsed="0.061437">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.531746" elapsed="0.062048">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.531506" elapsed="0.062746">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.531268" elapsed="0.063405">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.531037" elapsed="0.063955">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.530736" elapsed="0.064553">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.530501" elapsed="0.065212">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.530268" elapsed="0.065788">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.530024" elapsed="0.066363">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.529760" elapsed="0.066943">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.529518" elapsed="0.067504">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.529182" elapsed="0.068299">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.528519" elapsed="0.069368">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.528198" elapsed="0.070099">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.527937" elapsed="0.070686">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.527670" elapsed="0.071270">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.527428" elapsed="0.071830">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.527149" elapsed="0.072447">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.526850" elapsed="0.073048">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.526472" elapsed="0.078961">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.526053" elapsed="0.080607">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.525625" elapsed="0.081382">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.524834" elapsed="0.082583">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.524176" elapsed="0.084010">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.523833" elapsed="0.084672">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.523172" elapsed="0.085714">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.522843" elapsed="0.086364">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.522435" elapsed="0.087064">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.522004" elapsed="0.087867">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.521586" elapsed="0.088609">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.521323" elapsed="0.091135">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.520957" elapsed="0.091891">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.520702" elapsed="0.092430">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.520520" elapsed="0.092905">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.520304" elapsed="0.093793">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.520087" elapsed="0.094484">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.519870" elapsed="0.095079">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.519649" elapsed="0.095605">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.519239" elapsed="0.096393">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.518685" elapsed="0.097236">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.518424" elapsed="0.097807">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.518179" elapsed="0.098327">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.517943" elapsed="0.098840">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.517707" elapsed="0.099739">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.517459" elapsed="0.100523">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.517217" elapsed="0.101030">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.516954" elapsed="0.101646">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.516734" elapsed="0.102534">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.516506" elapsed="0.103059">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.516268" elapsed="0.103589">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.516041" elapsed="0.104087">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.515686" elapsed="0.105202">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.514807" elapsed="0.106495">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.514473" elapsed="0.107320">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.514242" elapsed="0.107813">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.514024" elapsed="0.108306">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.513729" elapsed="0.108896">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.513505" elapsed="0.109380">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.513279" elapsed="0.109834">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.513041" elapsed="0.110298">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.512754" elapsed="0.110817">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.512280" elapsed="0.111509">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.512036" elapsed="0.111984">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.511776" elapsed="0.112462">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.511521" elapsed="0.112930">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.510968" elapsed="0.113795">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.510596" elapsed="0.114363">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.510345" elapsed="0.114752">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.510110" elapsed="0.115102">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.509855" elapsed="0.115466">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.509603" elapsed="0.115823">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.509339" elapsed="0.116190">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.509068" elapsed="0.116563">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.508802" elapsed="0.116932">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.508467" elapsed="0.117370">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.508167" elapsed="0.117772">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.507893" elapsed="0.118144">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.507537" elapsed="0.118599">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.506847" elapsed="0.119428">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.506195" elapsed="0.120187">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.505913" elapsed="0.120600">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.505543" elapsed="0.121081">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.505034" elapsed="0.121691">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.504447" elapsed="0.122377">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.504102" elapsed="0.122832">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.503826" elapsed="0.123219">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.503582" elapsed="0.123591">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.503354" elapsed="0.123942">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.503125" elapsed="0.124265">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.502899" elapsed="0.124607">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.502628" elapsed="0.124995">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.502296" elapsed="0.125484">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.501467" elapsed="0.126436">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.501113" elapsed="0.126943">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.500835" elapsed="0.127307">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.500494" elapsed="0.127730">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.500208" elapsed="0.128099">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.499939" elapsed="0.128449">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.499663" elapsed="0.128817">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.499401" elapsed="0.129160">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.499138" elapsed="0.129506">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.498243" elapsed="0.130480">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.497975" elapsed="0.130827">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.497704" elapsed="0.131172">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.497440" elapsed="0.131522">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.496977" elapsed="0.132280">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.496538" elapsed="0.132856">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.496140" elapsed="0.133383">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.495843" elapsed="0.133795">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.495565" elapsed="0.134180">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.495293" elapsed="0.134564">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.495029" elapsed="0.134951">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.494753" elapsed="0.135316">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.494493" elapsed="0.135660">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.494187" elapsed="0.136058">Recursive execution stopped.</status>
+</kw>
+<doc>Cierra el navegador</doc>
+<status status="FAIL" start="2025-10-27T20:51:06.493779" elapsed="0.136538">Recursive execution stopped.</status>
+</kw>
+<status status="FAIL" start="2025-10-27T20:51:00.361070" elapsed="6.269526">Teardown failed:
+Recursive execution stopped.</status>
+</test>
+<doc>Verifica que la página de inicio de Siman.com carga correctamente.</doc>
+<status status="FAIL" start="2025-10-27T20:50:59.793823" elapsed="6.837769"/>
+</suite>
+<status status="FAIL" start="2025-10-27T20:50:59.759825" elapsed="6.872796"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Siman Automation - prod" id="s1" pass="0" fail="1" skip="0">Siman Automation - prod</stat>
+<stat name="Open Homepage" id="s1-s1" pass="0" fail="1" skip="0">Siman Automation - prod.Open Homepage</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

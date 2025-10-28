@@ -3,26 +3,81 @@ name = "siman-automation"
 version = "1.0.0"
 description = "Automatización de pruebas del e-commerce siman.com con Robot Framework"
 authors = [
-{ name = "Equipo QA Automation", email = "[qa-team@siman.com](mailto:qa-team@siman.com)" }
+    { name = "Equipo QA Automation", email = "qa-team@siman.com" }
 ]
 readme = "README.md"
 requires-python = ">=3.10"
 
 dependencies = [
-"robotframework==7.0",
-"robotframework-seleniumlibrary==6.3.0",
-"robotframework-requests==0.9.6",
-"robotframework-jsonlibrary==0.5",
-"robotframework-datadriver==1.10.0",
-"robotframework-pabot==3.3.1",
-"PyYAML==6.0.2",
-"python-dotenv==1.0.1",
-"allure-robotframework==3.1.1",
-"requests==2.32.3"
+    "robotframework==7.0",
+    "robotframework-seleniumlibrary==6.3.0",
+    "robotframework-requests==0.9.6",
+    "robotframework-jsonlibrary==0.5",
+    "robotframework-datadriver==1.10.0",
+    "robotframework-pabot==3.3.1",
+    "PyYAML==6.0.2",
+    "python-dotenv==1.0.1",
+    "allure-robotframework==3.1.1",
+    "requests==2.32.3",
+    "matplotlib==3.7.0",           # Para dashboards
+    "pandas==2.0.3",               # Para análisis de datos
+    "jinja2==3.1.2"                # Para templates de reportes
 ]
 
+# Configuración de Robot Framework
 [tool.robotframework]
 outputdir = "results"
 log = "log.html"
 report = "report.html"
 output = "output.xml"
+
+# Configuración de Reporting Avanzado
+[tool.robotframework.reporting]
+# Estructura de directorios
+results_base_dir = "results/executions"
+xray_dir = "results/xray"
+dashboard_dir = "results/dashboards"
+
+# Configuración XRay
+xray_enabled = false
+xray_project_key = "SIMAN"
+xray_upload_auto = false
+
+# Configuración Dashboard
+dashboard_enabled = true
+dashboard_retention_days = 30
+dashboard_format = ["html", "json"]
+
+# Configuración de evidencias
+screenshots_on_failure = true
+screenshots_on_pass = false
+log_level = "INFO"
+
+# Configuración de Entornos
+[tool.robotframework.environments.sandbox]
+base_url = "https://simanqa.myvtex.com"
+browser = "chrome"
+headless = false
+timeout = 30
+incognito = true
+
+[tool.robotframework.environments.production]
+base_url = "https://www.siman.com"
+browser = "chrome" 
+headless = true
+timeout = 45
+incognito = true
+
+# NUEVA SECCIÓN: Configuración CI/CD
+[tool.robotframework.ci]
+test_parallel = false
+max_parallel = 4
+artifacts_upload = true
+notifications_slack = false
+notifications_email = false
+
+# NUEVA SECCIÓN: Configuración de Notificaciones (Opcional)
+# [tool.robotframework.notifications]
+# slack_webhook = "${SLACK_WEBHOOK_URL}"
+# email_recipients = "qa-team@siman.com"
+# on_failure_only = true

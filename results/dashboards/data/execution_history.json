@@ -1,0 +1,62 @@
+[
+  {
+    "timestamp": "20251027_205108",
+    "environment": "prod",
+    "base_url": "https://sv.siman.com",
+    "browser": "chrome",
+    "total_tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "success_rate": 0.0,
+    "execution_time": 6873,
+    "suite_name": "Siman Automation - prod"
+  },
+  {
+    "timestamp": "20251027_205525",
+    "environment": "prod",
+    "base_url": "https://sv.siman.com",
+    "browser": "chrome",
+    "total_tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "success_rate": 100.0,
+    "execution_time": 7288,
+    "suite_name": "Siman Automation - prod"
+  },
+  {
+    "timestamp": "20251027_211053",
+    "environment": "prod",
+    "base_url": "https://sv.siman.com",
+    "browser": "chrome",
+    "total_tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "success_rate": 100.0,
+    "execution_time": 9242,
+    "suite_name": "Siman Automation - prod"
+  },
+  {
+    "timestamp": "20251027_211512",
+    "environment": "prod",
+    "base_url": "https://sv.siman.com",
+    "browser": "chrome",
+    "total_tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "success_rate": 100.0,
+    "execution_time": 7507,
+    "suite_name": "Siman Automation - prod"
+  },
+  {
+    "timestamp": "20251027_212340",
+    "environment": "prod",
+    "base_url": "https://sv.siman.com",
+    "browser": "chrome",
+    "total_tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "success_rate": 100.0,
+    "execution_time": 8045,
+    "suite_name": "Siman Automation - prod"
+  }
+]

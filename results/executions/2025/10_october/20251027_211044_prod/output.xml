@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.14.0 on win32)" generated="2025-10-27T21:10:44.037744" rpa="false" schemaversion="5">
+<suite id="s1" name="Siman Automation - prod" source="C:\Users\juan_valencia\OneDrive - Alsicorp\Documentos\automatizacion-robotframeork-siman\tests\smoke">
+<suite id="s1-s1" name="Open Homepage" source="C:\Users\juan_valencia\OneDrive - Alsicorp\Documentos\automatizacion-robotframeork-siman\tests\smoke\open_homepage.robot">
+<test id="s1-s1-t1" name="Test Checkout Small" line="11">
+<kw name="Open Browser To Checkout" owner="browser_keywords">
+<kw name="Set Variable If" owner="BuiltIn">
+<msg time="2025-10-27T21:10:44.329141" level="INFO">${checkout_url} = https://sv.siman.com/checkout/cart/add/?sku=8695234&amp;qty=1&amp;seller=1&amp;sc=1&amp;sku=8481414&amp;qty=1&amp;seller=1&amp;sc=1</msg>
+<var>${checkout_url}</var>
+<arg>'${cart_type}' == 'small'</arg>
+<arg>${CHECKOUT_PROD_SMALL}</arg>
+<arg>'${cart_type}' == 'small_mk'</arg>
+<arg>${CHECKOUT_PROD_SMALL_MK}</arg>
+<arg>'${cart_type}' == 'big'</arg>
+<arg>${CHECKOUT_PROD_BIG}</arg>
+<arg>'${cart_type}' == 'split_siman'</arg>
+<arg>${CHECKOUT_PROD_SPLIT_SIMAN}</arg>
+<arg>'${cart_type}' == 'split_siman_mk'</arg>
+<arg>${CHECKOUT_PROD_SPLIT_SIMAN_MK}</arg>
+<doc>Sets variable based on the given condition.</doc>
+<status status="PASS" start="2025-10-27T21:10:44.328539" elapsed="0.000685"/>
+</kw>
+<kw name="Open Browser With Options" owner="browser_keywords">
+<if>
+<branch type="IF" condition="'${BROWSER}' == 'chrome'">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2025-10-27T21:10:44.331427" level="INFO">${options} = &lt;selenium.webdriver.chrome.options.Options object at 0x0000020E125CBB60&gt;</msg>
+<var>${options}</var>
+<arg>sys.modules['selenium.webdriver'].ChromeOptions()</arg>
+<arg>sys, selenium.webdriver</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2025-10-27T21:10:44.330863" elapsed="0.000641"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--incognito</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-10-27T21:10:44.332112" elapsed="0.000242"/>
+</kw>
+<arg>${INCOGNITO_MODE}</arg>
+<arg>Call Method</arg>
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--incognito</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2025-10-27T21:10:44.331777" elapsed="0.000729"/>
+</kw>
+<status status="PASS" start="2025-10-27T21:10:44.330391" elapsed="0.002218"/>
+</branch>
+<branch type="ELSE IF" condition="'${BROWSER}' == 'firefox'">
+<kw name="Evaluate" owner="BuiltIn">
+<var>${options}</var>
+<arg>sys.modules['selenium.webdriver'].FirefoxOptions()</arg>
+<arg>sys, selenium.webdriver</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="NOT RUN" start="2025-10-27T21:10:44.332910" elapsed="0.000051"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<arg>${INCOGNITO_MODE}</arg>
+<arg>Call Method</arg>
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>-private</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="NOT RUN" start="2025-10-27T21:10:44.333170" elapsed="0.000050"/>
+</kw>
+<status status="NOT RUN" start="2025-10-27T21:10:44.332709" elapsed="0.000607"/>
+</branch>
+<status status="PASS" start="2025-10-27T21:10:44.330336" elapsed="0.003060"/>
+</if>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-extensions</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-10-27T21:10:44.333543" elapsed="0.000242"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-gpu</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-10-27T21:10:44.333969" elapsed="0.000212"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--no-sandbox</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-10-27T21:10:44.334361" elapsed="0.000254"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-dev-shm-usage</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-10-27T21:10:44.334949" elapsed="0.000272"/>
+</kw>
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-10-27T21:10:44.335880" level="INFO">Opening browser 'chrome' to base url 'https://sv.siman.com/checkout/cart/add/?sku=8695234&amp;qty=1&amp;seller=1&amp;sc=1&amp;sku=8481414&amp;qty=1&amp;seller=1&amp;sc=1'.</msg>
+<arg>${url}</arg>
+<arg>${BROWSER}</arg>
+<arg>options=${options}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-10-27T21:10:44.335476" elapsed="6.464641"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2025-10-27T21:10:50.800399" elapsed="0.067700"/>
+</kw>
+<arg>${checkout_url}</arg>
+<doc>Abre navegador con opciones configuradas</doc>
+<status status="PASS" start="2025-10-27T21:10:44.329861" elapsed="6.539645"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>✅ Carrito ${cart_type} cargado: ${checkout_url}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-10-27T21:10:50.869927" elapsed="0.000685"/>
+</kw>
+<arg>small</arg>
+<doc>Abre en modo incógnito según configuración</doc>
+<status status="PASS" start="2025-10-27T21:10:44.327212" elapsed="6.543589"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-27T21:10:50.871368" level="INFO">✅ Checkout small cargado correctamente</msg>
+<arg>✅ Checkout small cargado correctamente</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-27T21:10:50.871171" elapsed="0.000271"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-10-27T21:10:50.871908" elapsed="2.407923"/>
+</kw>
+<status status="PASS" start="2025-10-27T21:10:44.326325" elapsed="8.954088"/>
+</test>
+<doc>Verifica que la página de inicio de Siman.com carga correctamente.</doc>
+<status status="PASS" start="2025-10-27T21:10:44.081857" elapsed="9.199937"/>
+</suite>
+<status status="PASS" start="2025-10-27T21:10:44.041558" elapsed="9.242300"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Siman Automation - prod" id="s1" pass="1" fail="0" skip="0">Siman Automation - prod</stat>
+<stat name="Open Homepage" id="s1-s1" pass="1" fail="0" skip="0">Siman Automation - prod.Open Homepage</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

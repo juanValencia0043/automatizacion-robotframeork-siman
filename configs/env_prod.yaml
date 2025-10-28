@@ -1,6 +1,6 @@
-# configs/env_sandbox.yaml
+# configs/env_prod.yaml
 
-base_url: "https://simanqa.myvtex.com"
+base_url: "https://sv.siman.com"
 api_url: ""
 browser: "chrome"
 headless: false

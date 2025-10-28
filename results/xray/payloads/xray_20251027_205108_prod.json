@@ -1,0 +1,13 @@
+{
+  "testExecutionKey": "SIMAN-20251027_205108",
+  "info": {
+    "summary": "Automated Execution - prod",
+    "description": "Robot Framework execution for prod",
+    "startDate": "2025-10-27T20:51:08.751209",
+    "testEnvironments": [
+      "prod"
+    ],
+    "base_url": "https://sv.siman.com"
+  },
+  "tests": []
+}
