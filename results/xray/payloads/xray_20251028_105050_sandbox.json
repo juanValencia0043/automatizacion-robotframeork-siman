@@ -1,0 +1,13 @@
+{
+  "testExecutionKey": "SIMAN-20251028_105050",
+  "info": {
+    "summary": "Automated Execution - sandbox",
+    "description": "Robot Framework execution for sandbox",
+    "startDate": "2025-10-28T10:50:50.199377",
+    "testEnvironments": [
+      "sandbox"
+    ],
+    "base_url": "https://simanqa.myvtex.com"
+  },
+  "tests": []
+}

@@ -1,5 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
+Resource    ../../resources/variables/checkout_urls.resource
 
 *** Keywords ***
 Open Browser To Checkout

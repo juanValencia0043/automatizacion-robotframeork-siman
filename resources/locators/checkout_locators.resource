@@ -7,13 +7,13 @@ ${BTN_GO_PAYMENT}           id=btn-go-to-payment
 
 ${INPUT_EMAIL}              id=client-email
 ${INPUT_NAME}               id=input-firstName
-${INPUT_LAST_NAME}          id=input-input-lastName
+${INPUT_LAST_NAME}          id=input-lastName
 ${SELECT_DOCUMENT}          id=input-documentType
 ${INPUT_DOCUMENT}           id=input-document
 ${INPUT_PHONE}              id=input-homePhone
 
-${CHECK_SAVE_DATA}          id=input-homePhone
-${CHECK_PRIVACY_TERMS}      id=input-homePhone
+${CHECK_SAVE_DATA}          id=opt-in-save-data
+${CHECK_PRIVACY_TERMS}      id=privacy-terms
 
 ${BTN_GO_SHIPPING}          id=go-to-shipping
 
@@ -32,6 +32,5 @@ ${INPUT_COMPLEMENT}         id=ship-complement
 ${INPUT_RECEIVER_NAME}      id=ship-receiverName
 
 # Step 3 Payment
-
 
 ${BTN_FINISH_PURCHASE}      id=payment-data-submit
