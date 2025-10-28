@@ -218,12 +218,14 @@ def main():
     
     # Variables que se enviarán al Robot
     variables = [
+        # Se configuran en archivo env
         f"BASE_URL:{config['base_url']}",
         f"BROWSER:{config['browser']}",
         f"HEADLESS:{config['headless']}",
-        f"ENVIRONMENT:{env}",
+        f"ENVIRONMENT:{env}",  # ✅ ESTA ES CLAVE
         f"EXECUTION_DIR:{execution_dir}",
-        f"SCREENSHOT_DIR:{execution_dir}/screenshots"
+        f"SCREENSHOT_DIR:{execution_dir}/screenshots",
+        f"INCOGNITO_MODE:{config.get('incognito', True)}"  # ✅ Esta también
     ]
     
     # Agregar variables opcionales si existen en el config

@@ -4,17 +4,28 @@ Library    SeleniumLibrary
 *** Keywords ***
 Open Browser To Checkout
     [Arguments]     ${cart_type}
-    [Documentation]    Abre en modo incógnito según configuración
+    [Documentation]    Abre checkout según el environment (prod o sandbox)
     
+    # Determinar las URLs basado en el environment
     ${checkout_url}=    Set Variable If
-    ...    '${cart_type}' == 'small'              ${CHECKOUT_PROD_SMALL}
-    ...    '${cart_type}' == 'small_mk'           ${CHECKOUT_PROD_SMALL_MK}
-    ...    '${cart_type}' == 'big'                ${CHECKOUT_PROD_BIG}
-    ...    '${cart_type}' == 'split_siman'        ${CHECKOUT_PROD_SPLIT_SIMAN}
-    ...    '${cart_type}' == 'split_siman_mk'     ${CHECKOUT_PROD_SPLIT_SIMAN_MK} 
+        # PRODUCCIÓN
+        ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'small'              ${CHECKOUT_PROD_SMALL}
+        ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'small_mk'           ${CHECKOUT_PROD_SMALL_MK}
+        ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'big'                ${CHECKOUT_PROD_BIG}
+        ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'split_siman'        ${CHECKOUT_PROD_SPLIT_SIMAN}
+        ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'split_siman_mk'     ${CHECKOUT_PROD_SPLIT_SIMAN_MK}
+        # SANDBOX  
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'small'           ${CHECKOUT_SANDBOX_SMALL}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'small_mk'        ${CHECKOUT_SANDBOX_SMALL_MK}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'big'             ${CHECKOUT_SANDBOX_BIG}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_siman'     ${CHECKOUT_SANDBOX_SPLIT_SIMAN}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_siman_mk'  ${CHECKOUT_SANDBOX_SPLIT_SIMAN_MK}
+        # DEFAULT (fallback)
+        ...    ${CHECKOUT_PROD_SMALL}
 
     Open Browser With Options    ${checkout_url}
-    Log To Console    ✅ Carrito ${cart_type} cargado: ${checkout_url}
+    Log To Console    ✅ [${ENVIRONMENT}] Carrito ${cart_type} cargado: ${checkout_url}
+
 
 Open Browser With Options
     [Arguments]    ${url}
@@ -35,4 +46,4 @@ Open Browser With Options
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
     
     Open Browser    ${url}    ${BROWSER}    options=${options}
-    Maximize Browser Window
+    Maximize Browser Window 
