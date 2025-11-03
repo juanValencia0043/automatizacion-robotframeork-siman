@@ -95,9 +95,29 @@ def update_dashboard_data(output_file, env_name, config):
     except Exception as e:
         print(f"⚠️ Error actualizando dashboard: {e}")
 
-def generate_xray_payload(output_file, env_name, config):
-    """Genera payload para XRay"""
+def format_xray_date(robot_date):
+    """Convierte fecha de Robot a formato XRay Server"""
     try:
+        if not robot_date:
+            return datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.000-0600")
+        
+        # Formato Robot: 20251102 23:55:21.324
+        # Formato XRay: 2024-11-02T23:55:21.324-0600
+        date_part = robot_date[:8]  # 20251102
+        time_part = robot_date[9:]  # 23:55:21.324
+        
+        formatted_date = f"{date_part[:4]}-{date_part[4:6]}-{date_part[6:8]}T{time_part}-0600"
+        return formatted_date
+    except Exception:
+        return datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.000-0600")
+
+def generate_xray_payload(output_file, env_name, config):
+    """Genera payload para XRay Server/Data Center"""
+    try:
+        if not os.path.exists(output_file):
+            print("❌ No se encontró el output.xml para XRay")
+            return None
+        
         result = ExecutionResult(output_file)
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         
@@ -106,36 +126,83 @@ def generate_xray_payload(output_file, env_name, config):
             "info": {
                 "summary": f"Automated Execution - {env_name}",
                 "description": f"Robot Framework execution for {env_name}",
-                "startDate": datetime.datetime.now().isoformat(),
-                "testEnvironments": [env_name],
-                "base_url": config.get('base_url', 'N/A')
+                "user": config.get('jira_user', 'juan_valencia@siman.com'),
+                "startDate": format_xray_date(result.suite.starttime if hasattr(result.suite, 'starttime') else None),
+                "finishDate": format_xray_date(result.suite.endtime if hasattr(result.suite, 'endtime') else None),
+                "testPlanKey": config.get('test_plan_key', ''),
+                "testEnvironments": []  # ⬅️ Array vacío - omite ambientes
             },
             "tests": []
         }
         
-        for test in result.suite.tests:
-            test_result = {
-                "testKey": test.name.replace(' ', '_').upper(),
-                "start": test.starttime,
-                "finish": test.endtime,
-                "comment": test.message,
-                "status": "PASS" if test.passed else "FAIL"
-            }
-            xray_payload["tests"].append(test_result)
+        # Procesar tests recursivamente
+        tests_found = process_tests_recursive(result.suite, xray_payload['tests'])
+        
+        if tests_found == 0:
+            print("⚠️ No se encontraron tests para el payload de XRay")
+            return None
         
         # Guardar payload
         xray_file = f"results/xray/payloads/xray_{timestamp}_{env_name}.json"
         os.makedirs(os.path.dirname(xray_file), exist_ok=True)
         
-        with open(xray_file, 'w') as f:
-            json.dump(xray_payload, f, indent=2)
+        with open(xray_file, 'w', encoding='utf-8') as f:
+            json.dump(xray_payload, f, indent=2, ensure_ascii=False)
         
-        print(f"📦 Payload XRay generado: {xray_file}")
+        print(f"📦 Payload XRay generado: {xray_file} ({tests_found} tests)")
         return xray_file
         
     except Exception as e:
-        print(f"⚠️ Error generando payload XRay: {e}")
+        print(f"❌ Error generando payload XRay: {e}")
         return None
+
+def process_tests_recursive(suite, tests_list):
+    """Procesa tests recursivamente con debugging"""
+    count = 0
+    
+    for test in suite.tests:
+        count += 1
+        
+        # ✅ DEBUG: Ver qué tags tiene el test
+        print(f"🔍 Procesando test: {test.name}")
+        print(f"   Tags encontrados: {test.tags}")
+        
+        status = "PASSED" if test.passed else "FAILED"
+        
+        # Buscar test key en tags
+        test_key = None
+        for tag in test.tags:
+            print(f"   Analizando tag: {tag}")
+            if tag in ['CSC-8202', 'CSC-8203']:
+                test_key = tag
+                print(f"   ✅ Key encontrada: {test_key}")
+                break
+        
+        if not test_key:
+            test_key = f"AUTO-{test.name.replace(' ', '_').upper()}"
+            print(f"   ⚠️  Usando key automática: {test_key}")
+        
+        test_data = {
+            "testKey": test_key,
+            "start": format_xray_date(test.starttime),
+            "finish": format_xray_date(test.endtime),
+            "status": status,
+            "comment": f"Automated test execution: {test.name}",
+            "steps": [
+                {
+                    "status": status,
+                    "actualResult": f"Test {test.name} completed with status: {status}"
+                }
+            ]
+        }
+        
+        tests_list.append(test_data)
+        print(f"   ➕ Test agregado al payload: {test_key}\n")
+    
+    for sub_suite in suite.suites:
+        count += process_tests_recursive(sub_suite, tests_list)
+    
+    return count
 
 def ensure_results_structure():
     """Asegura que exista la estructura completa de directorios"""
@@ -159,8 +226,6 @@ def generate_dashboard():
     try:
         template_path = "results/dashboards/templates/dashboard.html"
         dashboard_path = "results/dashboards/index.html"
-        
-        print(f"🔍 Buscando template en: {os.path.abspath(template_path)}")
         
         if not os.path.exists(template_path):
             print("❌ No se encontró el template del dashboard")

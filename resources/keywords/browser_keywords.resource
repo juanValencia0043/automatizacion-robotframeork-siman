@@ -1,6 +1,7 @@
 *** Settings ***
 Library    SeleniumLibrary
 Resource    ../../resources/variables/checkout_urls.resource
+Resource    ../../resources/variables/environment.resource
 
 *** Keywords ***
 Open Browser To Checkout
@@ -10,7 +11,7 @@ Open Browser To Checkout
     # Determinar las URLs basado en el environment
     ${checkout_url}=    Set Variable If
         # PRODUCCIÓN
-        ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'small'              ${CHECKOUT_PROD_SMALL}
+        ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'small'              ${CHECKOUT_PROD_SMALL}    
         ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'small_mk'           ${CHECKOUT_PROD_SMALL_MK}
         ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'big'                ${CHECKOUT_PROD_BIG}
         ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'split_siman'        ${CHECKOUT_PROD_SPLIT_SIMAN}
@@ -25,7 +26,8 @@ Open Browser To Checkout
         ...    ${CHECKOUT_PROD_SMALL}
 
     Open Browser With Options    ${checkout_url}
-    Log To Console    ✅ [${ENVIRONMENT}] Carrito ${cart_type} cargado: ${checkout_url}
+    Sleep    2s 
+
 
 
 Open Browser With Options

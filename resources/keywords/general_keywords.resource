@@ -45,39 +45,130 @@ Click Radio Button Safe
     
 
 Fill Element By Text
-    [Arguments]    ${element_identifier}    ${text_element}=""
-    [Documentation]    Llenado de campos de texto
+    [Arguments]    ${element_identifier}    ${text_element}="${EMPTY}"
+    [Documentation]    Llenado robusto de campos de texto con manejo de errores
+    ...    - Esperas inteligentes
+    ...    - Validación de parámetros
+    ...    - Captura de errores detallada
+    ...    - Screenshots en caso de error
 
-    Page Should Contain Element    ${element_identifier}
-    Wait Until Element Is Visible    ${element_identifier}    10s
-    
-    IF    '${text_element}' != ''
-        Input Text    ${element_identifier}    ${text_element}
-    ELSE       
-        ${mesage}    Catenate    No se especificó un dato válido para:    ${element_identifier}
-        Log To Console    ${mesage}
+    # Validar parámetros obligatorios
+    Run Keyword If    '${element_identifier}' == '${EMPTY}'    
+    ...    Fail    msg=El identificador del elemento no puede estar vacío
+
+    TRY
+        # Espera inteligente para el elemento
+        Wait Until Keyword Succeeds    3x    2s    
+        ...    Page Should Contain Element    ${element_identifier}
+        
+        # Esperar a que sea visible e interactuable
+        Wait Until Keyword Succeeds    3x    1s    
+        ...    Element Should Be Visible    ${element_identifier}
+        
+        Wait Until Keyword Succeeds    2x    1s    
+        ...    Element Should Be Enabled    ${element_identifier}
+
+        # Limpiar campo antes de escribir (opcional)
+        Clear Element Text    ${element_identifier}
+        
+        # Solo escribir si hay texto proporcionado
+        IF    '${text_element}' != '${EMPTY}'
+            Input Text    ${element_identifier}    ${text_element}
+            
+            Log    Campo ${element_identifier} llenado con: ${text_element}
+        ELSE
+            Log    Campo ${element_identifier} se dejó vacío como se solicitó
+        END
+
+    EXCEPT    AS    ${error_message}
+        # Capturar screenshot en caso de error
+        Capture Page Screenshot    error_fill_{$element_identifier}.png
+        
+        # Log detallado del error
+        Log    Error al llenar campo ${element_identifier}: ${error_message}    level=ERROR
+        Log    Texto intentado: ${text_element}    level=DEBUG
+        
+        # Fallar con mensaje descriptivo
+        Fail    No se pudo llenar el campo '${element_identifier}' con el texto '${text_element}'. Error: ${error_message}
     END
     
 
 Select List Item
-    [Arguments]    ${locator}    ${label}    ${timeout}=10s
-    [Documentation]    Selecciona un item de lista con validación y timeout
-    ...                - Espera a que la lista esté visible
-    ...                - Selecciona por label
-    ...                - Verifica la selección
-    
-    # Esperar a que la lista esté disponible
-    Wait Until Element Is Visible    ${locator}    ${timeout}
-    
-    # Seleccionar el item
-    Select From List By Label    ${locator}    ${label}
-    
-    # Verificar que se seleccionó correctamente
-    ${selected_label}    Get Selected List Label    ${locator}
-    Should Be Equal    ${selected_label}    ${label}
-    
-    Log To Console    ✅ Seleccionado: '${label}' en ${locator}     
+    [Arguments]    ${locator}    ${label}    ${timeout}=15s
+    [Documentation]    Selecciona un item de lista con validaciones robustas
+    ...    - Validación de parámetros
+    ...    - Esperas inteligentes con reintentos
+    ...    - Manejo de listas desplegables dinámicas
+    ...    - Verificación de selección múltiple
+    ...    - Captura de errores con screenshots
 
+    # Validar parámetros obligatorios
+    Run Keyword If    '${locator}' == '${EMPTY}'    
+    ...    Fail    msg=El locator de la lista no puede estar vacío
+    
+    Run Keyword If    '${label}' == '${EMPTY}'    
+    ...    Fail    msg=El label a seleccionar no puede estar vacío
+
+    TRY
+        # Espera robusta para que la lista esté lista
+        Wait Until Keyword Succeeds    3x    2s    
+        ...    Page Should Contain Element    ${locator}
+        
+        Wait Until Keyword Succeeds    3x    2s    
+        ...    Element Should Be Visible    ${locator}
+        
+        Wait Until Keyword Succeeds    3x    1s    
+        ...    Element Should Be Enabled    ${locator}
+
+        # Verificar que la lista tiene opciones
+        Wait Until Keyword Succeeds    2x    2s    
+        ...    List Selection Should Be Possible    ${locator}
+
+        # Seleccionar por label con manejo de error específico
+        Wait Until Keyword Succeeds    2x    1s    
+        ...    Select From List By Label    ${locator}    ${label}
+
+        # Verificación robusta de la selección
+        Wait Until Keyword Succeeds    3x    1s    
+        ...    Verify List Selection    ${locator}    ${label}
+
+    EXCEPT    AS    ${error_message}
+        # Capturar screenshot y información de debug
+        Capture Page Screenshot    error_select_list_{$locator}.png
+        
+        # Obtener información de debug
+        ${available_labels}=    Run Keyword And Ignore Error    
+        ...    Get List Items    ${locator}
+        
+        ${current_selection}=    Run Keyword And Ignore Error    
+        ...    Get Selected List Label    ${locator}
+
+        # Log detallado del error
+        Log    Error al seleccionar '${label}' en ${locator}: ${error_message}    level=ERROR
+        Run Keyword If    '${available_labels}[0]' == 'PASS'    
+        ...    Log    Opciones disponibles: ${available_labels}[1]    level=DEBUG
+        Run Keyword If    '${current_selection}[0]' == 'PASS'    
+        ...    Log    Selección actual: ${current_selection}[1]    level=DEBUG
+        
+        # Re-lanzar error con mensaje mejorado
+        Fail    No se pudo seleccionar '${label}' en la lista '${locator}'. Error: ${error_message}
+    END
+
+Verify List Selection
+    [Arguments]    ${locator}    ${expected_label}
+    [Documentation]    Keyword auxiliar para verificar la selección
+    
+    ${selected_label}=    Get Selected List Label    ${locator}
+    Should Be Equal As Strings    ${selected_label}    ${expected_label}
+    ...    msg=La selección no coincide. Esperado: '${expected_label}' - Actual: '${selected_label}'
+
+List Selection Should Be Possible
+    [Arguments]    ${locator}
+    [Documentation]    Verifica que la lista tenga opciones disponibles
+    
+    ${items}=    Get List Items    ${locator}
+    Should Not Be Empty    ${items}
+    ...    msg=La lista ${locator} no tiene opciones disponibles
 Create Random Email
     [Documentation]    Generador de email para usuario nuevo
     ...                Formato: timestamp+test+@yopmail.com
