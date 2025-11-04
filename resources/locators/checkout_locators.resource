@@ -22,6 +22,10 @@ ${BTN_GO_SHIPPING}            id=go-to-shipping
 ${BTN_SHIPPING_DELIVERY}      id=shipping-option-delivery
 ${BTN_SHIPPING_PICKUP}        id=shipping-option-pickup-in-point
 ${BTN_SELECT_PICKUP}          id=change-pickup-button
+${FIND_PICKP_AVAIBLES}        id=find-pickups-manualy-button
+${SHOW_ALL_PICKUP_POINTS}     id=pkpmodal-show-list-btn
+${BTN_GO_TO_FILL_ADDRESS}     css=button[class*='vtex-omnishipping-1-x-btnDelivery']
+${CHANGE_PICKUP_BUTTON}       id=change-pickup-button
 
 ${SELECT_DEPARMENT}           id=ship-state
 ${SELECT_CITY}                id=ship-city

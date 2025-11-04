@@ -157,30 +157,24 @@ def generate_xray_payload(output_file, env_name, config):
         return None
 
 def process_tests_recursive(suite, tests_list):
-    """Procesa tests recursivamente con debugging"""
+    """Procesa tests recursivamente para XRay Server"""
     count = 0
     
     for test in suite.tests:
         count += 1
         
-        # ✅ DEBUG: Ver qué tags tiene el test
-        print(f"🔍 Procesando test: {test.name}")
-        print(f"   Tags encontrados: {test.tags}")
-        
         status = "PASSED" if test.passed else "FAILED"
         
-        # Buscar test key en tags
+        # Buscar cualquier tag que empiece con CSC-
         test_key = None
         for tag in test.tags:
-            print(f"   Analizando tag: {tag}")
-            if tag in ['CSC-8202', 'CSC-8203']:
+            if tag.startswith('CSC-'):
                 test_key = tag
-                print(f"   ✅ Key encontrada: {test_key}")
                 break
         
         if not test_key:
-            test_key = f"AUTO-{test.name.replace(' ', '_').upper()}"
-            print(f"   ⚠️  Usando key automática: {test_key}")
+            print(f"⚠️ No se encontró tag CSC- en test: {test.name}")
+            continue
         
         test_data = {
             "testKey": test_key,
@@ -197,7 +191,7 @@ def process_tests_recursive(suite, tests_list):
         }
         
         tests_list.append(test_data)
-        print(f"   ➕ Test agregado al payload: {test_key}\n")
+        print(f"✅ Test agregado: {test_key}")
     
     for sub_suite in suite.suites:
         count += process_tests_recursive(sub_suite, tests_list)
@@ -279,7 +273,7 @@ def main():
     execution_dir = create_execution_directory(env)
     
     # Define las rutas base
-    test_dir = os.path.join("tests", "smoke")
+    test_dir = os.path.join("tests", "regression")  # Ajusta según sea necesario
     
     # Variables que se enviarán al Robot
     variables = [
