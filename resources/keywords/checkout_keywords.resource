@@ -9,7 +9,7 @@ Login Checkout
     [Arguments]    ${user_type}
     [Documentation]    Metodo general para logearse en checkout ya sea como usuario recurrente o no 
     
-    Click Element By Type   ${BTN_GO_PAYMENT}    button
+    Click Element By Type   ${BTN_CART_TO_ORDERFORM}    button
 
     # Espera específica para el campo de email
     Wait Until Element Is Visible    ${INPUT_NAME}    30s
@@ -74,6 +74,8 @@ Select Pickup Point
     
     Wait Until Element Is Visible    css=.vtex-pickup-points-modal-3-x-pointsList    15s
     
+    Click Button    id=pkpmodal-show-list-btn
+
     # Buscar y hacer click en el elemento que contiene el nombre de la tienda
     Click Element    xpath=//p[contains(@class, 'pickupPointName') and contains(text(), '${store_name}')]/ancestor::div[contains(@class, 'pointsItem')]
     
@@ -99,12 +101,14 @@ Select Split Delivery
         
         # Esperar a que aparezca el botón de buscar pickups disponibles
         TRY
+            Log    Intentando seleccionar botón de buscar pickup manualmente
             Wait Until Keyword Succeeds    15s    2s
             ...    Element Should Be Visible    ${FIND_PICKP_AVAIBLES}
             
             Wait Until Keyword Succeeds    10s    1s
             ...    Click Element By Type    ${FIND_PICKP_AVAIBLES}    button
         EXCEPT
+            Log    Botón anterior no estaba disponible. Intentando cambiar pickup.
             Wait Until Keyword Succeeds    15s    2s
             ...    Element Should Be Visible    ${CHANGE_PICKUP_BUTTON} 
             

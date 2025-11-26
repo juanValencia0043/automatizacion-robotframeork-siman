@@ -2,6 +2,7 @@
 ${INPUT_CUPON}                id=cart-coupon
 ${BTN_CUPON}                  id=cart-coupon-add
 ${BTN_GO_PAYMENT}             xpath=(//button[@id='btn-go-to-payment'])[1]
+${BTN_CART_TO_ORDERFORM}      id=cart-to-orderform
 
 # Step 2 Form
 

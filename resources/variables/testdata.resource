@@ -1,12 +1,12 @@
 *** Variables ***
 # Variables para formularios / Direcciones
 
-${NAME}               Diego
-${LAST_NAME}          Valencia
+${NAME}               Omar
+${LAST_NAME}          Guerra
 ${DOCUMENT}           060247028
 ${PHONE}              75391216
 ${DUI}                DUI
 ${PASSPORT}           Pasaporte
 ${RESIDENT_CARD}      Carné de Residente
 
-${EMAIL_RECURRENT}    juan_valencia@siman.com
+${EMAIL_RECURRENT}    omar_guerra@siman.com
