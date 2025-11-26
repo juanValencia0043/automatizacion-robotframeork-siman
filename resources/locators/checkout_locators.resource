@@ -1,7 +1,7 @@
 *** Variables ***
 ${INPUT_CUPON}                id=cart-coupon
 ${BTN_CUPON}                  id=cart-coupon-add
-${BTN_GO_PAYMENT}             xpath=(//button[@id='btn-go-to-payment'])[1]
+${BTN_GO_PAYMENT}             id=cart-to-orderform
 
 # Step 2 Form
 
@@ -39,8 +39,7 @@ ${BTN_EDIT_ADRESS}            id=edit-address-button
 ${BTN_NEW_ADDRESS_OPTION}     id=new-address-button
 ${BTN_RETURN_TO_SHIPPING}     id=back-to-address-list
 
-${BTN_GO_PAYMENT_SHIPPING}    xpath=(//button[@id='btn-go-to-payment'])[2]
-
+${BTN_GO_PAYMENT_SHIPPING}    id=btn-go-to-payment
 
 # Step 3 Payment
 
@@ -56,8 +55,10 @@ ${paymentgroupcustomPrivate2Locator}      id=payment-group-customPrivate_404Paym
 ${paymentgrouppromissoryPayLocator}       id=payment-group-promissoryPaymentGroup
 ${paymentgroupcustom203PaymLocator}       id=payment-group-custom203PaymentGroupPaymentGroup
 ${paymentgroupcustomPrivate3Locator}      id=payment-group-customPrivate_401PaymentGroup
-${paymentgroupcustomPrivate4Locator}      id=payment-group-customPrivate_402PaymentGroup
+${PAYMENT_CREDISIMAN}                     id=payment-group-customPrivate_402PaymentGroup
 ${paymentgroupcustomPrivate5Locator}      id=payment-group-customPrivate_403PaymentGroup
 ${shortcutvisacuotasLocator}              id=shortcut-visa-cuotas
+${PAYMENT_TRANS_BANK}                     id=payment-group-custom205PaymentGroupPaymentGroup  
 
 ${BTN_FINISH_PURCHASE}                    id=payment-data-submit
+${BTN_CONFIRM_PURCHASE}                   xpath=(//button[@id='payment-data-submit'])[2]
