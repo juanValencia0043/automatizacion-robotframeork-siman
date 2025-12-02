@@ -3,6 +3,7 @@ Library    SeleniumLibrary
 Resource    ../../resources/keywords/general_keywords.resource
 Resource    ../../resources/locators/checkout_locators.resource
 Resource    ../../resources/variables/testdata.resource
+Resource    ../../resources/locators/login_vtex_locators.resource
 
 *** Keywords ***
 Login Checkout
@@ -56,6 +57,7 @@ Create New Adress In Checkout
         Fill Element By Text    ${INPUT_STREET}    Test Street
         Fill Element By Text    ${INPUT_COMPLEMENT}    Apto 123
         Fill Element By Text    ${INPUT_RECEIVER_NAME}    User Test
+        Wait Until Element Is Visible    ${BTN_GO_PAYMENT_SHIPPING}    10s
         Click Element By Type    ${BTN_GO_PAYMENT_SHIPPING}    button
     ELSE IF   '${user_type}' == 'recurrent_user'
         Click Element By Type    ${BTN_NEW_ADDRESS_OPTION}    button
@@ -155,7 +157,6 @@ Select Payment Method
     [Arguments]    ${payment_method}
     [Documentation]    Selección de método de pago en checkout
 
-    Sleep    1s 
 
     IF    '${payment_method}' == 'credisiman'
         # Lógica para seleccionar tarjeta de crédito
@@ -177,7 +178,46 @@ Select Payment Method
     ELSE IF   '${payment_method}' == 'tarjeta credito debito'
         # Lógica para seleccionar transferencia bancaria
         Log To Console    Seleccionando pago con tarjeta credito debito
+    ELSE IF    '${payment_method}' == 'transferencia_bancaria'
+        Wait Until Element Is Visible    ${PAYMENT_TRANS_BANK}    30s
+        Wait Until Element Is Enabled    ${PAYMENT_TRANS_BANK}    10s
+        Click Element By Type    ${PAYMENT_TRANS_BANK}    button
+        Sleep   2s
     END
 
+
+Finish Purchase
+    [Arguments]    ${verify_orden}
+    [Documentation]    Finaliza la compra en el checkout
+
+    IF    '${verify_orden}' == 'verify'
+
+        Wait Until Element Is Visible    ${BTN_CONFIRM_PURCHASE}    30s
+        Wait Until Element Is Enabled    ${BTN_CONFIRM_PURCHASE}    10s
+
+        Click Element By Type    ${BTN_CONFIRM_PURCHASE}    button
+
+        # Esperar a que aparezca el card completo
+        Wait Until Element Is Visible    xpath=//div[contains(., 'Vendido y entregado por')]    30s
+        
+        # Extraer información
+        ${ORDER_NUMBER}=    Get Text    xpath=//div[contains(., 'Orden #')]
+        ${ORDER_DATE}=      Get Text    xpath=//div[contains(., 'Hecho el')]
+        ${ORDER_EMAIL}=     Get Text    xpath=//div[contains(., '@')]
+        
+        Log To Console    *** Información de la Orden ***
+        Log To Console    ${ORDER_NUMBER}
+        Log To Console    ${ORDER_DATE}
+        Log To Console    ${ORDER_EMAIL}
+
+    ELSE IF    '${verify_orden}' == 'no_verify'
+        Wait Until Element Is Visible    ${BTN_CONFIRM_PURCHASE}    30s
+        Wait Until Element Is Enabled    ${BTN_CONFIRM_PURCHASE}    10s
+        Click Element By Type    ${BTN_CONFIRM_PURCHASE}    button
+
+        # Solo se valida que la el login de vtex sea visible
+        Wait Until Element Is Visible    ${INPUT_VTEX-LOGIN}    60s
+        Log To Console    Compra finalizada sin verificación de orden
+    END
 
 

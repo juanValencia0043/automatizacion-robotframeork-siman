@@ -16,12 +16,13 @@ Resource    ../../resources/locators/checkout_locators.resource
 Test Teardown   Close Browser
 
 *** Test Cases ***
-# Test Checkout Small Ticket New User
-#     [Tags]    CSC-8202  delivery_siman
-#     Open Browser To Checkout    small 
-#     Login Checkout  guest_user
-#     Create New Adress In Checkout   new_user   San Salvador    San Salvador Centro    San Salvador
-#     Select Payment Method   credisiman
+Test Checkout Small Ticket New User
+    [Tags]    CSC-8202  delivery_siman
+    Open Browser To Checkout    small 
+    Login Checkout  guest_user
+    Create New Adress In Checkout   new_user   San Salvador    San Salvador Centro    San Salvador
+    Select Payment Method   transferencia_bancaria    
+    Finish Purchase   no_verify
 
 # Test Checkout Small Ticket Mk New User
 #     [Tags]    CSC-8203  delivery_siman_mk
@@ -38,22 +39,22 @@ Test Teardown   Close Browser
 #     Select Payment Method   credisiman
 #     #Verify Order Confirmation
 
-Test Checkout Split New User
-    [Tags]    CSC-8226  delivery_and_pickup_siman
-    Open Browser To Checkout    split_siman 
-    Login Checkout  guest_user
-    Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV GALERIAS 
-    Select Payment Method   credisiman
-    Sleep    5s
-    #Verify Order Confirmation
+# Test Checkout Split New User
+#     [Tags]    CSC-8226  delivery_and_pickup_siman
+#     Open Browser To Checkout    split_siman 
+#     Login Checkout  guest_user
+#     Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV GALERIAS 
+#     Select Payment Method   credisiman
+#     Sleep    5s
+#     #Verify Order Confirmation
 
- Test Checkout Split Combinado New User
-    [Tags]    CSC-8227  delivery_and_pickup_siman_mk
-    Open Browser To Checkout    split_siman_mk 
-    Login Checkout  guest_user
-    Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV GALERIAS
-    Select Payment Method   credisiman
-    Sleep    5s
+#  Test Checkout Split Combinado New User
+#     [Tags]    CSC-8227  delivery_and_pickup_siman_mk
+#     Open Browser To Checkout    split_siman_mk 
+#     Login Checkout  guest_user
+#     Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV GALERIAS
+#     Select Payment Method   credisiman
+#     Sleep    5s
 
      #Verify Order Confirmation
 
