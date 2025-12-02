@@ -203,7 +203,8 @@ Finish Purchase
         # Realizar login en VTEX para verificar la orden
         Login Vtex    juan_valencia@siman.com
 
-        Sleep   5s
+        Sleep   7s
+        Reload Page
 
         # Esperar a que aparezca el card completo
         Wait Until Element Is Visible    xpath=//div[contains(., 'Vendido y entregado por')]    30s

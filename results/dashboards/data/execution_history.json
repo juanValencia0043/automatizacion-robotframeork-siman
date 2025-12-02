@@ -1,29 +1,5 @@
 [
   {
-    "timestamp": "20251126_102332",
-    "environment": "sandbox",
-    "base_url": "https://simanqa.myvtex.com",
-    "browser": "chrome",
-    "total_tests": 1,
-    "passed": 1,
-    "failed": 0,
-    "success_rate": 100.0,
-    "execution_time": 65593,
-    "suite_name": "Siman Automation - sandbox"
-  },
-  {
-    "timestamp": "20251126_135402",
-    "environment": "sandbox",
-    "base_url": "https://simanqa.myvtex.com",
-    "browser": "chrome",
-    "total_tests": 1,
-    "passed": 0,
-    "failed": 1,
-    "success_rate": 0.0,
-    "execution_time": 74930,
-    "suite_name": "Siman Automation - sandbox"
-  },
-  {
     "timestamp": "20251126_135516",
     "environment": "sandbox",
     "base_url": "https://simanqa.myvtex.com",
@@ -597,6 +573,30 @@
     "failed": 1,
     "success_rate": 0.0,
     "execution_time": 96626,
+    "suite_name": "Siman Automation - sandbox"
+  },
+  {
+    "timestamp": "20251202_165606",
+    "environment": "sandbox",
+    "base_url": "https://simanqa.myvtex.com",
+    "browser": "chrome",
+    "total_tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "success_rate": 0.0,
+    "execution_time": 65992,
+    "suite_name": "Siman Automation - sandbox"
+  },
+  {
+    "timestamp": "20251202_165733",
+    "environment": "sandbox",
+    "base_url": "https://simanqa.myvtex.com",
+    "browser": "chrome",
+    "total_tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "success_rate": 0.0,
+    "execution_time": 84194,
     "suite_name": "Siman Automation - sandbox"
   }
 ]

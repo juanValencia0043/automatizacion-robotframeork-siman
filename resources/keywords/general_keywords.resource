@@ -212,7 +212,7 @@ Login Vtex
     Fill Element By Text    ${INPUT_VTEX_TOKEN}    ${OTP}
     Click Element By Type    ${BTN_SUBMIT_VTEX_LOGIN}    button
 
-    Sleep    30s
+    #Sleep    30s
 
     
 
