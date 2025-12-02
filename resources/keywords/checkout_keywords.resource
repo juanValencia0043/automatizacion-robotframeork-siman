@@ -1,5 +1,7 @@
 *** Settings ***
 Library    SeleniumLibrary
+Library    String
+Library    Collections
 Resource    ../../resources/keywords/general_keywords.resource
 Resource    ../../resources/locators/checkout_locators.resource
 Resource    ../../resources/variables/testdata.resource
@@ -193,7 +195,6 @@ Finish Purchase
 
     IF    '${verify_orden}' == 'verify'
 
-
         Wait Until Element Is Visible    ${BTN_CONFIRM_PURCHASE}    30s
         Wait Until Element Is Enabled    ${BTN_CONFIRM_PURCHASE}    10s
 
@@ -207,15 +208,25 @@ Finish Purchase
         # Esperar a que aparezca el card completo
         Wait Until Element Is Visible    xpath=//div[contains(., 'Vendido y entregado por')]    30s
         
-        # Extraer información
-        ${ORDER_NUMBER}=    Get Text    xpath=//div[contains(., 'Orden #')]
-        ${ORDER_DATE}=      Get Text    xpath=//div[contains(., 'Hecho el')]
-        ${ORDER_EMAIL}=     Get Text    xpath=//div[contains(., '@')]
+        # Extraer texto completo
+        ${FULL_TEXT}=    Get Text    xpath=//div[contains(., 'Orden #')]
+        
+        # Extraer Orden # (números después de "Orden #")
+        ${ORDER_NUMBER}=    Get Regexp Matches    ${FULL_TEXT}    Orden #(\\d+)    1
+        ${ORDER_NUMBER}=    Get From List    ${ORDER_NUMBER}    0
+        
+        # Extraer fecha (formato d/m/yyyy)
+        ${ORDER_DATE}=    Get Regexp Matches    ${FULL_TEXT}    (\\d{1,2}/\\d{1,2}/\\d{4})    1
+        ${ORDER_DATE}=    Get From List    ${ORDER_DATE}    0
+        
+        # Extraer email (patrón: texto@dominio.com)
+        ${ORDER_EMAIL}=    Get Regexp Matches    ${FULL_TEXT}    ([\\w.-]+@[\\w.-]+\\.\\w+)    1
+        ${ORDER_EMAIL}=    Get From List    ${ORDER_EMAIL}    0
         
         Log To Console    *** Información de la Orden ***
-        Log To Console    ${ORDER_NUMBER}
-        Log To Console    ${ORDER_DATE}
-        Log To Console    ${ORDER_EMAIL}
+        Log To Console    Orden #${ORDER_NUMBER}
+        Log To Console    Fecha: ${ORDER_DATE}
+        Log To Console    Email: ${ORDER_EMAIL}
 
     ELSE IF    '${verify_orden}' == 'no_verify'
         Wait Until Element Is Visible    ${BTN_CONFIRM_PURCHASE}    30s
@@ -226,5 +237,4 @@ Finish Purchase
         Wait Until Element Is Visible    ${INPUT_VTEX_LOGIN}    60s
         Log To Console    Compra finalizada sin verificación de orden
     END
-
 
