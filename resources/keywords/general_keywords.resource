@@ -199,6 +199,7 @@ Login Vtex
     Click Element By Type    ${BTN_CHECK_YOPMAIL}    button
     
     Sleep    5s
+    Reload Page
     Select Frame    xpath=//*[@id="ifmail"]
 
     ${OTP}=    Get Text   xpath=//*[@id="mail"]/div/div[2]/table/tbody/tr/td/table/tbody/tr/td/div/p[2]   
