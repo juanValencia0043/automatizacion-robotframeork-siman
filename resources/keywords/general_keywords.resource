@@ -1,6 +1,8 @@
 *** Settings ***
 Library    SeleniumLibrary
 Library    DateTime
+Resource    ../../resources/locators/login_vtex_locators.resource
+
 
 *** Keywords ***
 Click Element By Type
@@ -177,3 +179,41 @@ Create Random Email
     ${timestamp}    Get Current Date    result_format=%Y%m%d%H%M%S
     ${random_email}    Catenate    SEPARATOR=    ${timestamp}    _test    @yopmail.com
     RETURN    ${random_email}
+
+Login Vtex
+    [Arguments]    ${email}
+    [Documentation]    Realiza login en plataforma VTEX
+
+    ${TAB_ORIGINAL}=    Get Window Handles
+    ${TAB_ORIGINAL}=    Set Variable    ${TAB_ORIGINAL}[0]
+
+    Wait Until Element Is Visible    ${INPUT_VTEX_LOGIN}    30s
+    Fill Element By Text    ${INPUT_VTEX_LOGIN}   ${email}
+    Click Element By Type    ${BTN_CONTINUE_VTEX_LOGIN}    button
+
+    # Abrir pagina yopmail en una nueva pestaña y obtener token
+    Execute Javascript    window.open("https://www.yopmail.com/es/", "_blank")
+    Switch Window    NEW
+
+    Fill Element By Text    ${INPUT_YOPMAIL}    tokens_siman_automatizacion
+    Click Element By Type    ${BTN_CHECK_YOPMAIL}    button
+    
+    Sleep    5s
+    Select Frame    xpath=//*[@id="ifmail"]
+
+    ${OTP}=    Get Text   xpath=//*[@id="mail"]/div/div[2]/table/tbody/tr/td/table/tbody/tr/td/div/p[2]   
+    
+    # Regresar a la pestaña original
+    Unselect Frame
+    Close Window
+    Switch Window    ${TAB_ORIGINAL}
+
+    Wait Until Element Is Visible    ${INPUT_VTEX_TOKEN}    30s
+    Fill Element By Text    ${INPUT_VTEX_TOKEN}    ${OTP}
+    Click Element By Type    ${BTN_SUBMIT_VTEX_LOGIN}    button
+
+    Sleep    30s
+
+    
+
+

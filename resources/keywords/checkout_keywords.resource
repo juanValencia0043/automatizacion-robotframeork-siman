@@ -3,7 +3,6 @@ Library    SeleniumLibrary
 Resource    ../../resources/keywords/general_keywords.resource
 Resource    ../../resources/locators/checkout_locators.resource
 Resource    ../../resources/variables/testdata.resource
-Resource    ../../resources/locators/login_vtex_locators.resource
 
 *** Keywords ***
 Login Checkout
@@ -57,8 +56,8 @@ Create New Adress In Checkout
         Fill Element By Text    ${INPUT_STREET}    Test Street
         Fill Element By Text    ${INPUT_COMPLEMENT}    Apto 123
         Fill Element By Text    ${INPUT_RECEIVER_NAME}    User Test
-        Wait Until Element Is Visible    ${BTN_GO_PAYMENT_SHIPPING}    10s
-        Click Element By Type    ${BTN_GO_PAYMENT_SHIPPING}    button
+        Wait Until Element Is Visible    ${BTN_GO_TO_STEP3_PAYMENT}    10s
+        Click Element By Type    ${BTN_GO_TO_STEP3_PAYMENT}    button
     ELSE IF   '${user_type}' == 'recurrent_user'
         Click Element By Type    ${BTN_NEW_ADDRESS_OPTION}    button
         Select List Item    ${SELECT_DEPARMENT}    ${DEPARTMENT}
@@ -67,7 +66,8 @@ Create New Adress In Checkout
         Fill Element By Text    ${INPUT_STREET}    Test Street
         Fill Element By Text    ${INPUT_COMPLEMENT}    Apto 123
         Fill Element By Text    ${INPUT_RECEIVER_NAME}    User Test
-        Click Element By Type    ${BTN_GO_PAYMENT_SHIPPING}    button
+        Wait Until Element Is Visible    ${BTN_GO_TO_STEP3_PAYMENT}    10s
+        Click Element By Type    ${BTN_GO_TO_STEP3_PAYMENT}    button
     END
 
 Select Pickup Point
@@ -183,6 +183,7 @@ Select Payment Method
         Wait Until Element Is Enabled    ${PAYMENT_TRANS_BANK}    10s
         Click Element By Type    ${PAYMENT_TRANS_BANK}    button
         Sleep   2s
+        Click Element By Type    ${PAYMENT_TRANS_BANK}    button
     END
 
 
@@ -192,10 +193,16 @@ Finish Purchase
 
     IF    '${verify_orden}' == 'verify'
 
+
         Wait Until Element Is Visible    ${BTN_CONFIRM_PURCHASE}    30s
         Wait Until Element Is Enabled    ${BTN_CONFIRM_PURCHASE}    10s
 
         Click Element By Type    ${BTN_CONFIRM_PURCHASE}    button
+
+        # Realizar login en VTEX para verificar la orden
+        Login Vtex    juan_valencia@siman.com
+
+        Sleep   5s
 
         # Esperar a que aparezca el card completo
         Wait Until Element Is Visible    xpath=//div[contains(., 'Vendido y entregado por')]    30s
@@ -216,7 +223,7 @@ Finish Purchase
         Click Element By Type    ${BTN_CONFIRM_PURCHASE}    button
 
         # Solo se valida que la el login de vtex sea visible
-        Wait Until Element Is Visible    ${INPUT_VTEX-LOGIN}    60s
+        Wait Until Element Is Visible    ${INPUT_VTEX_LOGIN}    60s
         Log To Console    Compra finalizada sin verificación de orden
     END
 

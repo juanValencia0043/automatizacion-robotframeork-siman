@@ -40,6 +40,7 @@ ${BTN_NEW_ADDRESS_OPTION}     id=new-address-button
 ${BTN_RETURN_TO_SHIPPING}     id=back-to-address-list
 
 ${BTN_GO_PAYMENT_SHIPPING}    id=btn-go-to-payment
+${BTN_GO_TO_STEP3_PAYMENT}    xpath=(//button[@id='btn-go-to-payment'])[2]
 
 # Step 3 Payment
 

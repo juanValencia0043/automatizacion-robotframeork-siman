@@ -5,7 +5,6 @@ Resource    ../../resources/keywords/browser_keywords.resource
 Resource    ../../resources/keywords/general_keywords.resource
 Resource    ../../resources/keywords/checkout_keywords.resource
 
-
 Resource    ../../resources/variables/environment.resource
 Resource    ../../resources/variables/checkout_urls.resource
 
@@ -17,12 +16,12 @@ Test Teardown   Close Browser
 
 *** Test Cases ***
 Test Checkout Small Ticket New User
-    [Tags]    CSC-8202  delivery_siman
+    # [Tags]    CSC-8202  delivery_siman
     Open Browser To Checkout    small 
     Login Checkout  guest_user
     Create New Adress In Checkout   new_user   San Salvador    San Salvador Centro    San Salvador
     Select Payment Method   transferencia_bancaria    
-    Finish Purchase   no_verify
+    Finish Purchase   verify
 
 # Test Checkout Small Ticket Mk New User
 #     [Tags]    CSC-8203  delivery_siman_mk
