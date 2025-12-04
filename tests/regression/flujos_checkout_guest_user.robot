@@ -16,10 +16,10 @@ Test Teardown   Close Browser
 
 *** Test Cases ***
 Test Checkout Small Ticket New User
-    # [Tags]    CSC-8202  delivery_siman
+    [Tags]    CSC-8202  delivery_siman
     Open Browser To Checkout    small 
     Login Checkout  guest_user
-    Create New Adress In Checkout   new_user   San Salvador    San Salvador Centro    San Salvador
+    Create New Adress In Checkout   new_user   Santa Ana    Santa Ana Centro    Santa Ana
     Select Payment Method   transferencia_bancaria    
     Finish Purchase   verify
 

@@ -183,9 +183,10 @@ Select Payment Method
     ELSE IF    '${payment_method}' == 'transferencia_bancaria'
         Wait Until Element Is Visible    ${PAYMENT_TRANS_BANK}    30s
         Wait Until Element Is Enabled    ${PAYMENT_TRANS_BANK}    10s
-        Click Element By Type    ${PAYMENT_TRANS_BANK}    button
+        Click Element By Type    ${paymentgroupcustomPrivate3Locator}    button
         Sleep   2s
         Click Element By Type    ${PAYMENT_TRANS_BANK}    button
+        Sleep   2s
     END
 
 
@@ -202,8 +203,6 @@ Finish Purchase
 
         # Realizar login en VTEX para verificar la orden
         Login Vtex    juan_valencia@siman.com
-
-        Sleep   7s
 
         # Esperar a que aparezca el card completo
         Wait Until Element Is Visible    xpath=//div[contains(., 'Vendido y entregado por')]    30s
@@ -223,7 +222,7 @@ Finish Purchase
         ${ORDER_EMAIL}=    Get Regexp Matches    ${FULL_TEXT}    ([\\w.-]+@[\\w.-]+\\.\\w+)    1
         ${ORDER_EMAIL}=    Get From List    ${ORDER_EMAIL}    0
         
-        Log To Console    *** Información de la Orden ***
+        Log To Console    ***\n Información de la Orden ***
         Log To Console    Orden #${ORDER_NUMBER}
         Log To Console    Fecha: ${ORDER_DATE}
         Log To Console    Email: ${ORDER_EMAIL}

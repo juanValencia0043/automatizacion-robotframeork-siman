@@ -184,6 +184,7 @@ Login Vtex
     [Arguments]    ${email}
     [Documentation]    Realiza login en plataforma VTEX
 
+    ${BANDERA}=    Set Variable    True
     ${TAB_ORIGINAL}=    Get Window Handles
     ${TAB_ORIGINAL}=    Set Variable    ${TAB_ORIGINAL}[0]
 
@@ -198,23 +199,48 @@ Login Vtex
     Fill Element By Text    ${INPUT_YOPMAIL}    tokens_siman_automatizacion
     Click Element By Type    ${BTN_CHECK_YOPMAIL}    button
     
+    #  Esperar hasta recibir el correo con el token
+    WHILE    ${BANDERA}
     Sleep    5s
-    Reload Page
+
+    # Siempre despegar el frame antes de entrar
+    Unselect Frame
+
     Select Frame    xpath=//*[@id="ifmail"]
 
-    ${OTP}=    Get Text   xpath=//*[@id="mail"]/div/div[2]/table/tbody/tr/td/table/tbody/tr/td/div/p[2]   
+        TRY
+            ${OTP}=    Get Text   xpath=//*[@id="mail"]/div/div[2]/table/tbody/tr/td/table/tbody/tr/td/div/p[2]
+            IF    '${OTP}' != ''
+                ${BANDERA}=    Set Variable    False
+                Unselect Frame
+            ELSE
+                Unselect Frame
+                Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
+            END
+        EXCEPT
+            Unselect Frame
+            Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
+        END
+
+    END
+    
+    # Eliminar correo para futuras pruebas
+    Wait Until Element Is Enabled    ${FRAME_MAILS_LIST}    30s
+    Select Frame    ${FRAME_MAILS_LIST}
+    Click Element By Type    ${EMAIL_CHECKBOX_YOPMAIL}    checkbox
+    Unselect Frame
+
+    Click Element By Type    ${BTN_DELETE_YOPMAIL}    button  
+
+    Sleep    5s
     
     # Regresar a la pestaña original
-    Unselect Frame
     Close Window
     Switch Window    ${TAB_ORIGINAL}
 
     Wait Until Element Is Visible    ${INPUT_VTEX_TOKEN}    30s
     Fill Element By Text    ${INPUT_VTEX_TOKEN}    ${OTP}
     Click Element By Type    ${BTN_SUBMIT_VTEX_LOGIN}    button
-
-    #Sleep    30s
-
     
 
 

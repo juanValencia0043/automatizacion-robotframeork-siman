@@ -9,4 +9,8 @@ ${FRAME_YOPMAIL}                   xpath=//*[@id="ifmail"]
 ${PARAGRAPH_WITH_OTP}              xpath=//*[@id="mail"]/div/div[2]/table/tbody/tr/td/table/tbody/tr/td/div/p[2]    
 ${INPUT_YOPMAIL}                   id=login
 ${BTN_CHECK_YOPMAIL}               css=div[id='refreshbut'] > button
+${BTN_REFRESH_YOPMAIL}             id=refresh
+${EMAIL_CHECKBOX_YOPMAIL}          xpath=//input[@class='mc']
+${BTN_DELETE_YOPMAIL}              id=delsel
+${FRAME_MAILS_LIST}                id=ifinbox
 
