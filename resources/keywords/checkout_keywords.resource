@@ -184,9 +184,7 @@ Select Payment Method
         Wait Until Element Is Visible    ${PAYMENT_TRANS_BANK}    30s
         Wait Until Element Is Enabled    ${PAYMENT_TRANS_BANK}    10s
         Click Element By Type    ${paymentgroupcustomPrivate3Locator}    button
-        Sleep   2s
         Click Element By Type    ${PAYMENT_TRANS_BANK}    button
-        Sleep   2s
     END
 
 

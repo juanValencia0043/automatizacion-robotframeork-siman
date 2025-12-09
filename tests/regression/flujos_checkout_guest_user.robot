@@ -29,6 +29,8 @@ Test Checkout Small Ticket New User
 #     Login Checkout  guest_user
 #     Create New Adress In Checkout   new_user   Santa Ana    Santa Ana Centro    Santa Ana
 #     Select Payment Method   credisiman
+#     Sleep    10s
+
 
 # Test Checkout Big Ticket New User
 #     [Tags]    CSC-8225  delivery_siman
@@ -36,7 +38,9 @@ Test Checkout Small Ticket New User
 #     Login Checkout  guest_user
 #     Create New Adress In Checkout   new_user   San Salvador    San Salvador Centro    San Salvador
 #     Select Payment Method   credisiman
-#     #Verify Order Confirmation
+#     Sleep    10s
+
+    #Verify Order Confirmation
 
 # Test Checkout Split New User
 #     [Tags]    CSC-8226  delivery_and_pickup_siman

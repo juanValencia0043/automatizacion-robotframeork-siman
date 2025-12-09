@@ -1,5 +1,5 @@
 {
-    "python.analysis.extraPaths": [
-        "./scripts"
-    ]
+  "python.analysis.extraPaths": ["./scripts"],
+  "robotframework.lint.robocop.enabled": true,
+  "robotframework.lint.robocop.path": "robocop"
 }
