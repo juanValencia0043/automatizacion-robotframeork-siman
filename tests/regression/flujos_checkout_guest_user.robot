@@ -15,12 +15,20 @@ Resource    ../../resources/locators/checkout_locators.resource
 Test Teardown   Close Browser
 
 *** Test Cases ***
-Test Checkout Small Ticket New User
-    [Tags]    CSC-8202  delivery_siman
-    Open Browser To Checkout    small 
+# Test Checkout Small Ticket New User
+#     [Tags]    CSC-8202  delivery_siman
+#     Open Browser To Checkout    small 
+#     Login Checkout  guest_user
+#     Create New Adress In Checkout   new_user   Santa Ana    Santa Ana Centro    Santa Ana
+#     Select Payment Method   transferencia_bancaria
+#     Finish Purchase   verify
+
+Test Checkout Split New User
+    [Tags]    CSC-8202  split_siman 
+    Open Browser To Checkout    split_siman 
     Login Checkout  guest_user
-    Create New Adress In Checkout   new_user   Santa Ana    Santa Ana Centro    Santa Ana
-    Select Payment Method   transferencia_bancaria    
+    Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV LA GRAN VIA 
+    Select Payment Method   transferencia_bancaria
     Finish Purchase   verify
 
 # Test Checkout Small Ticket Mk New User
