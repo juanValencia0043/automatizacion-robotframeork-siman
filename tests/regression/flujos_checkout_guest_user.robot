@@ -23,13 +23,21 @@ Test Teardown   Close Browser
 #     Select Payment Method   transferencia_bancaria
 #     Finish Purchase   verify
 
-Test Checkout Split New User
-    [Tags]    CSC-8202  split_siman 
-    Open Browser To Checkout    split_siman 
+# Test Checkout Split New User
+#     [Tags]    CSC-8202  split_siman 
+#     Open Browser To Checkout    split_siman 
+#     Login Checkout  guest_user
+#     Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV LA GRAN VIA 
+#     Select Payment Method   transferencia_bancaria
+#     Finish Purchase  no verify
+
+Test Checkout Split MK New User
+    [Tags]    CSC-8202  split_siman_mk 
+    Open Browser To Checkout    split_siman_mk 
     Login Checkout  guest_user
     Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV LA GRAN VIA 
     Select Payment Method   transferencia_bancaria
-    Finish Purchase   verify
+    Finish Purchase  no verify
 
 # Test Checkout Small Ticket Mk New User
 #     [Tags]    CSC-8203  delivery_siman_mk

@@ -12,4 +12,4 @@ ${CHECKOUT_SANDBOX_SMALL}              https://csc8179--simanqa.myvtex.com/check
 ${CHECKOUT_SANDBOX_SMALL_MK}           https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1
 ${CHECKOUT_SANDBOX_BIG}                https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1
 ${CHECKOUT_SANDBOX_SPLIT_SIMAN}        https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1&sku=5606264&qty=1&seller=1&sc=1
-${CHECKOUT_SANDBOX_SPLIT_SIMAN_MK}     https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1
+${CHECKOUT_SANDBOX_SPLIT_SIMAN_MK}     https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1&sku=10020300&qty=1&seller=NAVIR&sc=1
