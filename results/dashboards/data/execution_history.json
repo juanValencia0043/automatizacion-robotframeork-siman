@@ -1,17 +1,5 @@
 [
   {
-    "timestamp": "20251202_152348",
-    "environment": "sandbox",
-    "base_url": "https://simanqa.myvtex.com",
-    "browser": "chrome",
-    "total_tests": 1,
-    "passed": 0,
-    "failed": 1,
-    "success_rate": 0.0,
-    "execution_time": 44318,
-    "suite_name": "Siman Automation - sandbox"
-  },
-  {
     "timestamp": "20251202_152808",
     "environment": "sandbox",
     "base_url": "https://simanqa.myvtex.com",
@@ -597,6 +585,18 @@
     "failed": 0,
     "success_rate": 100.0,
     "execution_time": 610763,
+    "suite_name": "Siman Automation - sandbox"
+  },
+  {
+    "timestamp": "20260113_164404",
+    "environment": "sandbox",
+    "base_url": "https://simanqa.myvtex.com",
+    "browser": "chrome",
+    "total_tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "success_rate": 0.0,
+    "execution_time": 46441,
     "suite_name": "Siman Automation - sandbox"
   }
 ]
