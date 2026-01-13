@@ -33,6 +33,7 @@ Open Browser With Options
     [Documentation]    Abre navegador con opciones configuradas (Headless solo en CI)
     [Arguments]    ${url}
 
+    # 1. Inicializar las opciones según el navegador
     IF    '${BROWSER}' == 'chrome'
         ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
         IF    ${INCOGNITO_MODE}
@@ -45,15 +46,21 @@ Open Browser With Options
         END
     END
 
-    # HEADLESS SOLO EN CI/CD
+    # 2. HEADLESS: Usamos comillas para asegurar que se pase como string
+    # Nota: También puedes usar solo "--headless" si "--headless=new" te da problemas
     IF    '${CI}' == 'true'
-        Call Method    ${options}    add_argument    --headless=new
+        Call Method    ${options}    add_argument    --headless\=new
     END
 
-    # Opciones comunes (local + CI)
+    # 3. Opciones de estabilidad (Crucial para GitHub Actions)
     Call Method    ${options}    add_argument    --disable-extensions
     Call Method    ${options}    add_argument    --disable-gpu
     Call Method    ${options}    add_argument    --no-sandbox
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
 
-    Open Browser    ${url}    ${BROWSER}    options=${options}
+    # 4. Forzar el tamaño de ventana (evita que elementos no sean clickeables en headless)
+    Call Method    ${options}    add_argument    --window-size\=1920,1080
+
+    # 5. Abrir el navegador pasando el objeto de opciones correctamente
+    Create Webdriver    ${BROWSER.capitalize()}    options=${options}
+    Go To    ${url}

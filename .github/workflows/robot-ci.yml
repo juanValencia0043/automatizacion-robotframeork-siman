@@ -24,6 +24,7 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
+        cache: 'pip' # Mejora la velocidad de ejecuciones futuras
 
     - name: Install dependencies
       run: |
@@ -32,14 +33,17 @@ jobs:
 
     - name: Run Robot Framework tests
       env:
-        CI: true                 # activa headless
+        # Variables que son leídas por el script .robot y run_tests.py
+        CI: "true"                
         BROWSER: chrome
+        HEADLESS: "true"
       run: |
+        # Usamos el input del workflow o por defecto 'sandbox'
         python run_tests.py ${{ github.event.inputs.environment || 'sandbox' }}
 
     - name: Upload Robot results
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: robot-results
+        name: robot-results-${{ github.run_id }}
         path: results/
