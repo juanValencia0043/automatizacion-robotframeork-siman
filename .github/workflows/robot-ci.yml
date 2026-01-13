@@ -1,0 +1,44 @@
+name: Robot Framework CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment (sandbox/prod)"
+        required: true
+        default: "sandbox"
+
+jobs:
+  robot-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Robot Framework tests
+      env:
+        CI: true                 # activa headless
+        BROWSER: chrome
+      run: |
+        python run_tests.py ${{ github.event.inputs.environment || 'sandbox' }}
+
+    - name: Upload Robot results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: robot-results
+        path: results/
