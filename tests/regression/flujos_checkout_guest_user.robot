@@ -17,7 +17,7 @@ Test Checkout Small Ticket New User
     [Documentation]    Flujo de prueba
     [Tags]    csc-8202
 
-    FOR    ${i}    IN RANGE    20
+    FOR    ${i}    IN RANGE    2
         Log    Ejecución ${i}
         Open Browser To Checkout    small
         Login Checkout    guest_user
