@@ -7,6 +7,31 @@ import shutil
 from robot import run
 from robot.api import ExecutionResult
 
+class ConsoleFailureReporter:
+    """Listener personalizado para reportar keywords fallidas en consola"""
+    
+    def __init__(self):
+        self.current_test = None
+        self.failed_keywords = []
+    
+    def start_test(self, name, attributes):
+        self.current_test = name
+        self.failed_keywords = []
+    
+    def end_test(self, name, attributes):
+        if attributes.status == 'FAIL':
+            if self.failed_keywords:
+                print(f"\n❌ Test '{attributes.name}' FAILED at keyword: {self.failed_keywords[-1]}")
+            else:
+                print(f"\n❌ Test '{attributes.name}' FAILED (no specific keyword identified)")
+    
+    def start_keyword(self, name, attributes):
+        pass  # No necesitamos hacer nada al inicio del keyword
+    
+    def end_keyword(self, name, attributes):
+        if attributes.status == 'FAIL':
+            self.failed_keywords.append(name)
+
 def load_env_config(env):
     """Carga el archivo de configuración YAML del entorno"""
     config_path = os.path.join("configs", f"env_{env}.yaml")
@@ -297,6 +322,9 @@ def main():
     print(f"🌐 URL base: {config['base_url']}")
     print(f"📁 Directorio de ejecución: {execution_dir}")
 
+    # Crear listener personalizado para reportar keywords fallidas
+    failure_reporter = ConsoleFailureReporter()
+
     # Ejecuta Robot Framework con reporting mejorado
     output_file = os.path.join(execution_dir, "output.xml")
     
@@ -308,7 +336,8 @@ def main():
         report=os.path.join(execution_dir, 'report.html'),
         xunit=os.path.join(execution_dir, 'xunit.xml'),
         name=f"Siman Automation - {env}",
-        timestampoutputs=False
+        timestampoutputs=False,
+        listener=failure_reporter
     )
 
     # Generar reportes adicionales si la ejecución produjo resultados
