@@ -63,4 +63,5 @@ Open Browser With Options
 
     # 5. Abrir el navegador pasando el objeto de opciones correctamente
     Create Webdriver    ${BROWSER.capitalize()}    options=${options}
+    Set Window Size    1920    1080  # <--- Agrega esto
     Go To    ${url}
