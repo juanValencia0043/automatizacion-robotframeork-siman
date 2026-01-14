@@ -1,0 +1,74 @@
+name: Robot Framework CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment (sandbox/prod)"
+        required: true
+        default: "sandbox"
+
+# Permisos necesarios para desplegar a GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  robot-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Robot Framework tests
+        env:
+          CI: "true"
+          BROWSER: chrome
+          HEADLESS: "true"
+          # Aquí puedes añadir tus secretos si los necesitas:
+          # PASSWORD: ${{ secrets.PASSWORD }}
+        run: |
+          python run_tests.py ${{ github.event.inputs.environment || 'sandbox' }}
+
+      - name: Load Allure history
+        if: always()
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build Allure Report
+        if: always()
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_results: results/allure-results
+          allure_history: allure-history
+          keep_reports: 20
+          report_url: https://juanvalencia0043.github.io/automatizacion-robotframeork-siman/
+
+      - name: Deploy Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-history
+          publish_branch: gh-pages
+          force_orphan: true # Crea la rama si no existe o la sobreescribe
