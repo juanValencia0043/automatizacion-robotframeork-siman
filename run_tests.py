@@ -338,7 +338,6 @@ def main():
         xunit=os.path.join(execution_dir, 'xunit.xml'),
         name=f"Siman Automation - {env}",
         timestampoutputs=False,
-        listener=failure_reporter
     )
 
     # Generar reportes adicionales si la ejecución produjo resultados
