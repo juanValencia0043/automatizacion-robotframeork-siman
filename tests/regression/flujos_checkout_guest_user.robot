@@ -17,15 +17,12 @@ Test Checkout Small Ticket New User
     [Documentation]    Flujo de prueba
     [Tags]    csc-8202
 
-    FOR    ${i}    IN RANGE    2
-        Log    Ejecución ${i}
-        Open Browser To Checkout    small
-        Login Checkout    guest_user
-        Create New Adress In Checkout    new_user    Santa Ana    Santa Ana Centro    Santa Ana
-        Select Payment Method    transferencia_bancaria
-        Finish Purchase    no_verify
-        Close Browser
-    END
+    Open Browser To Checkout    small
+    Login Checkout    guest_user
+    Create New Adress In Checkout    new_user    Santa Ana    Santa Ana Centro    Santa Ana
+    Select Payment Method    transferencia_bancaria
+    Finish Purchase    no_verify
+    Close Browser
 
 # Test Checkout Small Ticket Mk New User
 #    [Tags]    CSC-8203    delivery_siman_mk

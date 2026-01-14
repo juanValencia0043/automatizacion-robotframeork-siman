@@ -1,41 +1,5 @@
 [
   {
-    "timestamp": "20251202_152808",
-    "environment": "sandbox",
-    "base_url": "https://simanqa.myvtex.com",
-    "browser": "chrome",
-    "total_tests": 1,
-    "passed": 0,
-    "failed": 1,
-    "success_rate": 0.0,
-    "execution_time": 23684,
-    "suite_name": "Siman Automation - sandbox"
-  },
-  {
-    "timestamp": "20251202_152940",
-    "environment": "sandbox",
-    "base_url": "https://simanqa.myvtex.com",
-    "browser": "chrome",
-    "total_tests": 1,
-    "passed": 0,
-    "failed": 1,
-    "success_rate": 0.0,
-    "execution_time": 48831,
-    "suite_name": "Siman Automation - sandbox"
-  },
-  {
-    "timestamp": "20251202_153147",
-    "environment": "sandbox",
-    "base_url": "https://simanqa.myvtex.com",
-    "browser": "chrome",
-    "total_tests": 1,
-    "passed": 0,
-    "failed": 1,
-    "success_rate": 0.0,
-    "execution_time": 48135,
-    "suite_name": "Siman Automation - sandbox"
-  },
-  {
     "timestamp": "20251202_153749",
     "environment": "sandbox",
     "base_url": "https://simanqa.myvtex.com",
@@ -597,6 +561,42 @@
     "failed": 1,
     "success_rate": 0.0,
     "execution_time": 46441,
+    "suite_name": "Siman Automation - sandbox"
+  },
+  {
+    "timestamp": "20260114_114116",
+    "environment": "sandbox",
+    "base_url": "https://simanqa.myvtex.com",
+    "browser": "chrome",
+    "total_tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "success_rate": 0.0,
+    "execution_time": 25497,
+    "suite_name": "Siman Automation - sandbox"
+  },
+  {
+    "timestamp": "20260114_115142",
+    "environment": "sandbox",
+    "base_url": "https://simanqa.myvtex.com",
+    "browser": "chrome",
+    "total_tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "success_rate": 0.0,
+    "execution_time": 86190,
+    "suite_name": "Siman Automation - sandbox"
+  },
+  {
+    "timestamp": "20260114_115606",
+    "environment": "sandbox",
+    "base_url": "https://simanqa.myvtex.com",
+    "browser": "chrome",
+    "total_tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "success_rate": 100.0,
+    "execution_time": 29436,
     "suite_name": "Siman Automation - sandbox"
   }
 ]
