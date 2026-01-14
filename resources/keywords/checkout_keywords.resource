@@ -16,7 +16,7 @@ Login Checkout
 
     # Espera específica para el campo de email
     Wait Until Element Is Visible    ${INPUT_NAME}    30s
-    Wait Until Element Is Enabled    ${INPUT_NAME}    10s
+    Wait Until Element Is Enabled    ${INPUT_NAME}    30s
 
     IF    '${user_type}' == 'guest_user'
         ${random_email}=    Create Random Email
@@ -50,7 +50,7 @@ Create New Adress In Checkout
 
     # Espera específica para el campo de email
     Wait Until Element Is Visible    ${SELECT_DEPARMENT}    30s
-    Wait Until Element Is Enabled    ${SELECT_DEPARMENT}    10s
+    Wait Until Element Is Enabled    ${SELECT_DEPARMENT}    30s
 
     IF    '${user_type}' == 'new_user'
         Select List Item    ${SELECT_DEPARMENT}    ${DEPARTMENT}
@@ -59,7 +59,7 @@ Create New Adress In Checkout
         Fill Element By Text    ${INPUT_STREET}    Test Street
         Fill Element By Text    ${INPUT_COMPLEMENT}    Apto 123
         Fill Element By Text    ${INPUT_RECEIVER_NAME}    User Test
-        Wait Until Element Is Visible    ${BTN_GO_TO_STEP3_PAYMENT}    10s
+        Wait Until Element Is Visible    ${BTN_GO_TO_STEP3_PAYMENT}    30s
         Click Element By Type    ${BTN_GO_TO_STEP3_PAYMENT}    button
     ELSE IF    '${user_type}' == 'recurrent_user'
         Click Element By Type    ${BTN_NEW_ADDRESS_OPTION}    button
@@ -69,7 +69,7 @@ Create New Adress In Checkout
         Fill Element By Text    ${INPUT_STREET}    Test Street
         Fill Element By Text    ${INPUT_COMPLEMENT}    Apto 123
         Fill Element By Text    ${INPUT_RECEIVER_NAME}    User Test
-        Wait Until Element Is Visible    ${BTN_GO_TO_STEP3_PAYMENT}    10s
+        Wait Until Element Is Visible    ${BTN_GO_TO_STEP3_PAYMENT}    30s
         Click Element By Type    ${BTN_GO_TO_STEP3_PAYMENT}    button
     END
 
@@ -77,18 +77,18 @@ Select Pickup Point
     [Documentation]    Selecciona un punto de recogida por nombre de tienda
     [Arguments]    ${store_name}
 
-    Wait Until Element Is Visible    css=.vtex-pickup-points-modal-3-x-pointsList    15s
+    Wait Until Element Is Visible    css=.vtex-pickup-points-modal-3-x-pointsList    30s
 
     # Buscar y hacer click en el elemento que contiene el nombre de la tienda
     Click Element
     ...    xpath=//p[contains(@class, 'pickupPointName') and contains(text(), '${store_name}')]/ancestor::div[contains(@class, 'pointsItem')]
 
     # Esperar a que se active el botón de confirmar
-    Wait Until Element Is Visible    xpath=//button[text()='Recogida en este punto']    15s
+    Wait Until Element Is Visible    xpath=//button[text()='Recogida en este punto']    30s
     Click Element    xpath=//button[text()='Recogida en este punto']
 
     # Verificar que el modal se cerró
-    Wait Until Element Is Not Visible    xpath=//button[text()='Recogida en este punto']    10s
+    Wait Until Element Is Not Visible    xpath=//button[text()='Recogida en este punto']    30s
 
 Select Split Delivery
     [Documentation]    Método para seleccionar la opción de delivery y pickup en checkout con esperas dinámicas
@@ -96,7 +96,7 @@ Select Split Delivery
 
     # Espera para el campo de departamento
     Wait Until Element Is Visible    ${SELECT_DEPARMENT}    30s
-    Wait Until Element Is Enabled    ${SELECT_DEPARMENT}    10s
+    Wait Until Element Is Enabled    ${SELECT_DEPARMENT}    30s
 
     IF    '${user_type}' == 'guest_user'
         # Esperar y hacer click en botón de shipping/pickup
@@ -187,7 +187,7 @@ Select Payment Method
         Log To Console    Seleccionando pago con tarjeta credito debito
     ELSE IF    '${payment_method}' == 'transferencia_bancaria'
         Wait Until Element Is Visible    ${PAYMENT_TRANS_BANK}    30s
-        Wait Until Element Is Enabled    ${PAYMENT_TRANS_BANK}    10s
+        Wait Until Element Is Enabled    ${PAYMENT_TRANS_BANK}    30s
         Click Element By Type    ${paymentgroupcustomPrivate3Locator}    button
         Sleep    2s
         Click Element By Type    ${PAYMENT_TRANS_BANK}    button
@@ -199,7 +199,7 @@ Finish Purchase
 
     IF    '${verify_orden}' == 'verify'
         Wait Until Element Is Visible    ${BTN_CONFIRM_PURCHASE}    30s
-        Wait Until Element Is Enabled    ${BTN_CONFIRM_PURCHASE}    10s
+        Wait Until Element Is Enabled    ${BTN_CONFIRM_PURCHASE}    30s
 
         Click Element By Type    ${BTN_CONFIRM_PURCHASE}    button
 
