@@ -53,7 +53,7 @@ Test Checkout Small Ticket Mk New User
     Login Checkout  guest_user
     Create New Adress In Checkout   new_user   Santa Ana    Santa Ana Centro    Santa Ana
     Select Payment Method   credisiman
-    Sleep    10s
+    Finish Purchase  no verify
 
 
 Test Checkout Big Ticket New User
@@ -62,7 +62,7 @@ Test Checkout Big Ticket New User
     Login Checkout  guest_user
     Create New Adress In Checkout   new_user   San Salvador    San Salvador Centro    San Salvador
     Select Payment Method   credisiman
-    Sleep    10s
+    Finish Purchase  no verify
 
     #Verify Order Confirmation
 
@@ -72,7 +72,7 @@ Test Checkout Split New User
     Login Checkout  guest_user
     Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV GALERIAS 
     Select Payment Method   credisiman
-    Sleep    5s
+    Finish Purchase  no verify
     #Verify Order Confirmation
 
  Test Checkout Split Combinado New User
@@ -81,7 +81,7 @@ Test Checkout Split New User
     Login Checkout  guest_user
     Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV GALERIAS
     Select Payment Method   credisiman
-    Sleep    5s
+    Finish Purchase  no verify
 
      #Verify Order Confirmation
 
