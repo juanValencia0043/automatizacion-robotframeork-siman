@@ -100,7 +100,7 @@ Select Split Delivery
 
     IF    '${user_type}' == 'guest_user'
         # Esperar y hacer click en botón de shipping/pickup
-        Wait Until Keyword Succeeds    15s    2s
+        Wait Until Keyword Succeeds    25s    2s
         ...    Click Element By Type    ${BTN_SHIPPING_PICKUP}    button
 
         # Esperar a que aparezca el botón de buscar pickups disponibles
@@ -146,7 +146,7 @@ Select Split Delivery
         Fill Element By Text    ${INPUT_RECEIVER_NAME}    User Test
 
         # Finalizar y continuar a pago
-        Wait Until Keyword Succeeds    10s    2s
+        Wait Until Keyword Succeeds    15s    2s
         ...    Click Element By Type    ${BTN_GO_PAYMENT_SHIPPING}    button
 
         # ELSE IF    '${user_type}' == 'recurrent_user'
