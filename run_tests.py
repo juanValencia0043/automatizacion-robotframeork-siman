@@ -303,7 +303,7 @@ def main():
     result = run(
         test_dir,
         variable=variables,
-        listener='allure_robotframework;results/artifacts/test-results/allure',
+        listener='allure_robotframework;results/allure-results',
         output=output_file,
         log=os.path.join(execution_dir, 'log.html'),
         report=os.path.join(execution_dir, 'report.html'),
