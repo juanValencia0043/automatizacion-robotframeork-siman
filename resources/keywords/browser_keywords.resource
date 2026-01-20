@@ -7,6 +7,8 @@ Resource    ../../resources/variables/environment.resource
 Open Browser To Checkout
     [Arguments]     ${cart_type}
     [Documentation]    Abre checkout según el environment (prod o sandbox)
+    #Por default environment es sandbox
+    
     
     # Determinar las URLs basado en el environment
     ${checkout_url}=    Set Variable If
@@ -23,7 +25,7 @@ Open Browser To Checkout
         ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_siman'     ${CHECKOUT_SANDBOX_SPLIT_SIMAN}
         ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_siman_mk'  ${CHECKOUT_SANDBOX_SPLIT_SIMAN_MK}
         # DEFAULT (fallback)
-        ...    ${CHECKOUT_PROD_SMALL}
+        ...    ${CHECKOUT_SANDBOX_SMALL}
 
     Open Browser With Options    ${checkout_url}
     Sleep    2s 

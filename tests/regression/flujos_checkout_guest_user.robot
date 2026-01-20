@@ -21,23 +21,32 @@ Test Checkout Small Ticket New User
     Login Checkout  guest_user
     Create New Adress In Checkout   new_user   Santa Ana    Santa Ana Centro    Santa Ana
     Select Payment Method   transferencia_bancaria
-    Finish Purchase   verify
+    Finish Purchase   no_verify
 
-Test Checkout Split New User
-    [Tags]    CSC-8202  split_siman 
+Test Checkout Split Siman Guest User
+    [Tags]    CSC-8202  split_siman SmallTicket BigTicket guest_user
     Open Browser To Checkout    split_siman 
     Login Checkout  guest_user
     Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV LA GRAN VIA 
     Select Payment Method   transferencia_bancaria
-    Finish Purchase  no verify
+    Finish Purchase  no_verify
+
+Test Checkout Split Siman New User
+    [Tags]    CSC-8202  split_siman_new_user 
+    Open Browser To Checkout    split_siman 
+    Login Checkout  new_user
+    Create New Adress In Checkout   new_user   San Salvador    San Salvador Centro    San Salvador
+    Select Split Delivery  new_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV LA GRAN VIA 
+    Select Payment Method   transferencia_bancaria
+    Finish Purchase  no_verify
 
 Test Checkout Split Existing User
     [Tags]    CSC-8202  split_siman_existing_user 
     Open Browser To Checkout    split_siman 
-    Login Checkout  existing_user
-    Select Split Delivery  existing_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV LA GRAN VIA 
+    Login Checkout  guest_user
+    Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV LA GRAN VIA 
     Select Payment Method   transferencia_bancaria
-    Finish Purchase  no verify
+    Finish Purchase  no_verify
 
 Test Checkout Split MK New User
     [Tags]    CSC-8202  split_siman_mk 
@@ -45,7 +54,7 @@ Test Checkout Split MK New User
     Login Checkout  guest_user
     Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV LA GRAN VIA 
     Select Payment Method   transferencia_bancaria
-    Finish Purchase  no verify
+    Finish Purchase  no_verify
 
 # Test Checkout Small Ticket Mk New User
 #     [Tags]    CSC-8203  delivery_siman_mk
