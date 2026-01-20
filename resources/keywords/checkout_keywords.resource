@@ -50,6 +50,14 @@ Login Checkout
         Click Element By Type   ${BTN_CONFIRM_LOGIN}    button
     ELSE IF    '${user_type}' == 'recurrent_user'
         Fill Element By Text    ${INPUT_EMAIL}    ${EMAIL_RECURRENT}
+        Click Element By Type    ${INPUT_NAME}    other
+        Wait Until Element Is Visible   ${BTN_SEND_EMAIL_CODE}    10s
+        Click Element By Type   ${BTN_SEND_EMAIL_CODE}    button
+        Wait Until Element Is Visible  ${BTN_CONFIRM_EMAIL_CODE}    10s
+        Click Element By Type   ${BTN_CONFIRM_EMAIL_CODE}    button
+        ${OTP}=    Login Yopmail   ${EMAIL_RECURRENT}
+        Fill Element By Text    ${INPUT_EMAIL_CODE}    ${OTP}
+        Click Element By Type   ${BTN_CONFIRM_LOGIN}    button
     END
 
 Create New Adress In Checkout
@@ -106,7 +114,7 @@ Select Split Delivery
     Wait Until Element Is Visible    ${SELECT_DEPARMENT}    30s
     Wait Until Element Is Enabled    ${SELECT_DEPARMENT}    10s 
 
-    IF    '${user_type}' == 'guest_user'
+    IF    '${user_type}' == 'guest_user' or '${user_type}' == 'new_user'
         # Esperar y hacer click en botón de shipping/pickup
         Wait Until Keyword Succeeds    25s    2s
         ...    Click Element By Type    ${BTN_SHIPPING_PICKUP}    button
