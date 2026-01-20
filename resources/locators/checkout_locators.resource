@@ -16,6 +16,10 @@ ${CHECK_SAVE_DATA}            id=opt-in-save-data
 ${CHECK_PRIVACY_TERMS}        id=privacy-terms
 
 ${BTN_GO_SHIPPING}            id=go-to-shipping
+${BTN_SEND_EMAIL_CODE}        id=loginWithAccessKeyBtn
+${BTN_CONFIRM_EMAIL_CODE}     id=sendAccessKeyBtn
+${INPUT_EMAIL_CODE}          id=access-code
+${BTN_CONFIRM_LOGIN}     id=confirmLoginAccessKeyBtn
 
 # Step 2 shipping
 

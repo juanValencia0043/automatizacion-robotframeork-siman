@@ -10,6 +10,7 @@ Resource    ../../resources/variables/testdata.resource
 Login Checkout
     [Arguments]    ${user_type}
     [Documentation]    Metodo general para logearse en checkout ya sea como usuario recurrente o no 
+    VAR    ${OTP}    
     
     Click Element By Type   ${BTN_GO_PAYMENT}    button
 
@@ -37,8 +38,16 @@ Login Checkout
         Select List Item    ${SELECT_DOCUMENT}    ${DUI}
         Fill Element By Text    ${INPUT_DOCUMENT}     ${DOCUMENT}
         Fill Element By Text    ${INPUT_PHONE}    ${PHONE}
+        Click Element By Type    ${CHECK_SAVE_DATA}    checkbox
         Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox
-        Click Element By Type   ${BTN_GO_SHIPPING}    button        
+        Click Element By Type   ${BTN_GO_SHIPPING}    button   
+        Wait Until Element Is Visible   ${BTN_SEND_EMAIL_CODE}    10s
+        Click Element By Type   ${BTN_SEND_EMAIL_CODE}    button
+        Wait Until Element Is Visible  ${BTN_CONFIRM_EMAIL_CODE}    10s
+        Click Element By Type   ${BTN_CONFIRM_EMAIL_CODE}    button
+        ${OTP}=    Login Yopmail   ${random_email}
+        Fill Element By Text    ${INPUT_EMAIL_CODE}    ${OTP}
+        Click Element By Type   ${BTN_CONFIRM_LOGIN}    button
     ELSE IF    '${user_type}' == 'recurrent_user'
         Fill Element By Text    ${INPUT_EMAIL}    ${EMAIL_RECURRENT}
     END
@@ -93,6 +102,7 @@ Select Split Delivery
     [Documentation]    Método para seleccionar la opción de delivery y pickup en checkout con esperas dinámicas
 
     # Espera para el campo de departamento
+    Log To Console    Seleccionando opción de Split Delivery con pickup point: ${PICKUP_NAME}
     Wait Until Element Is Visible    ${SELECT_DEPARMENT}    30s
     Wait Until Element Is Enabled    ${SELECT_DEPARMENT}    10s 
 
