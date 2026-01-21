@@ -28,29 +28,38 @@ class DetailedReportGenerator:
         result = ExecutionResult(self.output_xml)
         tests_info = []
         
-        for test in result.suite.tests:
-            test_data = {
-                'name': test.name,
-                'status': test.status,
-                'elapsed_time': test.elapsedtime / 1000,  # Convertir a segundos
-                'start_time': self._format_time(test.starttime),
-                'end_time': self._format_time(test.endtime),
-                'tags': list(test.tags),
-                'documentation': test.doc,
-                'keywords': []
-            }
-            
-            # Extraer información de keywords
-            for keyword in test.keywords:
-                kw_data = {
-                    'name': keyword.name,
-                    'status': keyword.status,
-                    'elapsed_time': keyword.elapsedtime / 1000,
-                    'args': list(keyword.args) if keyword.args else []
+        def extract_tests(suite):
+            """Extrae tests de suites anidadas recursivamente"""
+            for test in suite.tests:
+                test_data = {
+                    'name': test.name,
+                    'status': test.status,
+                    'elapsed_time': test.elapsedtime / 1000,  # Convertir a segundos
+                    'start_time': self._format_time(test.starttime),
+                    'end_time': self._format_time(test.endtime),
+                    'tags': list(test.tags),
+                    'documentation': test.doc,
+                    'keywords': []
                 }
-                test_data['keywords'].append(kw_data)
+                
+                # Extraer información de keywords (body contiene los keywords ejecutados)
+                for keyword in test.body:
+                    kw_data = {
+                        'name': keyword.name,
+                        'status': keyword.status,
+                        'elapsed_time': keyword.elapsedtime / 1000,
+                        'args': list(keyword.args) if keyword.args else []
+                    }
+                    test_data['keywords'].append(kw_data)
+                
+                tests_info.append(test_data)
             
-            tests_info.append(test_data)
+            # Procesar suites anidadas
+            for sub_suite in suite.suites:
+                extract_tests(sub_suite)
+        
+        # Iniciar extracción desde la suite principal
+        extract_tests(result.suite)
         
         return {
             'suite_name': result.suite.name,

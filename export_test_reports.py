@@ -26,6 +26,32 @@ class ReportExporter:
         
         result = ExecutionResult(self.output_xml)
         
+        # Función para extraer tests recursivamente
+        def extract_tests_recursive(suite):
+            tests = []
+            for test in suite.tests:
+                tests.append({
+                    'name': test.name,
+                    'status': test.status,
+                    'tags': list(test.tags),
+                    'documentation': test.doc,
+                    'elapsed_time': test.elapsedtime / 1000,
+                    'start_time': str(test.starttime),
+                    'end_time': str(test.endtime),
+                    'keywords': [
+                        {
+                            'name': kw.name,
+                            'status': kw.status,
+                            'elapsed_time': kw.elapsedtime / 1000,
+                            'args': list(kw.args) if kw.args else [],
+                            'doc': kw.doc
+                        } for kw in test.body
+                    ]
+                })
+            for sub_suite in suite.suites:
+                tests.extend(extract_tests_recursive(sub_suite))
+            return tests
+        
         data = {
             'export_date': datetime.now().isoformat(),
             'suite': {
@@ -44,7 +70,7 @@ class ReportExporter:
                 },
                 'by_tag': {}
             },
-            'tests': []
+            'tests': extract_tests_recursive(result.suite)
         }
         
         # Agregar estadísticas por tags
@@ -55,31 +81,6 @@ class ReportExporter:
                     'passed': tag_stat.passed,
                     'failed': tag_stat.failed
                 }
-        
-        # Agregar detalles de tests
-        for test in result.suite.tests:
-            test_data = {
-                'name': test.name,
-                'status': test.status,
-                'tags': list(test.tags),
-                'documentation': test.doc,
-                'elapsed_time': test.elapsedtime / 1000,
-                'start_time': str(test.starttime),
-                'end_time': str(test.endtime),
-                'keywords': []
-            }
-            
-            for keyword in test.keywords:
-                kw_data = {
-                    'name': keyword.name,
-                    'status': keyword.status,
-                    'elapsed_time': keyword.elapsedtime / 1000,
-                    'args': list(keyword.args) if keyword.args else [],
-                    'doc': keyword.doc
-                }
-                test_data['keywords'].append(kw_data)
-            
-            data['tests'].append(test_data)
         
         json_file = os.path.join(self.export_dir, "results.json")
         with open(json_file, 'w', encoding='utf-8') as f:
@@ -96,13 +97,24 @@ class ReportExporter:
         
         result = ExecutionResult(self.output_xml)
         
+        # Función para extraer tests recursivamente
+        def extract_tests_recursive(suite):
+            tests = []
+            for test in suite.tests:
+                tests.append(test)
+            for sub_suite in suite.suites:
+                tests.extend(extract_tests_recursive(sub_suite))
+            return tests
+        
+        all_tests = extract_tests_recursive(result.suite)
+        
         # Archivo principal de tests
         csv_file = os.path.join(self.export_dir, "test_results.csv")
         with open(csv_file, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(['Test Name', 'Status', 'Elapsed Time (s)', 'Tags', 'Start Time', 'End Time'])
             
-            for test in result.suite.tests:
+            for test in all_tests:
                 writer.writerow([
                     test.name,
                     test.status,
@@ -120,8 +132,8 @@ class ReportExporter:
             writer = csv.writer(f)
             writer.writerow(['Test', 'Keyword', 'Status', 'Elapsed Time (s)'])
             
-            for test in result.suite.tests:
-                for keyword in test.keywords:
+            for test in all_tests:
+                for keyword in test.body:
                     writer.writerow([
                         test.name,
                         keyword.name,
@@ -140,6 +152,17 @@ class ReportExporter:
         
         result = ExecutionResult(self.output_xml)
         
+        # Función para extraer tests recursivamente
+        def extract_tests_recursive(suite):
+            tests = []
+            for test in suite.tests:
+                tests.append(test)
+            for sub_suite in suite.suites:
+                tests.extend(extract_tests_recursive(sub_suite))
+            return tests
+        
+        all_tests = extract_tests_recursive(result.suite)
+        
         md_content = f"""# Reporte de Pruebas - {result.suite.name}
 
 **Fecha de Generación:** {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}
@@ -152,7 +175,7 @@ class ReportExporter:
 | ✅ Pasadas | {result.statistics.total.passed} |
 | ❌ Fallidas | {result.statistics.total.failed} |
 | ⏭️ Omitidas | {result.statistics.total.skipped} |
-| 📈 Tasa de Éxito | {round((result.statistics.total.passed / result.statistics.total.total) * 100, 2)}% |
+| 📈 Tasa de Éxito | {round((result.statistics.total.passed / result.statistics.total.total) * 100, 2) if result.statistics.total.total > 0 else 0}% |
 | ⏱️ Tiempo Total | {result.suite.elapsedtime / 1000:.2f}s |
 
 ## 📋 Información General
@@ -167,7 +190,7 @@ class ReportExporter:
 """
         
         # Pruebas pasadas
-        passed_tests = [t for t in result.suite.tests if t.status == 'PASS']
+        passed_tests = [t for t in all_tests if t.status == 'PASS']
         if passed_tests:
             md_content += f"\n### ✅ Pruebas Pasadas ({len(passed_tests)})\n\n"
             for test in passed_tests:
@@ -176,7 +199,7 @@ class ReportExporter:
                 md_content += f"  - Tiempo: {test.elapsedtime / 1000:.2f}s\n"
         
         # Pruebas fallidas
-        failed_tests = [t for t in result.suite.tests if t.status == 'FAIL']
+        failed_tests = [t for t in all_tests if t.status == 'FAIL']
         if failed_tests:
             md_content += f"\n### ❌ Pruebas Fallidas ({len(failed_tests)})\n\n"
             for test in failed_tests:
@@ -185,7 +208,7 @@ class ReportExporter:
                 md_content += f"  - Tiempo: {test.elapsedtime / 1000:.2f}s\n"
                 
                 # Mostrar keyword que falló
-                for kw in test.keywords:
+                for kw in test.body:
                     if kw.status == 'FAIL':
                         md_content += f"  - **Falló en:** `{kw.name}`\n"
                         break
@@ -201,8 +224,8 @@ class ReportExporter:
         
         # Keywords más lentos
         all_keywords = []
-        for test in result.suite.tests:
-            for kw in test.keywords:
+        for test in all_tests:
+            for kw in test.body:
                 all_keywords.append({
                     'name': kw.name,
                     'time': kw.elapsedtime / 1000,
