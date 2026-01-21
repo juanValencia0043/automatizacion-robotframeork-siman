@@ -217,17 +217,22 @@ Select Payment Method
         Click Element By Type    ${PAYMENT_TRANS_BANK}    button
     END
 
+Click Payment Submit Button
+    [Documentation]    Click en el boton de finalizar compra en el checkout
+    Wait Until Element Is Visible    ${BTN_CONFIRM_PURCHASE}    30s
+    Wait Until Element Is Enabled    ${BTN_CONFIRM_PURCHASE}    10s
+    Click Element By Type    ${BTN_CONFIRM_PURCHASE}    button
 
+
+## ---- Finalizar compra ---- ##
+## ---- Se refactorizará este keyword para incluir la verificación de orden ---- ##
 Finish Purchase
     [Arguments]    ${verify_orden}
     [Documentation]    Finaliza la compra en el checkout
 
     IF    '${verify_orden}' == 'verify'
 
-        Wait Until Element Is Visible    ${BTN_CONFIRM_PURCHASE}    30s
-        Wait Until Element Is Enabled    ${BTN_CONFIRM_PURCHASE}    10s
-
-        Click Element By Type    ${BTN_CONFIRM_PURCHASE}    button
+        Click Payment Submit Button
 
         # Realizar login en VTEX para verificar la orden
         Login Vtex    juan_valencia@siman.com
@@ -256,9 +261,8 @@ Finish Purchase
         Log To Console    Email: ${ORDER_EMAIL}
 
     ELSE IF    '${verify_orden}' == 'no_verify'
-        Wait Until Element Is Visible    ${BTN_CONFIRM_PURCHASE}    30s
-        Wait Until Element Is Enabled    ${BTN_CONFIRM_PURCHASE}    10s
-        Click Element By Type    ${BTN_CONFIRM_PURCHASE}    button
+        
+        Click Payment Submit Button
 
         # Solo se valida que la el login de vtex sea visible
         Wait Until Element Is Visible    ${INPUT_VTEX_LOGIN}    60s

@@ -67,4 +67,4 @@ ${shortcutvisacuotasLocator}              id=shortcut-visa-cuotas
 ${PAYMENT_TRANS_BANK}                     id=payment-group-custom205PaymentGroupPaymentGroup  
 
 ${BTN_FINISH_PURCHASE}                    id=payment-data-submit
-${BTN_CONFIRM_PURCHASE}                   id=payment-data-submit
+${BTN_CONFIRM_PURCHASE}                   xpath=(//button[@id='payment-data-submit'])[2]
