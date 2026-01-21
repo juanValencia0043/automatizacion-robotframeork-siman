@@ -44,7 +44,7 @@ Test Checkout Split Siman New User
     Finish Purchase  no_verify
 
 Test Checkout Split Siman Recurrent User
-    #IN PROGRESS
+    #FINALIZADO
     [Tags]    CSC-8202  split_siman_recurrent_user 
     Open Browser To Checkout    split_siman 
     Login Checkout  recurrent_user
@@ -53,6 +53,7 @@ Test Checkout Split Siman Recurrent User
     Finish Purchase  no_verify
 
 Test Checkout Split MK Guest User
+    #FINALIZADO
     [Tags]    CSC-8202  split_siman_mk 
     Open Browser To Checkout    split_siman_mk 
     Login Checkout  guest_user
@@ -61,6 +62,7 @@ Test Checkout Split MK Guest User
     Finish Purchase  no_verify
 
 Test Checkout Split MK New User
+    #FINALIZADO
     [Tags]    CSC-8202  split_siman_mk_new_user 
     Open Browser To Checkout    split_siman_mk 
     Login Checkout  new_user
@@ -69,6 +71,7 @@ Test Checkout Split MK New User
     Finish Purchase  no_verify
 
 Test Checkout Split MK Recurrent User
+    #FINALIZADO
     [Tags]    CSC-8202  split_siman_mk_recurrent_user
     Open Browser To Checkout    split_siman_mk 
     Login Checkout  recurrent_user
