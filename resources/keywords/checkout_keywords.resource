@@ -110,12 +110,24 @@ Select Split Delivery
     [Documentation]    Método para seleccionar la opción de delivery y pickup en checkout con esperas dinámicas
 
     # Espera para el campo de departamento
-    Log To Console    Seleccionando opción de Split Delivery con pickup point: ${PICKUP_NAME}
-    Wait Until Element Is Visible    ${SELECT_DEPARMENT}    30s
-    Wait Until Element Is Enabled    ${SELECT_DEPARMENT}    10s 
+    #Log To Console    Seleccionando opción de Split Delivery con pickup point: ${PICKUP_NAME}
 
     IF    '${user_type}' == 'guest_user' or '${user_type}' == 'new_user'
-        # Esperar y hacer click en botón de shipping/pickup
+        # Espera para el campo de departamento
+        Wait Until Element Is Visible    ${SELECT_DEPARMENT}    30s
+        Wait Until Element Is Enabled    ${SELECT_DEPARMENT}    10s 
+        Select Split Method    ${DEPARTMENT}    ${CITY}    ${NEIGHBORHOOD}    ${PICKUP_NAME}
+        
+    ELSE IF   '${user_type}' == 'recurrent_user'
+        Wait Until Element Is Visible    ${BTN_EDIT_SHIPPING}    10s
+        Wait Until Keyword Succeeds    3x    1s    
+        ...    Click Element By Type    ${BTN_EDIT_SHIPPING}    link    
+        Select Split Method    ${DEPARTMENT}    ${CITY}    ${NEIGHBORHOOD}    ${PICKUP_NAME}
+    END
+
+Select Split Method
+    [Arguments]       ${DEPARTMENT}    ${CITY}    ${NEIGHBORHOOD}    ${PICKUP_NAME}
+    [Documentation]    Método para seleccionar la opción de delivery y pickup en checkout con esperas dinámicas
         Wait Until Keyword Succeeds    25s    2s
         ...    Click Element By Type    ${BTN_SHIPPING_PICKUP}    button
         
@@ -136,42 +148,42 @@ Select Split Delivery
         
         # Esperar a que cargue el modal de pickup points
         Wait Until Keyword Succeeds    20s    2s
-        ...    Element Should Be Visible    css=.vtex-pickup-points-modal-3-x-pointsList
+        ...    Element Should Be Enabled    id:controls-wrapper
         
         # Seleccionar el punto de recogida
         Select Pickup Point    ${PICKUP_NAME}
         
         # Esperar a que se cierre el modal y aparezca el botón de continuar
-        Wait Until Keyword Succeeds    15s    2s
-        ...    Element Should Be Visible    ${BTN_GO_TO_FILL_ADDRESS}
+        TRY
+            Wait Until Keyword Succeeds    15s    2s
+            ...    Element Should Be Visible    ${BTN_GO_TO_FILL_ADDRESS}
         
-        Click Element By Type    ${BTN_GO_TO_FILL_ADDRESS}    button
+            Click Element By Type    ${BTN_GO_TO_FILL_ADDRESS}    button
         
-        # Llenar información de dirección
-        Wait Until Keyword Succeeds    10s    2s
-        ...    Select List Item    ${SELECT_DEPARMENT}    ${DEPARTMENT}
-        
-        Wait Until Keyword Succeeds    10s    2s
-        ...    Select List Item    ${SELECT_CITY}    ${CITY}
-        
-        Wait Until Keyword Succeeds    10s    2s
-        ...    Select List Item    ${SELECT_NEIGHBORHOOD}    ${NEIGHBORHOOD}
-        
-        Fill Element By Text    ${INPUT_STREET}    Test Street
-        Fill Element By Text    ${INPUT_COMPLEMENT}    Apto 123
-        Fill Element By Text    ${INPUT_RECEIVER_NAME}    User Test
-        
-        # Finalizar y continuar a pago
-        Wait Until Keyword Succeeds    15s    2s
-        ...    Click Element By Type    ${BTN_GO_PAYMENT_SHIPPING}    button
-        
-    # ELSE IF   '${user_type}' == 'recurrent_user'
-    #     Click Element By Type    ${CHECK_SPLIT_DELIVERY}    checkbox
-    #     Select List Item    ${SELECT_DEPARMENT_SPLIT}    ${DEPARTMENT}
-    #     Select List Item    ${SELECT_CITY_SPLIT}    ${CITY}
-    #     Select List Item    ${SELECT_NEIGHBORHOOD_SPLIT}    ${NEIGHBORHOOD}
-    #     Click Element By Type    ${BTN_GO_PAYMENT_SHIPPING}    button
-    END
+            # Llenar información de dirección
+            Wait Until Keyword Succeeds    10s    2s
+            ...    Select List Item    ${SELECT_DEPARMENT}    ${DEPARTMENT}
+            
+            Wait Until Keyword Succeeds    10s    2s
+            ...    Select List Item    ${SELECT_CITY}    ${CITY}
+            
+            Wait Until Keyword Succeeds    10s    2s
+            ...    Select List Item    ${SELECT_NEIGHBORHOOD}    ${NEIGHBORHOOD}
+            
+            Fill Element By Text    ${INPUT_STREET}    Test Street
+            Fill Element By Text    ${INPUT_COMPLEMENT}    Apto 123
+            Fill Element By Text    ${INPUT_RECEIVER_NAME}    User Test
+            # Finalizar y continuar a pago
+            Wait Until Keyword Succeeds    15s    2s
+            ...    Click Element By Type    ${BTN_GO_PAYMENT_SHIPPING}    button
+        EXCEPT
+            #Log To Console    El botón de continuar a dirección no apareció, procediendo con dirección guardada.
+            # Finalizar y continuar a pago
+            Wait Until Keyword Succeeds    15s    2s
+            ...    Click Element By Type    ${BTN_GO_PAYMENT_SHIPPING}    button
+        END  
+
+
 
 Select Payment Method
     [Arguments]    ${payment_method}

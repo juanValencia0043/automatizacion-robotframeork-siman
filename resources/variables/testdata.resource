@@ -9,4 +9,5 @@ ${DUI}                DUI
 ${PASSPORT}           Pasaporte
 ${RESIDENT_CARD}      Carné de Residente
 
-${EMAIL_RECURRENT}    juan_valencia@siman.com
+${EMAIL_RECURRENT}    automatizacion_ronald@yopmail.com
+${EMAIL_VTEX}         ronald_ramos@siman.com

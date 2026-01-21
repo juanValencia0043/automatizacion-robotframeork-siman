@@ -205,14 +205,14 @@ Login Yopmail
         Sleep    5s
 
         # Siempre despegar el frame antes de entrar
-        Log To Console    \n--- Despejando frame antes de entrar ---\n
+        #Log To Console    \n--- Despejando frame antes de entrar ---\n
         Unselect Frame
 
         Select Frame    xpath=//*[@id="ifmail"]
-        Log To Console    \n--- Frame seleccionado ---\n
+        #Log To Console    \n--- Frame seleccionado ---\n
 
         TRY
-            Log To Console    \n--- Intentando obtener OTP ---\n
+            #Log To Console    \n--- Intentando obtener OTP ---\n
             ${OTP}=     Get OTP From Mail
             #${OTP}=    Get Text    xpath=//*[@id="mail"]/div/div[2]/table/tbody/tr/td/table/tbody/tr/td/div/p[2]
             
@@ -302,10 +302,10 @@ Login Yopmail
 Get mail 
     [Documentation]    Obtiene el correo temporal de Yopmail
     
-    Log To Console   \n--- Obteniendo correo yopmail ---\n
+    #Log To Console   \n--- Obteniendo correo yopmail ---\n
     VAR    ${MAIL_TEXT} 
     ${MAIL_TEXT}=    Get Text    ${YOPMAIL_MAIL_FRAME}
-    Log To Console     ${MAIL_TEXT}
+    #Log To Console     ${MAIL_TEXT}
     RETURN    ${MAIL_TEXT}
 
 Get OTP From Mail

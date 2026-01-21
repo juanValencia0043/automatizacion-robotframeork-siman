@@ -23,6 +23,7 @@ ${BTN_CONFIRM_LOGIN}     id=confirmLoginAccessKeyBtn
 
 # Step 2 shipping
 
+${BTN_EDIT_SHIPPING}          id=edit-shipping-data
 ${BTN_SHIPPING_DELIVERY}      id=shipping-option-delivery
 ${BTN_SHIPPING_PICKUP}        id=shipping-option-pickup-in-point
 ${BTN_SELECT_PICKUP}          id=change-pickup-button
@@ -66,4 +67,4 @@ ${shortcutvisacuotasLocator}              id=shortcut-visa-cuotas
 ${PAYMENT_TRANS_BANK}                     id=payment-group-custom205PaymentGroupPaymentGroup  
 
 ${BTN_FINISH_PURCHASE}                    id=payment-data-submit
-${BTN_CONFIRM_PURCHASE}                   xpath=(//button[@id='payment-data-submit'])[2]
+${BTN_CONFIRM_PURCHASE}                   id=payment-data-submit
