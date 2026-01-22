@@ -245,59 +245,59 @@ Login Yopmail
     RETURN    ${OTP}
 
 
-# Login Yopmail
-#     [Documentation]    Obtiene el código OTP enviado a Yopmail
-#     ...    para el email
+Login Yopmail Vtex
+    [Documentation]    Obtiene el código OTP enviado a Yopmail
+    ...    para el email
 
-#     VAR    ${BANDERA}=    True
-#     @{window_handles}=    Get Window Handles
-#     VAR    ${TAB_ORIGINAL}=    ${window_handles}[0]
+    VAR    ${BANDERA}=    True
+    @{window_handles}=    Get Window Handles
+    VAR    ${TAB_ORIGINAL}=    ${window_handles}[0]
 
-#     # Abrir pagina yopmail en una nueva pestaña y obtener token
-#     Execute Javascript    window.open("https://www.yopmail.com/es/", "_blank")
-#     Switch Window    NEW
+    # Abrir pagina yopmail en una nueva pestaña y obtener token
+    Execute Javascript    window.open("https://www.yopmail.com/es/", "_blank")
+    Switch Window    NEW
 
-#     Fill Element By Text    ${INPUT_YOPMAIL}    tokens_siman_automatizacion
-#     Click Element By Type    ${BTN_CHECK_YOPMAIL}    button
+    Fill Element By Text    ${INPUT_YOPMAIL}    tokens_siman_automatizacion
+    Click Element By Type    ${BTN_CHECK_YOPMAIL}    button
 
-#     #    Esperar hasta recibir el correo con el token
-#     WHILE    ${BANDERA}
-#         Sleep    5s
+    #    Esperar hasta recibir el correo con el token
+    WHILE    ${BANDERA}
+        Sleep    5s
 
-#         # Siempre despegar el frame antes de entrar
-#         Unselect Frame
+        # Siempre despegar el frame antes de entrar
+        Unselect Frame
 
-#         Select Frame    xpath=//*[@id="ifmail"]
+        Select Frame    xpath=//*[@id="ifmail"]
 
-#         TRY
-#             ${OTP}=    Get Text    xpath=//*[@id="mail"]/div/div[2]/table/tbody/tr/td/table/tbody/tr/td/div/p[2]
-#             IF    '${OTP}' != ''
-#                 VAR    ${BANDERA}=    False
-#                 Unselect Frame
-#             ELSE
-#                 Unselect Frame
-#                 Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
-#             END
-#         EXCEPT
-#             Unselect Frame
-#             Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
-#         END
-#     END
+        TRY
+            ${OTP}=    Get Text    xpath=//*[@id="mail"]/div/div[2]/table/tbody/tr/td/table/tbody/tr/td/div/p[2]
+            IF    '${OTP}' != ''
+                VAR    ${BANDERA}=    False
+                Unselect Frame
+            ELSE
+                Unselect Frame
+                Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
+            END
+        EXCEPT
+            Unselect Frame
+            Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
+        END
+    END
 
-#     # Eliminar correo para futuras pruebas
-#     Wait Until Element Is Enabled    ${FRAME_MAILS_LIST}    30s
-#     Select Frame    ${FRAME_MAILS_LIST}
-#     Click Element By Type    ${EMAIL_CHECKBOX_YOPMAIL}    checkbox
-#     Unselect Frame
+    # Eliminar correo para futuras pruebas
+    Wait Until Element Is Enabled    ${FRAME_MAILS_LIST}    30s
+    Select Frame    ${FRAME_MAILS_LIST}
+    Click Element By Type    ${EMAIL_CHECKBOX_YOPMAIL}    checkbox
+    Unselect Frame
 
-#     Click Element By Type    ${BTN_DELETE_YOPMAIL}    button
+    Click Element By Type    ${BTN_DELETE_YOPMAIL}    button
 
-#     Sleep    5s
+    Sleep    5s
 
-#     # Regresar a la pestaña original
-#     Close Window
-#     Switch Window    ${TAB_ORIGINAL}
-#     RETURN    ${OTP}
+    # Regresar a la pestaña original
+    Close Window
+    Switch Window    ${TAB_ORIGINAL}
+    RETURN    ${OTP}
 
 Get mail 
     [Documentation]    Obtiene el correo temporal de Yopmail
@@ -332,8 +332,16 @@ Login Vtex
     Click Element By Type    ${BTN_CONTINUE_VTEX_LOGIN}    button
 
     # Obtener código OTP desde Yopmail
-    ${OTP}=    Login Yopmail  ${email}
+    ${OTP}=    Login Yopmail Vtex
 
     Wait Until Element Is Visible    ${INPUT_VTEX_TOKEN}    30s
     Fill Element By Text    ${INPUT_VTEX_TOKEN}    ${OTP}
     Click Element By Type    ${BTN_SUBMIT_VTEX_LOGIN}    button
+
+Login Vtex with Google
+    [Documentation]    Realiza login en plataforma VTEX con contraseña
+    [Arguments]    ${email}    ${password}
+    
+    Wait Until Element Is Visible    ${INPUT_VTEX_LOGIN}    30s
+    Fill Element By Text    ${INPUT_VTEX_LOGIN}    ${email}
+    Click Element By Type    ${BTN_CONTINUE_VTEX_LOGIN}    button

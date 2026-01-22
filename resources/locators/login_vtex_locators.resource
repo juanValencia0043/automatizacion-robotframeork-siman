@@ -14,3 +14,5 @@ ${EMAIL_CHECKBOX_YOPMAIL}          xpath=//input[@class='mc']
 ${BTN_DELETE_YOPMAIL}              id=delsel
 ${FRAME_MAILS_LIST}                id=ifinbox
 
+${LOGIN_GOOGLE}                    id=google-oauth
+

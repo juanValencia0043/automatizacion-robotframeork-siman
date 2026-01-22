@@ -8,8 +8,14 @@ ${CHECKOUT_PROD_SPLIT_SIMAN_MK}        https://sv.siman.com/checkout/cart/add/?s
 
 
 # URLs de Checkout para diferentes carritos - SANDBOX
-${CHECKOUT_SANDBOX_SMALL}              https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1
+${CHECKOUT_SANDBOX_SMALL}              https://itglobers--simanqa.myvtex.com/checkout/cart/add/?sku=7334848&qty=1&seller=1&sc=1
 ${CHECKOUT_SANDBOX_SMALL_MK}           https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1
 ${CHECKOUT_SANDBOX_BIG}                https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1
-${CHECKOUT_SANDBOX_SPLIT_SIMAN}        https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1&sku=5606264&qty=1&seller=1&sc=1
-${CHECKOUT_SANDBOX_SPLIT_SIMAN_MK}     https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1&sku=10020300&qty=1&seller=NAVIR&sc=1
+${CHECKOUT_SANDBOX_SPLIT_SIMAN}        https://itglobers--simanqa.myvtex.com/checkout/cart/add/?sku=2106542&qty=1&seller=1&sc=1&sku=10010037&qty=1&seller=1&sc=1
+${CHECKOUT_SANDBOX_SPLIT_SIMAN_MK}     https://itglobers--simanqa.myvtex.com/checkout/cart/add/?sku=10047548&qty=1&seller=ADOC&sc=1&sku=10021163&qty=1&seller=Calzadopruebas1&sc=1&sku=10021161&qty=1&seller=Calzadopruebas1&sc=1
+${CHECKOUT_SANDBOX_ANY}                https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1                 
+
+# URLs checkout por entorno
+${CHECKOUT_SANDBOX_GT}               https://simanqagt.myvtex.com/checkout/cart/add/?sku=7334803&qty=1&seller=1&sc=4&sku=5777006&qty=1&seller=1&sc=4
+${CHECKOUT_SANDBOX_CR}               https://simanqacr.myvtex.com/checkout/cart/add/?sku=7334803&qty=1&seller=1&sc=6&sku=5777006&qty=1&seller=1&sc=6
+${CHECKOUT_SANDBOX_NI}               https://simanqanicor.myvtex.com/checkout/cart/add/?sku=7334803&qty=1&seller=1&sc=8&sku=5777006&qty=1&seller=1&sc=8

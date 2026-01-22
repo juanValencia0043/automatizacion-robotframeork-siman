@@ -1,8 +1,8 @@
 *** Variables ***
 # Variables para formularios / Direcciones
 
-${NAME}               Diego
-${LAST_NAME}          Valencia
+${NAME}               Robot
+${LAST_NAME}          Framework
 ${DOCUMENT}           060247028
 ${PHONE}              75391216
 ${DUI}                DUI

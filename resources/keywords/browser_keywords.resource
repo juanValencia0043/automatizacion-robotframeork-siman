@@ -5,13 +5,12 @@ Resource    ../../resources/variables/environment.resource
 
 *** Keywords ***
 Open Browser To Checkout
-    [Arguments]     ${cart_type}
+    [Arguments]     ${cart_type}        ${country}
     [Documentation]    Abre checkout según el environment (prod o sandbox)
     #Por default environment es sandbox
-    
-    
-    # Determinar las URLs basado en el environment
-    ${checkout_url}=    Set Variable If
+    IF    '${country}' == 'sv'
+        # Determinar las URLs basado en el environment
+        ${checkout_url}=    Set Variable If
         # PRODUCCIÓN
         ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'small'              ${CHECKOUT_PROD_SMALL}    
         ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'small_mk'           ${CHECKOUT_PROD_SMALL_MK}
@@ -25,7 +24,18 @@ Open Browser To Checkout
         ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_siman'     ${CHECKOUT_SANDBOX_SPLIT_SIMAN}
         ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_siman_mk'  ${CHECKOUT_SANDBOX_SPLIT_SIMAN_MK}
         # DEFAULT (fallback)
-        ...    ${CHECKOUT_SANDBOX_SMALL}
+        ...    ${CHECKOUT_SANDBOX_ANY}
+    ELSE IF    '${country}' == 'gt'
+        ${checkout_url}=    Set Variable    ${CHECKOUT_SANDBOX_GT}
+    ELSE IF    '${country}' == 'cr'
+        ${checkout_url}=    Set Variable    ${CHECKOUT_SANDBOX_CR}
+    ELSE IF    '${country}' == 'ni'
+        ${checkout_url}=    Set Variable    ${CHECKOUT_SANDBOX_NI}
+        
+    END
+    
+    
+
 
     Open Browser With Options    ${checkout_url}
     Sleep    2s 
