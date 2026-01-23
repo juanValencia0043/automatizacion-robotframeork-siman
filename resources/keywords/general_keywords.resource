@@ -178,27 +178,27 @@ List Selection Should Be Possible
 
 Create Random Email
     [Documentation]    Generador de email para usuario nuevo
-    ...    Formato: timestamp+test+@yopmail.com
-    ...    Ejemplo: 20241215123045_test@yopmail.com
+    ...    Formato: timestamp+test+@mail7.app
+    ...    Ejemplo: 20241215123045_test@mail7.app
 
     ${timestamp}=    Get Current Date    result_format=%Y%m%d%H%M%S
-    ${random_email}=    Catenate    SEPARATOR=${EMPTY}    ${timestamp}    _test    @yopmail.com
+    ${random_email}=    Catenate    SEPARATOR=${EMPTY}    ${timestamp}    _test    @mail7.app
     RETURN    ${random_email}
 
-Login Yopmail
-    [Documentation]    Obtiene el código OTP enviado a Yopmail
+Login mail7
+    [Documentation]    Obtiene el código OTP enviado a mail7
     [Arguments]    ${email}
 
     VAR    ${BANDERA}=    True
     @{window_handles}=    Get Window Handles
     VAR    ${TAB_ORIGINAL}=    ${window_handles}[0]
 
-    # Abrir pagina yopmail en una nueva pestaña y obtener token
-    Execute Javascript    window.open("${YOPMAIL_URL}", "_blank")
+    # Abrir pagina mail7 en una nueva pestaña y obtener token
+    Execute Javascript    window.open("${mail7_URL}", "_blank")
     Switch Window    NEW
 
-    Fill Element By Text    ${INPUT_YOPMAIL}    ${email}
-    Click Element By Type    ${BTN_CHECK_YOPMAIL}    button
+    Fill Element By Text    ${INPUT_mail7}    ${email}
+    Click Element By Type    ${BTN_CHECK_mail7}    button
 
     #    Esperar hasta recibir el correo con el token
     WHILE    ${BANDERA}
@@ -221,21 +221,21 @@ Login Yopmail
                 Unselect Frame
             ELSE
                 Unselect Frame
-                Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
+                Click Element By Type    ${BTN_REFRESH_mail7}    button
             END
         EXCEPT
             Unselect Frame
-            Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
+            Click Element By Type    ${BTN_REFRESH_mail7}    button
         END
     END
 
     # Eliminar correo para futuras pruebas
     Wait Until Element Is Enabled    ${FRAME_MAILS_LIST}    30s
     Select Frame    ${FRAME_MAILS_LIST}
-    Click Element By Type    ${EMAIL_CHECKBOX_YOPMAIL}    checkbox
+    Click Element By Type    ${EMAIL_CHECKBOX_mail7}    checkbox
     Unselect Frame
 
-    Click Element By Type    ${BTN_DELETE_YOPMAIL}    button
+    Click Element By Type    ${BTN_DELETE_mail7}    button
 
     Sleep    5s
 
@@ -245,20 +245,20 @@ Login Yopmail
     RETURN    ${OTP}
 
 
-Login Yopmail Vtex
-    [Documentation]    Obtiene el código OTP enviado a Yopmail
+Login mail7 Vtex
+    [Documentation]    Obtiene el código OTP enviado a mail7
     ...    para el email
 
     VAR    ${BANDERA}=    True
     @{window_handles}=    Get Window Handles
     VAR    ${TAB_ORIGINAL}=    ${window_handles}[0]
 
-    # Abrir pagina yopmail en una nueva pestaña y obtener token
-    Execute Javascript    window.open("https://www.yopmail.com/es/", "_blank")
+    # Abrir pagina mail7 en una nueva pestaña y obtener token
+    Execute Javascript    window.open("https://www.mail7.app/es/", "_blank")
     Switch Window    NEW
 
-    Fill Element By Text    ${INPUT_YOPMAIL}    tokens_siman_automatizacion
-    Click Element By Type    ${BTN_CHECK_YOPMAIL}    button
+    Fill Element By Text    ${INPUT_mail7}    tokens_siman_automatizacion
+    Click Element By Type    ${BTN_CHECK_mail7}    button
 
     #    Esperar hasta recibir el correo con el token
     WHILE    ${BANDERA}
@@ -276,21 +276,21 @@ Login Yopmail Vtex
                 Unselect Frame
             ELSE
                 Unselect Frame
-                Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
+                Click Element By Type    ${BTN_REFRESH_mail7}    button
             END
         EXCEPT
             Unselect Frame
-            Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
+            Click Element By Type    ${BTN_REFRESH_mail7}    button
         END
     END
 
     # Eliminar correo para futuras pruebas
     Wait Until Element Is Enabled    ${FRAME_MAILS_LIST}    30s
     Select Frame    ${FRAME_MAILS_LIST}
-    Click Element By Type    ${EMAIL_CHECKBOX_YOPMAIL}    checkbox
+    Click Element By Type    ${EMAIL_CHECKBOX_mail7}    checkbox
     Unselect Frame
 
-    Click Element By Type    ${BTN_DELETE_YOPMAIL}    button
+    Click Element By Type    ${BTN_DELETE_mail7}    button
 
     Sleep    5s
 
@@ -300,11 +300,11 @@ Login Yopmail Vtex
     RETURN    ${OTP}
 
 Get mail 
-    [Documentation]    Obtiene el correo temporal de Yopmail
+    [Documentation]    Obtiene el correo temporal de mail7
     
-    #Log To Console   \n--- Obteniendo correo yopmail ---\n
+    #Log To Console   \n--- Obteniendo correo mail7 ---\n
     VAR    ${MAIL_TEXT} 
-    ${MAIL_TEXT}=    Get Text    ${YOPMAIL_MAIL_FRAME}
+    ${MAIL_TEXT}=    Get Text    ${mail7_MAIL_FRAME}
     #Log To Console     ${MAIL_TEXT}
     RETURN    ${MAIL_TEXT}
 
@@ -331,8 +331,8 @@ Login Vtex
     Fill Element By Text    ${INPUT_VTEX_LOGIN}    ${email}
     Click Element By Type    ${BTN_CONTINUE_VTEX_LOGIN}    button
 
-    # Obtener código OTP desde Yopmail
-    ${OTP}=    Login Yopmail Vtex
+    # Obtener código OTP desde mail7
+    ${OTP}=    Login mail7 Vtex
 
     Wait Until Element Is Visible    ${INPUT_VTEX_TOKEN}    30s
     Fill Element By Text    ${INPUT_VTEX_TOKEN}    ${OTP}

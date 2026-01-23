@@ -1,5 +1,5 @@
 *** Variables ***
-${YOPMAIL_URL}              https://www.yopmail.com/en/
+${mail7_URL}              https://portal.mail7.app
 
-#Yopmail Locators
-${YOPMAIL_MAIL_FRAME}        id=mail
+#mail7 Locators
+${mail7_MAIL_FRAME}        id=mail
