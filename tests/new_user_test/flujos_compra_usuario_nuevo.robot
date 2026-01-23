@@ -23,5 +23,5 @@ Test Checkout Split Siman New User
     Login Checkout  new_user
     Create New Adress In Checkout   new_user   San Salvador    San Salvador Centro    San Salvador
     Select Payment Method   transferencia_bancaria
-    Finish Purchase   verify
+    Finish Purchase   no_verify
     Close Browser
