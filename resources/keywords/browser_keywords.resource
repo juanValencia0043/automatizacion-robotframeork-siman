@@ -23,6 +23,12 @@ Open Browser To Checkout
         ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'big'             ${CHECKOUT_SANDBOX_BIG}
         ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_siman'     ${CHECKOUT_SANDBOX_SPLIT_SIMAN}
         ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_siman_mk'  ${CHECKOUT_SANDBOX_SPLIT_SIMAN_MK}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_st_bt_mk'  ${CHECKOUT_SANDBOX_SPLIT_ST_BT_MK}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_st_moto'     ${CHECKOUT_SANDBOX_SPLIT_ST_MOTO}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_bt_moto'     ${CHECKOUT_SANDBOX_SPLIT_BT_MOTO}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_st_bt_moto'  ${CHECKOUT_SANDBOX_SPLIT_ST_BT_MOTO}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_mk_moto'     ${CHECKOUT_SANDBOX_SPLIT_MK_MOTO}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_st_bt_mk_moto'  ${CHECKOUT_SANDBOX_SPLIT_ST_BT_MK_MOTO}
         # DEFAULT (fallback)
         ...    ${CHECKOUT_SANDBOX_ANY}
     ELSE IF    '${country}' == 'gt'

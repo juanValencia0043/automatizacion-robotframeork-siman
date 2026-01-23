@@ -123,6 +123,9 @@ Select Split Delivery
         Wait Until Keyword Succeeds    3x    1s    
         ...    Click Element By Type    ${BTN_EDIT_SHIPPING}    link    
         Select Split Method    ${DEPARTMENT}    ${CITY}    ${NEIGHBORHOOD}    ${PICKUP_NAME}
+    ELSE IF    '${user_type}' == 'guest_user' or '${user_type}' == 'new_user' and '${PICKUP_NAME}' == 'Motocity'
+        # Seleccionar el punto de recogida
+        Select Split Method    ${DEPARTMENT}    ${CITY}    ${NEIGHBORHOOD}    'Florely'    
     END
 
 Select Split Method
@@ -130,24 +133,28 @@ Select Split Method
     [Documentation]    Método para seleccionar la opción de delivery y pickup en checkout con esperas dinámicas
         Wait Until Keyword Succeeds    25s    2s
         ...    Click Element By Type    ${BTN_SHIPPING_PICKUP}    button
-        
-        # Esperar a que aparezca el botón de buscar pickups disponibles
-        TRY
-            Wait Until Keyword Succeeds    15s    2s
-            ...    Element Should Be Visible    ${FIND_PICKP_AVAIBLES}
-            
-            Wait Until Keyword Succeeds    10s    1s
-            ...    Click Element By Type    ${FIND_PICKP_AVAIBLES}    button
-        EXCEPT
-            Wait Until Keyword Succeeds    15s    2s
-            ...    Element Should Be Visible    ${CHANGE_PICKUP_BUTTON} 
-            
-            Wait Until Keyword Succeeds    10s    1s
-            ...    Click Element By Type    ${CHANGE_PICKUP_BUTTON}     button
+        IF    '${PICKUP_NAME}' == 'Motocity'
+            ${PICKUP_NAME}=    Set Variable    Florely
+        ELSE
+                    # Esperar a que aparezca el botón de buscar pickups disponibles
+            TRY
+                Wait Until Keyword Succeeds    15s    2s
+                ...    Element Should Be Visible    ${FIND_PICKP_AVAIBLES}
+                
+                Wait Until Keyword Succeeds    10s    1s
+                ...    Click Element By Type    ${FIND_PICKP_AVAIBLES}    button
+            EXCEPT
+                    Wait Until Keyword Succeeds    15s    2s
+                    ...    Element Should Be Visible    ${CHANGE_PICKUP_BUTTON} 
+                    
+                    Wait Until Keyword Succeeds    10s    1s
+                    ...    Click Element By Type    ${CHANGE_PICKUP_BUTTON}     button
+            END
         END
+
         
         # Esperar a que cargue el modal de pickup points
-        Wait Until Keyword Succeeds    20s    2s
+        Wait Until Keyword Succeeds    3x    5s
         ...    Element Should Be Enabled    id:controls-wrapper
         
         # Seleccionar el punto de recogida

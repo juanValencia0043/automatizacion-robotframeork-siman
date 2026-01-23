@@ -13,6 +13,12 @@ ${CHECKOUT_SANDBOX_SMALL_MK}           https://csc8179--simanqa.myvtex.com/check
 ${CHECKOUT_SANDBOX_BIG}                https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1
 ${CHECKOUT_SANDBOX_SPLIT_SIMAN}        https://itglobers--simanqa.myvtex.com/checkout/cart/add/?sku=2106542&qty=1&seller=1&sc=1&sku=10010037&qty=1&seller=1&sc=1
 ${CHECKOUT_SANDBOX_SPLIT_SIMAN_MK}     https://itglobers--simanqa.myvtex.com/checkout/cart/add/?sku=10047548&qty=1&seller=ADOC&sc=1&sku=10021163&qty=1&seller=Calzadopruebas1&sc=1&sku=10021161&qty=1&seller=Calzadopruebas1&sc=1
+${CHECKOUT_SANDBOX_SPLIT_ST_BT_MK}     https://itglobers--simanqa.myvtex.com/checkout/cart/add/?sku=10047548&qty=1&seller=ADOC&sc=1&sku=10047598&qty=1&seller=ADOC&sc=1&sku=5777008&qty=1&seller=1&sc=1
+${CHECKOUT_SANDBOX_SPLIT_ST_MOTO}      https://itglobers--simanqa.myvtex.com/checkout/cart/add/?sku=10047601&qty=1&seller=TiendaDomus21&sc=1&sku=5777008&qty=1&seller=1&sc=1
+${CHECKOUT_SANDBOX_SPLIT_BT_MOTO}       https://itglobers--simanqa.myvtex.com/checkout/cart/add/?sku=10047598&qty=1&seller=ADOC&sc=1&sku=5777008&qty=1&seller=1&sc=1&sku=10047601&qty=1&seller=TiendaDomus21&sc=1
+${CHECKOUT_SANDBOX_SPLIT_ST_BT_MOTO}    https://itglobers--simanqa.myvtex.com/checkout/cart/add/?sku=10047548&qty=1&seller=ADOC&sc=1&sku=10047598&qty=1&seller=ADOC&sc=1&sku=5777008&qty=1&seller=1&sc=1&sku=10020042&qty=1&seller=1&sc=1&sku=10047601&qty=1&seller=TiendaDomus21&sc=1
+${CHECKOUT_SANDBOX_SPLIT_MK_MOTO}          https://itglobers--simanqa.myvtex.com/checkout/cart/add/?sku=10047601&qty=1&seller=TiendaDomus21&sc=1&sku=10047548&qty=1&seller=ADOC&sc=1
+${CHECKOUT_SANDBOX_SPLIT_ST_BT_MK_MOTO}    https://itglobers--simanqa.myvtex.com/checkout/cart/add/?sku=10047548&qty=1&seller=ADOC&sc=1&sku=10047598&qty=1&seller=ADOC&sc=1&sku=5777008&qty=1&seller=1&sc=1&sku=10020042&qty=1&seller=1&sc=1&sku=10047601&qty=1&seller=TiendaDomus21&sc=1
 ${CHECKOUT_SANDBOX_ANY}                https://csc8179--simanqa.myvtex.com/checkout/cart/add/?sku=7469998&qty=1&seller=1&sc=1                 
 
 # URLs checkout por entorno
