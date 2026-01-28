@@ -11,7 +11,6 @@ Resource    ../../resources/variables/testdata.resource
 Login Checkout
     [Documentation]    Metodo general para logearse en checkout ya sea como usuario recurrente o no
     [Arguments]    ${user_type}
-    VAR    ${OTP}    
     
     Click Element By Type   ${BTN_GO_PAYMENT}    button
 
