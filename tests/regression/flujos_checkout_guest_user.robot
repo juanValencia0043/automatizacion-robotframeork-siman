@@ -1,9 +1,13 @@
 *** Settings ***
-Documentation    Verifica flujos principales en Checkout.
+Documentation       Verifica flujos principales en Checkout.
 
-Resource    ../../resources/keywords/browser_keywords.resource
-Resource    ../../resources/keywords/general_keywords.resource
-Resource    ../../resources/keywords/checkout_keywords.resource
+Resource            ../../resources/keywords/browser_keywords.resource
+Resource            ../../resources/keywords/general_keywords.resource
+Resource            ../../resources/keywords/checkout_keywords.resource
+Resource            ../../resources/variables/environment.resource
+Resource            ../../resources/variables/checkout_urls.resource
+Resource            ../../resources/locators/home_locators.resource
+Resource            ../../resources/locators/checkout_locators.resource
 
 Test Teardown   Close Browser
 

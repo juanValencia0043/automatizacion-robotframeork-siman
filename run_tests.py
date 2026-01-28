@@ -331,13 +331,13 @@ def main():
     result = run(
         test_dir,
         variable=variables,
+        listener='allure_robotframework;results/allure-results',
         output=output_file,
         log=os.path.join(execution_dir, 'log.html'),
         report=os.path.join(execution_dir, 'report.html'),
         xunit=os.path.join(execution_dir, 'xunit.xml'),
         name=f"Siman Automation - {env}",
         timestampoutputs=False,
-        listener=failure_reporter
     )
 
     # Generar reportes adicionales si la ejecución produjo resultados

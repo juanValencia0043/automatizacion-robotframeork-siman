@@ -1,1 +1,25 @@
+# Entorno y Secretos
+.env
+*.env
+__pycache__/
+
+# Resultados de Robot Framework
 results/
+output.xml
+log.html
+report.html
+
+# Resultados de Allure
+results/allure-results/
+allure-report/
+
+# Directorios de Robot que se generan dinámicamente
+results/executions/
+results/xray/
+results/dashboards/data/
+results/dashboards/index.html
+
+# Resultados de Allure
+results/allure-results/
+allure-history/
+allure-report/

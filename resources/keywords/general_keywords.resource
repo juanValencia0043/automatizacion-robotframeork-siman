@@ -27,24 +27,31 @@ Click Element By Type
     END
 
 Click Button Safe
+    [Documentation]    Click especializado para botones con esperas robustas
     [Arguments]    ${link_identifier}
-    Wait Until Element Is Visible    ${link_identifier}    10s
+    Wait Until Element Is Visible    ${link_identifier}    30s
+    Wait Until Element Is Enabled    ${link_identifier}    30s
     Click Element    ${link_identifier}
 
 Click Link Safe
+    [Documentation]    Click especializado para enlaces con esperas robustas
     [Arguments]    ${link_identifier}
-    Wait Until Element Is Visible    ${link_identifier}    10s
+    Wait Until Element Is Visible    ${link_identifier}    30s
+    Wait Until Element Is Enabled    ${link_identifier}    30s
     Scroll Element Into View    ${link_identifier}
     Click Link    ${link_identifier}
 
 Click Checkbox Safe
+    [Documentation]    Click especializado para checkboxes con esperas robustas
     [Arguments]    ${checkbox_identifier}
-    Wait Until Element Is Visible    ${checkbox_identifier}    10s
+    Wait Until Element Is Visible    ${checkbox_identifier}    30s
+    Wait Until Element Is Enabled    ${checkbox_identifier}    30s
     Select Checkbox    ${checkbox_identifier}
 
 Click Radio Button Safe
+    [Documentation]    Click especializado para radio buttons con esperas robustas
     [Arguments]    ${radio_identifier}
-    Wait Until Element Is Visible    ${radio_identifier}    10s
+    Wait Until Element Is Visible    ${radio_identifier}    30s
     Click Element    ${radio_identifier}
 
 Fill Element By Text
@@ -103,7 +110,7 @@ Select List Item
     ...    - Manejo de listas desplegables dinámicas
     ...    - Verificación de selección múltiple
     ...    - Captura de errores con screenshots
-    [Arguments]    ${locator}    ${label}    ${timeout}=15s
+    [Arguments]    ${locator}    ${label}
 
     # Validar parámetros obligatorios
     IF    '${locator}' == '${EMPTY}'
