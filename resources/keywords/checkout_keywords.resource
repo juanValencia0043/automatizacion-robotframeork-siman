@@ -11,8 +11,10 @@ Resource    ../../resources/variables/testdata.resource
 Login Checkout
     [Documentation]    Metodo general para logearse en checkout ya sea como usuario recurrente o no
     [Arguments]    ${user_type}
-
-    Click Element By Type    ${BTN_GO_PAYMENT}    button
+    [Documentation]    Metodo general para logearse en checkout ya sea como usuario recurrente o no 
+    VAR    ${OTP}    
+    
+    Click Element By Type   ${BTN_GO_PAYMENT}    button
 
     # Espera específica para el campo de email
     Wait Until Element Is Visible    ${INPUT_NAME}    30s
@@ -38,10 +40,26 @@ Login Checkout
         Select List Item    ${SELECT_DOCUMENT}    ${DUI}
         Fill Element By Text    ${INPUT_DOCUMENT}    ${DOCUMENT}
         Fill Element By Text    ${INPUT_PHONE}    ${PHONE}
+        Click Element By Type    ${CHECK_SAVE_DATA}    checkbox
         Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox
-        Click Element By Type    ${BTN_GO_SHIPPING}    button
+        Click Element By Type   ${BTN_GO_SHIPPING}    button   
+        Wait Until Element Is Visible   ${BTN_SEND_EMAIL_CODE}    10s
+        Click Element By Type   ${BTN_SEND_EMAIL_CODE}    button
+        Wait Until Element Is Visible  ${BTN_CONFIRM_EMAIL_CODE}    10s
+        Click Element By Type   ${BTN_CONFIRM_EMAIL_CODE}    button
+        ${OTP}=    Login Yopmail   ${random_email}
+        Fill Element By Text    ${INPUT_EMAIL_CODE}    ${OTP}
+        Click Element By Type   ${BTN_CONFIRM_LOGIN}    button
     ELSE IF    '${user_type}' == 'recurrent_user'
         Fill Element By Text    ${INPUT_EMAIL}    ${EMAIL_RECURRENT}
+        Click Element By Type    ${INPUT_NAME}    other
+        Wait Until Element Is Visible   ${BTN_SEND_EMAIL_CODE}    10s
+        Click Element By Type   ${BTN_SEND_EMAIL_CODE}    button
+        Wait Until Element Is Visible  ${BTN_CONFIRM_EMAIL_CODE}    10s
+        Click Element By Type   ${BTN_CONFIRM_EMAIL_CODE}    button
+        ${OTP}=    Login Yopmail   ${EMAIL_RECURRENT}
+        Fill Element By Text    ${INPUT_EMAIL_CODE}    ${OTP}
+        Click Element By Type   ${BTN_CONFIRM_LOGIN}    button
     END
 
 Create New Adress In Checkout
@@ -95,67 +113,87 @@ Select Split Delivery
     [Arguments]    ${user_type}    ${DEPARTMENT}    ${CITY}    ${NEIGHBORHOOD}    ${PICKUP_NAME}
 
     # Espera para el campo de departamento
-    Wait Until Element Is Visible    ${SELECT_DEPARMENT}    30s
-    Wait Until Element Is Enabled    ${SELECT_DEPARMENT}    30s
+    #Log To Console    Seleccionando opción de Split Delivery con pickup point: ${PICKUP_NAME}
 
-    IF    '${user_type}' == 'guest_user'
-        # Esperar y hacer click en botón de shipping/pickup
+    IF    '${user_type}' == 'guest_user' or '${user_type}' == 'new_user'
+        # Espera para el campo de departamento
+        Wait Until Element Is Visible    ${SELECT_DEPARMENT}    30s
+        Wait Until Element Is Enabled    ${SELECT_DEPARMENT}    10s 
+        Select Split Method    ${DEPARTMENT}    ${CITY}    ${NEIGHBORHOOD}    ${PICKUP_NAME}
+        
+    ELSE IF   '${user_type}' == 'recurrent_user'
+        Wait Until Element Is Visible    ${BTN_EDIT_SHIPPING}    10s
+        Wait Until Keyword Succeeds    3x    1s    
+        ...    Click Element By Type    ${BTN_EDIT_SHIPPING}    link    
+        Select Split Method    ${DEPARTMENT}    ${CITY}    ${NEIGHBORHOOD}    ${PICKUP_NAME}
+    ELSE IF    '${user_type}' == 'guest_user' or '${user_type}' == 'new_user' and '${PICKUP_NAME}' == 'Motocity'
+        # Seleccionar el punto de recogida
+        Select Split Method    ${DEPARTMENT}    ${CITY}    ${NEIGHBORHOOD}    'Florely'    
+    END
+
+Select Split Method
+    [Arguments]       ${DEPARTMENT}    ${CITY}    ${NEIGHBORHOOD}    ${PICKUP_NAME}
+    [Documentation]    Método para seleccionar la opción de delivery y pickup en checkout con esperas dinámicas
         Wait Until Keyword Succeeds    25s    2s
         ...    Click Element By Type    ${BTN_SHIPPING_PICKUP}    button
-
-        # Esperar a que aparezca el botón de buscar pickups disponibles
-        TRY
-            Wait Until Keyword Succeeds    15s    2s
-            ...    Element Should Be Visible    ${FIND_PICKP_AVAIBLES}
-
-            Wait Until Keyword Succeeds    10s    1s
-            ...    Click Element By Type    ${FIND_PICKP_AVAIBLES}    button
-        EXCEPT
-            Wait Until Keyword Succeeds    15s    2s
-            ...    Element Should Be Visible    ${CHANGE_PICKUP_BUTTON}
-
-            Wait Until Keyword Succeeds    10s    1s
-            ...    Click Element By Type    ${CHANGE_PICKUP_BUTTON}    button
+        IF    '${PICKUP_NAME}' == 'Motocity'
+            ${PICKUP_NAME}=    Set Variable    Florely
+        ELSE
+                    # Esperar a que aparezca el botón de buscar pickups disponibles
+            TRY
+                Wait Until Keyword Succeeds    15s    2s
+                ...    Element Should Be Visible    ${FIND_PICKP_AVAIBLES}
+                
+                Wait Until Keyword Succeeds    10s    1s
+                ...    Click Element By Type    ${FIND_PICKP_AVAIBLES}    button
+            EXCEPT
+                    Wait Until Keyword Succeeds    15s    2s
+                    ...    Element Should Be Visible    ${CHANGE_PICKUP_BUTTON} 
+                    
+                    Wait Until Keyword Succeeds    10s    1s
+                    ...    Click Element By Type    ${CHANGE_PICKUP_BUTTON}     button
+            END
         END
 
+        
         # Esperar a que cargue el modal de pickup points
-        Wait Until Keyword Succeeds    20s    2s
-        ...    Element Should Be Visible    css=.vtex-pickup-points-modal-3-x-pointsList
-
+        Wait Until Keyword Succeeds    3x    5s
+        ...    Element Should Be Enabled    id:controls-wrapper
+        
         # Seleccionar el punto de recogida
         Select Pickup Point    ${PICKUP_NAME}
 
         # Esperar a que se cierre el modal y aparezca el botón de continuar
-        Wait Until Keyword Succeeds    15s    2s
-        ...    Element Should Be Visible    ${BTN_GO_TO_FILL_ADDRESS}
+        TRY
+            Wait Until Keyword Succeeds    15s    2s
+            ...    Element Should Be Visible    ${BTN_GO_TO_FILL_ADDRESS}
+        
+            Click Element By Type    ${BTN_GO_TO_FILL_ADDRESS}    button
+        
+            # Llenar información de dirección
+            Wait Until Keyword Succeeds    10s    2s
+            ...    Select List Item    ${SELECT_DEPARMENT}    ${DEPARTMENT}
+            
+            Wait Until Keyword Succeeds    10s    2s
+            ...    Select List Item    ${SELECT_CITY}    ${CITY}
+            
+            Wait Until Keyword Succeeds    10s    2s
+            ...    Select List Item    ${SELECT_NEIGHBORHOOD}    ${NEIGHBORHOOD}
+            
+            Fill Element By Text    ${INPUT_STREET}    Test Street
+            Fill Element By Text    ${INPUT_COMPLEMENT}    Apto 123
+            Fill Element By Text    ${INPUT_RECEIVER_NAME}    User Test
+            # Finalizar y continuar a pago
+            Wait Until Keyword Succeeds    15s    2s
+            ...    Click Element By Type    ${BTN_GO_PAYMENT_SHIPPING}    button
+        EXCEPT
+            #Log To Console    El botón de continuar a dirección no apareció, procediendo con dirección guardada.
+            # Finalizar y continuar a pago
+            Wait Until Keyword Succeeds    15s    2s
+            ...    Click Element By Type    ${BTN_GO_PAYMENT_SHIPPING}    button
+        END  
 
-        Click Element By Type    ${BTN_GO_TO_FILL_ADDRESS}    button
 
-        # Llenar información de dirección
-        Wait Until Keyword Succeeds    10s    2s
-        ...    Select List Item    ${SELECT_DEPARMENT}    ${DEPARTMENT}
-
-        Wait Until Keyword Succeeds    10s    2s
-        ...    Select List Item    ${SELECT_CITY}    ${CITY}
-
-        Wait Until Keyword Succeeds    10s    2s
-        ...    Select List Item    ${SELECT_NEIGHBORHOOD}    ${NEIGHBORHOOD}
-
-        Fill Element By Text    ${INPUT_STREET}    Test Street
-        Fill Element By Text    ${INPUT_COMPLEMENT}    Apto 123
-        Fill Element By Text    ${INPUT_RECEIVER_NAME}    User Test
-
-        # Finalizar y continuar a pago
-        Wait Until Keyword Succeeds    15s    2s
-        ...    Click Element By Type    ${BTN_GO_PAYMENT_SHIPPING}    button
-
-        # ELSE IF    '${user_type}' == 'recurrent_user'
-        #    Click Element By Type    ${CHECK_SPLIT_DELIVERY}    checkbox
-        #    Select List Item    ${SELECT_DEPARMENT_SPLIT}    ${DEPARTMENT}
-        #    Select List Item    ${SELECT_CITY_SPLIT}    ${CITY}
-        #    Select List Item    ${SELECT_NEIGHBORHOOD_SPLIT}    ${NEIGHBORHOOD}
-        #    Click Element By Type    ${BTN_GO_PAYMENT_SHIPPING}    button
-    END
 
 Select Payment Method
     [Documentation]    Selección de método de pago en checkout
@@ -193,15 +231,22 @@ Select Payment Method
         Click Element By Type    ${PAYMENT_TRANS_BANK}    button
     END
 
+Click Payment Submit Button
+    [Documentation]    Click en el boton de finalizar compra en el checkout
+    Wait Until Element Is Visible    ${BTN_CONFIRM_PURCHASE}    30s
+    Wait Until Element Is Enabled    ${BTN_CONFIRM_PURCHASE}    10s
+    Click Element By Type    ${BTN_CONFIRM_PURCHASE}    button
+
+
+## ---- Finalizar compra ---- ##
+## ---- Se refactorizará este keyword para incluir la verificación de orden ---- ##
 Finish Purchase
     [Documentation]    Finaliza la compra en el checkout
     [Arguments]    ${verify_orden}
 
     IF    '${verify_orden}' == 'verify'
-        Wait Until Element Is Visible    ${BTN_CONFIRM_PURCHASE}    30s
-        Wait Until Element Is Enabled    ${BTN_CONFIRM_PURCHASE}    30s
 
-        Click Element By Type    ${BTN_CONFIRM_PURCHASE}    button
+        Click Payment Submit Button
 
         # Realizar login en VTEX para verificar la orden
         Login Vtex    juan_valencia@siman.com
@@ -229,9 +274,8 @@ Finish Purchase
         Log To Console    Fecha: ${ORDER_DATE}
         Log To Console    Email: ${ORDER_EMAIL}
     ELSE IF    '${verify_orden}' == 'no_verify'
-        Wait Until Element Is Visible    ${BTN_CONFIRM_PURCHASE}    30s
-        Wait Until Element Is Enabled    ${BTN_CONFIRM_PURCHASE}    10s
-        Click Element By Type    ${BTN_CONFIRM_PURCHASE}    button
+        
+        Click Payment Submit Button
 
         # Solo se valida que la el login de vtex sea visible
         Wait Until Element Is Visible    ${INPUT_VTEX_LOGIN}    60s

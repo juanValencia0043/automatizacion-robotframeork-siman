@@ -11,5 +11,6 @@ robotframework-datadriver==1.10.0
 requests==2.32.3
 PyYAML==6.0.2
 python-dotenv==1.0.1
-
-allure-robotframework==2.13.5
+allure-robotframework==3.1.1
+requests==2.32.3
+pyngrok==7.0.0

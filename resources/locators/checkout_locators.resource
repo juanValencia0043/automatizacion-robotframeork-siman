@@ -16,9 +16,14 @@ ${CHECK_SAVE_DATA}            id=opt-in-save-data
 ${CHECK_PRIVACY_TERMS}        id=privacy-terms
 
 ${BTN_GO_SHIPPING}            id=go-to-shipping
+${BTN_SEND_EMAIL_CODE}        id=loginWithAccessKeyBtn
+${BTN_CONFIRM_EMAIL_CODE}     id=sendAccessKeyBtn
+${INPUT_EMAIL_CODE}          id=access-code
+${BTN_CONFIRM_LOGIN}     id=confirmLoginAccessKeyBtn
 
 # Step 2 shipping
 
+${BTN_EDIT_SHIPPING}          id=edit-shipping-data
 ${BTN_SHIPPING_DELIVERY}      id=shipping-option-delivery
 ${BTN_SHIPPING_PICKUP}        id=shipping-option-pickup-in-point
 ${BTN_SELECT_PICKUP}          id=change-pickup-button

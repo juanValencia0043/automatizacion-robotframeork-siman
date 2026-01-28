@@ -345,6 +345,16 @@ def main():
         print("📊 Generando reportes adicionales...")
         update_dashboard_data(output_file, env, config)
         generate_xray_payload(output_file, env, config)
+        
+        # ✅ COPIAR ARCHIVOS PRINCIPALES A LA RAÍZ DE RESULTS PARA ACCESO RÁPIDO
+        print("📋 Copiando reportes a results/...")
+        try:
+            shutil.copy2(output_file, "results/output.xml")
+            shutil.copy2(os.path.join(execution_dir, "log.html"), "results/log.html")
+            shutil.copy2(os.path.join(execution_dir, "report.html"), "results/report.html")
+            print("✅ Reportes copiados a results/")
+        except Exception as e:
+            print(f"⚠️ Error copiando reportes: {e}")
     else:
         print("❌ No se generó output.xml, omitiendo reportes adicionales")
 

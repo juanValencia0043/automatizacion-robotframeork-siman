@@ -6,25 +6,43 @@ Resource    ../../resources/variables/environment.resource
 
 *** Keywords ***
 Open Browser To Checkout
+    [Arguments]     ${cart_type}        ${country}
     [Documentation]    Abre checkout según el environment (prod o sandbox)
-    [Arguments]    ${cart_type}
+    #Por default environment es sandbox
+    IF    '${country}' == 'sv'
+        # Determinar las URLs basado en el environment
+        ${checkout_url}=    Set Variable If
+        # PRODUCCIÓN
+        ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'small'              ${CHECKOUT_PROD_SMALL}    
+        ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'small_mk'           ${CHECKOUT_PROD_SMALL_MK}
+        ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'big'                ${CHECKOUT_PROD_BIG}
+        ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'split_siman'        ${CHECKOUT_PROD_SPLIT_SIMAN}
+        ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'split_siman_mk'     ${CHECKOUT_PROD_SPLIT_SIMAN_MK}
+        # SANDBOX  
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'small'           ${CHECKOUT_SANDBOX_SMALL}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'small_mk'        ${CHECKOUT_SANDBOX_SMALL_MK}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'big'             ${CHECKOUT_SANDBOX_BIG}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_siman'     ${CHECKOUT_SANDBOX_SPLIT_SIMAN}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_siman_mk'  ${CHECKOUT_SANDBOX_SPLIT_SIMAN_MK}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_st_bt_mk'  ${CHECKOUT_SANDBOX_SPLIT_ST_BT_MK}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_st_moto'     ${CHECKOUT_SANDBOX_SPLIT_ST_MOTO}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_bt_moto'     ${CHECKOUT_SANDBOX_SPLIT_BT_MOTO}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_st_bt_moto'  ${CHECKOUT_SANDBOX_SPLIT_ST_BT_MOTO}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_mk_moto'     ${CHECKOUT_SANDBOX_SPLIT_MK_MOTO}
+        ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_st_bt_mk_moto'  ${CHECKOUT_SANDBOX_SPLIT_ST_BT_MK_MOTO}
+        # DEFAULT (fallback)
+        ...    ${CHECKOUT_SANDBOX_ANY}
+    ELSE IF    '${country}' == 'gt'
+        ${checkout_url}=    Set Variable    ${CHECKOUT_SANDBOX_GT}
+    ELSE IF    '${country}' == 'cr'
+        ${checkout_url}=    Set Variable    ${CHECKOUT_SANDBOX_CR}
+    ELSE IF    '${country}' == 'ni'
+        ${checkout_url}=    Set Variable    ${CHECKOUT_SANDBOX_NI}
+        
+    END
+    
+    
 
-    # Determinar las URLs basado en el environment
-    ${checkout_url}=    Set Variable If
-    # PRODUCCIÓN
-    ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'small'    ${CHECKOUT_PROD_SMALL}
-    ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'small_mk'    ${CHECKOUT_PROD_SMALL_MK}
-    ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'big'    ${CHECKOUT_PROD_BIG}
-    ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'split_siman'    ${CHECKOUT_PROD_SPLIT_SIMAN}
-    ...    '${ENVIRONMENT}' == 'prod' and '${cart_type}' == 'split_siman_mk'    ${CHECKOUT_PROD_SPLIT_SIMAN_MK}
-    # SANDBOX
-    ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'small'    ${CHECKOUT_SANDBOX_SMALL}
-    ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'small_mk'    ${CHECKOUT_SANDBOX_SMALL_MK}
-    ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'big'    ${CHECKOUT_SANDBOX_BIG}
-    ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_siman'    ${CHECKOUT_SANDBOX_SPLIT_SIMAN}
-    ...    '${ENVIRONMENT}' == 'sandbox' and '${cart_type}' == 'split_siman_mk'    ${CHECKOUT_SANDBOX_SPLIT_SIMAN_MK}
-    # DEFAULT (fallback)
-    ...    ${CHECKOUT_PROD_SMALL}
 
     Open Browser With Options    ${checkout_url}
     Sleep    2s
