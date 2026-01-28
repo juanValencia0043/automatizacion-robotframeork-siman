@@ -9,7 +9,8 @@ Test Teardown   Close Browser
 
 *** Test Cases ***
 Test Checkout Small Ticket New User
-    #FINALIZADO
+    [Documentation]    Verifica flujo de checkout para pequeño ticket con nuevo usuario.
+    #    FINALIZADO
     [Tags]    CSC-8202  delivery_siman
     Open Browser To Checkout    any    sv
     Login Checkout  new_user
@@ -18,8 +19,8 @@ Test Checkout Small Ticket New User
     Finish Purchase   no_verify
 
 Test Checkout Split Siman Guest User
-    #FINALIZADO
-    [Tags]    CSC-8202  split_siman SmallTicket BigTicket guest_user
+    #    FINALIZADO
+    [Tags]    CSC-8202  split_siman    SmallTicket    BigTicket    guest_user
     Open Browser To Checkout    split_siman    sv
     Login Checkout  guest_user
     Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV LA GRAN VIA 
@@ -27,10 +28,10 @@ Test Checkout Split Siman Guest User
     Finish Purchase  no_verify
 
 Test Checkout Split Siman New User    
-    #FINALIZADO
-    [Tags]    CSC-8202  split_siman_new_user 
-    Open Browser To Checkout    split_siman    sv 
-    Login Checkout  new_user    
+    #    FINALIZADO
+    [Tags]    CSC-8202  split_siman_new_user
+    Open Browser To Checkout    split_siman    sv
+    Login Checkout  new_user
     #Create New Adress In Checkout   new_user   San Salvador    San Salvador Centro    San Salvador
     Select Split Delivery  new_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV LA GRAN VIA 
     Select Payment Method   transferencia_bancaria
@@ -233,43 +234,3 @@ Test Checkout Split ST BT MK Moto Recurrent User
     Select Split Delivery  recurrent_user   San Salvador    San Salvador Centro    San Salvador    Motocity
     Select Payment Method   transferencia_bancaria
     Finish Purchase  no_verify
-    
-
-# Test Checkout Small Ticket Mk New User
-#     [Tags]    CSC-8203  delivery_siman_mk
-#     Open Browser To Checkout    small_mk
-#     Login Checkout  guest_user
-#     Create New Adress In Checkout   new_user   Santa Ana    Santa Ana Centro    Santa Ana
-#     Select Payment Method   credisiman
-#     Finish Purchase  no verify
-
-
-# Test Checkout Big Ticket New User
-#     [Tags]    CSC-8225  delivery_siman
-#     Open Browser To Checkout    big 
-#     Login Checkout  guest_user
-#     Create New Adress In Checkout   new_user   San Salvador    San Salvador Centro    San Salvador
-#     Select Payment Method   credisiman
-#     Finish Purchase  no verify
-
-#     #Verify Order Confirmation
-
-# Test Checkout Split New User
-#     [Tags]    CSC-8226  delivery_and_pickup_siman
-#     Open Browser To Checkout    split_siman 
-#     Login Checkout  guest_user
-#     Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV GALERIAS 
-#     Select Payment Method   credisiman
-#     Finish Purchase  no verify
-#     #Verify Order Confirmation
-
-#  Test Checkout Split Combinado New User
-#     [Tags]    CSC-8227  delivery_and_pickup_siman_mk
-#     Open Browser To Checkout    split_siman_mk 
-#     Login Checkout  guest_user
-#     Select Split Delivery  guest_user   San Salvador    San Salvador Centro    San Salvador    SIMAN SV GALERIAS
-#     Select Payment Method   credisiman
-#     Finish Purchase  no verify
-
-#      #Verify Order Confirmation
-
