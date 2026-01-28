@@ -196,9 +196,9 @@ Login Yopmail
     [Documentation]    Obtiene el código OTP enviado a Yopmail
     [Arguments]    ${email}
 
-    VAR    ${BANDERA}=    True
+    ${BANDERA}=    Set Variable    True
     @{window_handles}=    Get Window Handles
-    VAR    ${TAB_ORIGINAL}=    ${window_handles}[0]
+    ${TAB_ORIGINAL}=    Set Variable    ${window_handles}[0]
 
     # Abrir pagina yopmail en una nueva pestaña y obtener token
     Execute Javascript    window.open("${YOPMAIL_URL}", "_blank")
@@ -224,7 +224,7 @@ Login Yopmail
             #${OTP}=    Get Text    xpath=//*[@id="mail"]/div/div[2]/table/tbody/tr/td/table/tbody/tr/td/div/p[2]
             
             IF    '${OTP}' != ''
-                VAR    ${BANDERA}=    False
+                ${BANDERA}=    Set Variable    False
                 Unselect Frame
             ELSE
                 Unselect Frame
@@ -256,9 +256,9 @@ Login Yopmail Vtex
     [Documentation]    Obtiene el código OTP enviado a Yopmail
     ...    para el email
 
-    VAR    ${BANDERA}=    True
+    ${BANDERA}=    Set Variable    True
     @{window_handles}=    Get Window Handles
-    VAR    ${TAB_ORIGINAL}=    ${window_handles}[0]
+    ${TAB_ORIGINAL}=    Set Variable    ${window_handles}[0]
 
     # Abrir pagina yopmail en una nueva pestaña y obtener token
     Execute Javascript    window.open("https://www.yopmail.com/es/", "_blank")
@@ -279,7 +279,7 @@ Login Yopmail Vtex
         TRY
             ${OTP}=    Get Text    xpath=//*[@id="mail"]/div/div[2]/table/tbody/tr/td/table/tbody/tr/td/div/p[2]
             IF    '${OTP}' != ''
-                VAR    ${BANDERA}=    False
+                ${BANDERA}=    Set Variable    False
                 Unselect Frame
             ELSE
                 Unselect Frame
@@ -310,7 +310,6 @@ Get mail
     [Documentation]    Obtiene el correo temporal de Yopmail
     
     #Log To Console   \n--- Obteniendo correo yopmail ---\n
-    VAR    ${MAIL_TEXT} 
     ${MAIL_TEXT}=    Get Text    ${YOPMAIL_MAIL_FRAME}
     #Log To Console     ${MAIL_TEXT}
     RETURN    ${MAIL_TEXT}
@@ -319,7 +318,6 @@ Get OTP From Mail
     [Documentation]    Extrae el código OTP (6 dígitos) del texto del correo usando regex
 
     VAR    ${mail_text}
-    ${mail_text}=    Get mail    
     # Busca un patrón de 6 dígitos consecutivos en el texto
     ${otp}=    Get Regexp Matches    ${mail_text}    \\d{6}    
     
