@@ -1,7 +1,7 @@
 *** Settings ***
-Library     SeleniumLibrary
 Library     String
 Library     Collections
+Library     SeleniumLibrary
 Resource    ../../resources/keywords/general_keywords.resource
 Resource    ../../resources/locators/checkout_locators.resource
 Resource    ../../resources/variables/testdata.resource
@@ -11,7 +11,6 @@ Resource    ../../resources/variables/testdata.resource
 Login Checkout
     [Documentation]    Metodo general para logearse en checkout ya sea como usuario recurrente o no
     [Arguments]    ${user_type}
-    [Documentation]    Metodo general para logearse en checkout ya sea como usuario recurrente o no 
     VAR    ${OTP}    
     
     Click Element By Type   ${BTN_GO_PAYMENT}    button
