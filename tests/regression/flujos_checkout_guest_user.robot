@@ -6,6 +6,8 @@ Resource            ../../resources/keywords/general_keywords.resource
 Resource            ../../resources/keywords/checkout_keywords.resource
 Resource            ../../resources/locators/home_locators.resource
 
+Suite Setup    Disable SSL Warnings
+
 Test Teardown   Close Browser
 
 *** Test Cases ***
