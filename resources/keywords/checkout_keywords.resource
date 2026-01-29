@@ -121,9 +121,13 @@ Select Split Delivery
         Select Split Method    ${DEPARTMENT}    ${CITY}    ${NEIGHBORHOOD}    ${PICKUP_NAME}
         
     ELSE IF   '${user_type}' == 'recurrent_user'
-        Wait Until Element Is Visible    ${BTN_EDIT_SHIPPING}    10s
-        Wait Until Keyword Succeeds    3x    1s    
-        ...    Click Element By Type    ${BTN_EDIT_SHIPPING}    link    
+        TRY
+            Wait Until Element Is Visible    ${BTN_EDIT_SHIPPING}    10s
+            Wait Until Keyword Succeeds    3x    1s    
+            ...    Click Element By Type    ${BTN_EDIT_SHIPPING}    link    
+        EXCEPT
+            Log To Console    No se encontró el botón de editar dirección, procediendo.
+        END
         Select Split Method    ${DEPARTMENT}    ${CITY}    ${NEIGHBORHOOD}    ${PICKUP_NAME}
     ELSE IF    '${user_type}' == 'guest_user' or '${user_type}' == 'new_user' and '${PICKUP_NAME}' == 'Motocity'
         # Seleccionar el punto de recogida

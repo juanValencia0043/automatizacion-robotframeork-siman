@@ -198,7 +198,6 @@ Create Random Email
 Login Mailsac
     [Documentation]    Obtiene el código OTP enviado a Mailsac
     [Arguments]    ${email_address}
-    Sleep    85s    # Esperar a que el correo llegue
     ${otp}=    Obtener Codigo OTP Mailsac    ${email_address}
     RETURN    ${otp}
 
