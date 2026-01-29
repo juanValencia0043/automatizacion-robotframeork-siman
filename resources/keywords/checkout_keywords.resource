@@ -46,7 +46,7 @@ Login Checkout
         Wait Until Element Is Visible  ${BTN_CONFIRM_EMAIL_CODE}    10s
         Click Element By Type   ${BTN_CONFIRM_EMAIL_CODE}    button
         #   Obtener OTP desde Mailsac
-        ${OTP}=    Login Mailsac   ${random_email}
+        ${OTP}=    Login Mailsac   ${random_email}    ${user_type}
         Fill Element By Text    ${INPUT_EMAIL_CODE}    ${OTP}
         Click Element By Type   ${BTN_CONFIRM_LOGIN}    button
     ELSE IF    '${user_type}' == 'recurrent_user'
@@ -56,7 +56,7 @@ Login Checkout
         Click Element By Type   ${BTN_SEND_EMAIL_CODE}    button
         Wait Until Element Is Visible  ${BTN_CONFIRM_EMAIL_CODE}    10s
         Click Element By Type   ${BTN_CONFIRM_EMAIL_CODE}    button
-        ${OTP}=    Login Mailsac   ${EMAIL_RECURRENT}
+        ${OTP}=    Login Mailsac   ${EMAIL_RECURRENT}    ${user_type}
         Fill Element By Text    ${INPUT_EMAIL_CODE}    ${OTP}
         Click Element By Type   ${BTN_CONFIRM_LOGIN}    button
     END

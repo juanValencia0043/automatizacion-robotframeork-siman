@@ -18,44 +18,44 @@ Obtener Codigo OTP Mailsac
     ...    Argumentos:
     ...    - email_address: Dirección de correo de Mailsac
     ...    - max_reintentos: Número máximo de reintentos (default: 3)
-    ...    - tiempo_espera: Tiempo a esperar entre intentos (default: 20s)
+    ...    - tiempo_espera: Tiempo a esperar entre intentos (default: 60s)
     
-    ${intento}=    Set Variable    0
-    
-    WHILE    ${intento} < ${max_reintentos}
-        TRY
-            #    Esperar a que caiga el mail
-            Sleep    ${tiempo_espera}
-            #    Configurar headers
-            ${headers}=    Create Dictionary    Mailsac-Key=${MAILSAC_API_KEY}    Mailsac-Host=${MAILSAC_HOST}
-            Create Session    mailsac    ${MAILSAC_BASE_URL}    headers=${headers}    verify=False
-            #    Obtener mensajes
-            ${response}=    GET On Session    mailsac    /addresses/${email_address}/messages
-            Status Should Be    200    ${response}
-            
-            #    Validar que hay mensajes
-            Should Not Be Empty    ${response.json()}    msg=No se encontraron mensajes en ${email_address}
-            
-            #    Obtener ID del mensaje mas reciente
-            ${LAST_MESSAGE}=    Set Variable    ${response.json()[0]}
-            ${message_id}=    Set Variable    ${LAST_MESSAGE['_id']}
-            #    Obtener contenido del mensaje
-            ${body_res}=    Get On Session    mailsac    /text/${email_address}/${message_id}
-            #    Extraer codigo OTP del contenido
-            ${OTP}=    Get Lines Matching Regexp    ${body_res.text}    \\d{6}
-            
-            #    Validar que se encontró el código OTP
-            Should Not Be Empty    ${OTP}    msg=No se encontró código OTP válido en el correo
-            
-            Log    Código OTP obtenido exitosamente en el intento ${intento + 1}
-            RETURN    ${OTP}
-        EXCEPT    *
-            ${intento}=    Evaluate    ${intento} + 1
-            Log    Intento ${intento} fallido. Reintentando...    level=WARN
-            
-            IF    ${intento} >= ${max_reintentos}
-                Fail    No se pudo obtener el código OTP después de ${max_reintentos} intentos
+    ${headers}=    Create Dictionary    Mailsac-Key=${MAILSAC_API_KEY}    Mailsac-Host=${MAILSAC_HOST}
+    ${intentos}=    Set Variable    0
+    #    [DEBUG]    setear email vacío fijo para pruebas
+    #    ${email_address}=    Set Variable    new_mail_siman@mailsac.com    
+
+    FOR    ${intentos}    IN RANGE    ${max_reintentos}
+        Log To Console    Intento número: ${intentos + 1}
+        Create Session    mailsac    ${MAILSAC_BASE_URL}    headers=${headers}
+        ${response}=    GET On Session    mailsac    /addresses/${email_address}/messages
+        Status Should Be    200    ${response}
+        #    [DEBUG]    
+        #    Log To Console    Respuesta de mensajes: ${response.text}
+        IF    ${response.json()}==[]
+            IF    ${intentos + 1} == ${max_reintentos}
+                Fail    No se encontraron correos después de ${max_reintentos} intentos.
+            ELSE
+                Log To Console    No se encontraron correos. Esperando ${tiempo_espera} antes del siguiente intento...
+                Sleep    ${tiempo_espera} 
+                CONTINUE
             END
+        ELSE
+            Log To Console    Correos encontrados. Procesando el último mensaje...
+            Exit For Loop
         END
-    END
+    END    
+    ${messages}=    Set Variable    ${response.json()}
+    ${latest_message}=    Get From List    ${messages}    0
+    ${message_id}=    Get From Dictionary    ${latest_message}    _id
+    Log To Console    ID del último mensaje: ${message_id}
+    #    Obtener el contenido del correo
+    ${body_res}=    GET On Session    mailsac    /text/${email_address}/${message_id}
+    Status Should Be    200    ${body_res}
+    ${otp}=    Get Lines Matching Regexp    ${body_res.text}    \\d{6}
+    Log To Console    Código OTP obtenido: ${otp}
+    RETURN    ${otp}
+
+
+    
 

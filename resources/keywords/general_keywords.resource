@@ -5,7 +5,6 @@ Library     SeleniumLibrary
 Resource    ../../resources/locators/login_vtex_locators.resource
 Resource    ../../resources/locators/general_locators.resource
 Resource    ../../resources/keywords/mailsac_keywords.resource
-Resource    ../../resources/variables/environment.resource
 
 
 *** Keywords ***
@@ -197,7 +196,14 @@ Create Random Email
 
 Login Mailsac
     [Documentation]    Obtiene el código OTP enviado a Mailsac
-    [Arguments]    ${email_address}
+    [Arguments]    ${email_address}    ${user_type}
+    IF    '${user_type}' == 'recurrent_user'
+        Log To Console    Esperando 60s para recibir el correo en usuario recurrente...
+        Sleep    60s
+    ELSE
+        Log To Console    Esperando 25s para recibir el correo en usuario nuevo...
+        Sleep    25s
+    END
     ${otp}=    Obtener Codigo OTP Mailsac    ${email_address}
     RETURN    ${otp}
 

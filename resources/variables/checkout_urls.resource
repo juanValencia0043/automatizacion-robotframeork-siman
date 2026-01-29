@@ -1,6 +1,7 @@
 *** Variables ***
 
-${BASE_URL_SANDBOX}                   https://csc8346--simanqa.myvtex.com/
+${BASE_URL_SANDBOX}                   https://itglobers--simanqa.myvtex.com/    
+#${BASE_URL_SANDBOX}                   https://csc8346--simanqa.myvtex.com/
 
 # URLs de Checkout para diferentes carritos - PRODUCCIÓN
 ${CHECKOUT_PROD_SMALL}                 https://sv.siman.com/checkout/cart/add/?sku=8695234&qty=1&seller=1&sc=1&sku=8481414&qty=1&seller=1&sc=1
