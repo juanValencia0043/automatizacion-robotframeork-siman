@@ -200,7 +200,6 @@ Login Mailsac
     [Arguments]    ${email_address}
     Sleep    65s    # Esperar a que el correo llegue
     ${otp}=    Obtener Codigo OTP Mailsac    ${email_address}
-    Log To Console    El codigo OTP obtenido es: ${otp}
     RETURN    ${otp}
 
 # Login Yopmail

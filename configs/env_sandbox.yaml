@@ -3,7 +3,7 @@
 base_url: "https://simanqa.myvtex.com"
 api_url: ""
 browser: "chrome"
-headless: false
+headless: true
 
 credentials:
   user: ""

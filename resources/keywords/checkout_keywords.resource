@@ -45,9 +45,7 @@ Login Checkout
         Click Element By Type   ${BTN_SEND_EMAIL_CODE}    button
         Wait Until Element Is Visible  ${BTN_CONFIRM_EMAIL_CODE}    10s
         Click Element By Type   ${BTN_CONFIRM_EMAIL_CODE}    button
-        #   Logear en consola fecha y hora de envío del email
-        ${timestamp}=    Get Current Date    result_format=%Y-%m-%d %H:%M:%S
-        Log To Console    Fecha y hora de envío del email: ${timestamp}
+        #   Obtener OTP desde Mailsac
         ${OTP}=    Login Mailsac   ${random_email}
         Fill Element By Text    ${INPUT_EMAIL_CODE}    ${OTP}
         Click Element By Type   ${BTN_CONFIRM_LOGIN}    button
