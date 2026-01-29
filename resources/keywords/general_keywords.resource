@@ -1,9 +1,11 @@
 *** Settings ***
-Library     SeleniumLibrary
 Library     DateTime
 Library     String
+Library     SeleniumLibrary
 Resource    ../../resources/locators/login_vtex_locators.resource
 Resource    ../../resources/locators/general_locators.resource
+Resource    ../../resources/keywords/mailsac_keywords.resource
+Resource    ../../resources/variables/environment.resource
 
 
 *** Keywords ***
@@ -185,71 +187,79 @@ List Selection Should Be Possible
 
 Create Random Email
     [Documentation]    Generador de email para usuario nuevo
-    ...    Formato: timestamp+test+@yopmail.com
-    ...    Ejemplo: 20241215123045_test@yopmail.com
+    ...    Formato: timestamp+test+@mailsac.com
+    ...    Ejemplo: 20241215123045_test@mailsac.com
 
     ${timestamp}=    Get Current Date    result_format=%Y%m%d%H%M%S
-    ${random_email}=    Catenate    SEPARATOR=${EMPTY}    ${timestamp}    _test    @yopmail.com
+    ${random_email}=    Catenate    SEPARATOR=${EMPTY}    ${timestamp}    _siman_test    @${MAILSAC_HOST}
+    Log To Console    El email generado es: ${random_email}
     RETURN    ${random_email}
 
-Login Yopmail
-    [Documentation]    Obtiene el código OTP enviado a Yopmail
-    [Arguments]    ${email}
+Login Mailsac
+    [Documentation]    Obtiene el código OTP enviado a Mailsac
+    [Arguments]    ${email_address}
+    Sleep    65s    # Esperar a que el correo llegue
+    ${otp}=    Obtener Codigo OTP Mailsac    ${email_address}
+    RETURN    ${otp}
 
-    ${BANDERA}=    Set Variable    True
-    @{window_handles}=    Get Window Handles
-    ${TAB_ORIGINAL}=    Set Variable    ${window_handles}[0]
+# Login Yopmail
+#     [Documentation]    Obtiene el código OTP enviado a Yopmail
+#     [Arguments]    ${email}
 
-    # Abrir pagina yopmail en una nueva pestaña y obtener token
-    Execute Javascript    window.open("${YOPMAIL_URL}", "_blank")
-    Switch Window    NEW
+#     ${BANDERA}=    Set Variable    True
+#     @{window_handles}=    Get Window Handles
+#     ${TAB_ORIGINAL}=    Set Variable    ${window_handles}[0]
 
-    Fill Element By Text    ${INPUT_YOPMAIL}    ${email}
-    Click Element By Type    ${BTN_CHECK_YOPMAIL}    button
+#     # Abrir pagina yopmail en una nueva pestaña y obtener token
+#     Execute Javascript    window.open("${YOPMAIL_URL}", "_blank")
+#     Switch Window    NEW
 
-    #    Esperar hasta recibir el correo con el token
-    WHILE    ${BANDERA}
-        Sleep    5s
+#     Fill Element By Text    ${INPUT_YOPMAIL}    ${email}
+#     Click Element By Type    ${BTN_CHECK_YOPMAIL}    button
 
-        # Siempre despegar el frame antes de entrar
-        #Log To Console    \n--- Despejando frame antes de entrar ---\n
-        Unselect Frame
+#     #    Esperar hasta recibir el correo con el token
+#     WHILE    ${BANDERA}
+#         Sleep    5s
 
-        Select Frame    xpath=//*[@id="ifmail"]
-        #Log To Console    \n--- Frame seleccionado ---\n
+#         # Siempre despegar el frame antes de entrar
+#         #Log To Console    \n--- Despejando frame antes de entrar ---\n
+#         Unselect Frame
 
-        TRY
-            #Log To Console    \n--- Intentando obtener OTP ---\n
-            ${OTP}=     Get OTP From Mail
-            #${OTP}=    Get Text    xpath=//*[@id="mail"]/div/div[2]/table/tbody/tr/td/table/tbody/tr/td/div/p[2]
+#         Select Frame    xpath=//*[@id="ifmail"]
+#         #Log To Console    \n--- Frame seleccionado ---\n
+
+#         TRY
+#             #Log To Console    \n--- Intentando obtener OTP ---\n
+#             ${OTP}=     Get OTP From Mail
+#             #${OTP}=    Get Text    xpath=//*[@id="mail"]/div/div[2]/table/tbody/tr/td/table/tbody/tr/td/div/p[2]
             
-            IF    '${OTP}' != ''
-                ${BANDERA}=    Set Variable    False
-                Unselect Frame
-            ELSE
-                Unselect Frame
-                Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
-            END
-        EXCEPT
-            Unselect Frame
-            Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
-        END
-    END
+#             IF    '${OTP}' != ''
+#                 ${BANDERA}=    Set Variable    False
+#                 Unselect Frame
+#             ELSE
+#                 Unselect Frame
+#                 Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
+#             END
+#         EXCEPT
+#             Unselect Frame
+#             Click Element By Type    ${BTN_REFRESH_YOPMAIL}    button
+#         END
+#     END
 
-    # Eliminar correo para futuras pruebas
-    Wait Until Element Is Enabled    ${FRAME_MAILS_LIST}    30s
-    Select Frame    ${FRAME_MAILS_LIST}
-    Click Element By Type    ${EMAIL_CHECKBOX_YOPMAIL}    checkbox
-    Unselect Frame
+#     # Eliminar correo para futuras pruebas
+#     Wait Until Element Is Enabled    ${FRAME_MAILS_LIST}    30s
+#     Select Frame    ${FRAME_MAILS_LIST}
+#     Click Element By Type    ${EMAIL_CHECKBOX_YOPMAIL}    checkbox
+#     Unselect Frame
 
-    Click Element By Type    ${BTN_DELETE_YOPMAIL}    button
+#     Click Element By Type    ${BTN_DELETE_YOPMAIL}    button
 
-    Sleep    5s
+#     Sleep    5s
 
-    # Regresar a la pestaña original
-    Close Window
-    Switch Window    ${TAB_ORIGINAL}
-    RETURN    ${OTP}
+#     # Regresar a la pestaña original
+#     Close Window
+#     Switch Window    ${TAB_ORIGINAL}
+#     RETURN    ${OTP}
 
 
 Login Yopmail Vtex
