@@ -15,7 +15,7 @@ Test Checkout Small Ticket New User
     [Tags]    CSC-8202  delivery_siman
     Open Browser To Checkout    any    sv
     Login Checkout  new_user
-    Create New Adress In Checkout   new_user   Santa Ana    Santa Ana Centro    Santa Ana
+    Create New Adress In Checkout   new_user   San Salvador    San Salvador Centro    San Salvador
     Select Payment Method   transferencia_bancaria
     Finish Purchase   no_verify
 
