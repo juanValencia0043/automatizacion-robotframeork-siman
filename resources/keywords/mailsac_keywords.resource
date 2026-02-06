@@ -12,7 +12,7 @@ Disable SSL Warnings
     Evaluate    __import__('urllib3').disable_warnings(__import__('urllib3').exceptions.InsecureRequestWarning)
 
 Obtener Codigo OTP Mailsac
-    [Arguments]    ${email_address}    ${max_reintentos}=3    ${tiempo_espera}=60s
+    [Arguments]    ${email_address}    ${max_reintentos}=36    ${tiempo_espera}=5s
     [Documentation]    Obtiene el código OTP del correo en Mailsac
     ...    Reintentos automáticos si no encuentra el correo o código OTP válido
     ...    Argumentos:
@@ -27,6 +27,7 @@ Obtener Codigo OTP Mailsac
 
     FOR    ${intentos}    IN RANGE    ${max_reintentos}
         Log To Console    Intento número: ${intentos + 1}
+        Disable SSL Warnings
         Create Session    mailsac    ${MAILSAC_BASE_URL}    headers=${headers}
         ${response}=    GET On Session    mailsac    /addresses/${email_address}/messages
         Status Should Be    200    ${response}

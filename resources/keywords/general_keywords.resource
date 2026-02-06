@@ -198,11 +198,11 @@ Login Mailsac
     [Documentation]    Obtiene el código OTP enviado a Mailsac
     [Arguments]    ${email_address}    ${user_type}
     IF    '${user_type}' == 'recurrent_user'
-        Log To Console    Esperando 60s para recibir el correo en usuario recurrente...
-        Sleep    60s
+        Log To Console    Esperando 10s para recibir el correo en usuario recurrente...
+        Sleep    10s
     ELSE
         Log To Console    Esperando 25s para recibir el correo en usuario nuevo...
-        Sleep    25s
+        Sleep    10s
     END
     ${otp}=    Obtener Codigo OTP Mailsac    ${email_address}
     RETURN    ${otp}

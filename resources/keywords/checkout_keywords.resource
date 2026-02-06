@@ -41,7 +41,7 @@ Login Checkout
         Click Element By Type    ${CHECK_SAVE_DATA}    checkbox
         Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox
         Click Element By Type   ${BTN_GO_SHIPPING}    button   
-        Wait Until Element Is Visible   ${BTN_SEND_EMAIL_CODE}    10s
+        Wait Until Element Is Visible   ${BTN_SEND_EMAIL_CODE}    15s
         Click Element By Type   ${BTN_SEND_EMAIL_CODE}    button
         Wait Until Element Is Visible  ${BTN_CONFIRM_EMAIL_CODE}    10s
         Click Element By Type   ${BTN_CONFIRM_EMAIL_CODE}    button
