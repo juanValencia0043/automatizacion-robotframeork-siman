@@ -59,4 +59,12 @@ Obtener Codigo OTP Mailsac
 
 
     
+Vaciar bandeja correo recurrente
+    [Documentation]    Vacía la bandeja de entrada del correo recurrente en Mailsac
+    [Arguments]    ${email_address}
+    ${headers}=    Create Dictionary    Mailsac-Key=${MAILSAC_API_KEY}    Mailsac-Host=${MAILSAC_HOST}
+    Create Session    mailsac    ${MAILSAC_BASE_URL}    headers=${headers}
+    ${response}=    DELETE On Session    mailsac    /addresses/${email_address}/messages
+    Status Should Be    200    ${response}
+    
 

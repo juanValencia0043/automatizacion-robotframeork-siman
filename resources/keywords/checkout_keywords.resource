@@ -10,7 +10,7 @@ Resource    ../../resources/variables/testdata.resource
 *** Keywords ***
 Login Checkout
     [Documentation]    Metodo general para logearse en checkout ya sea como usuario recurrente o no
-    [Arguments]    ${user_type}
+    [Arguments]    ${country}    ${user_type}
     
     Click Element By Type   ${BTN_GO_PAYMENT}    button
 
@@ -20,46 +20,104 @@ Login Checkout
 
     IF    '${user_type}' == 'guest_user'
         ${random_email}=    Create Random Email
-        Fill Element By Text    ${INPUT_EMAIL}    ${random_email}
-        Click Element By Type    ${INPUT_NAME}    other
-        Fill Element By Text    ${INPUT_NAME}    ${NAME}
-        Fill Element By Text    ${INPUT_LAST_NAME}    ${LAST_NAME}
-        Select List Item    ${SELECT_DOCUMENT}    ${DUI}
-        Fill Element By Text    ${INPUT_DOCUMENT}    ${DOCUMENT}
-        Fill Element By Text    ${INPUT_PHONE}    ${PHONE}
-        Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox
-        Click Element By Type    ${BTN_GO_SHIPPING}    button
+        Fill User Form    ${country}    ${user_type}    ${random_email}
     ELSE IF    '${user_type}' == 'new_user'
         ${random_email}=    Create Random Email
-        Fill Element By Text    ${INPUT_EMAIL}    ${random_email}
-        Click Element By Type    ${INPUT_NAME}    other
-        Fill Element By Text    ${INPUT_NAME}    ${NAME}
-        Fill Element By Text    ${INPUT_LAST_NAME}    ${LAST_NAME}
-        Select List Item    ${SELECT_DOCUMENT}    ${DUI}
-        Fill Element By Text    ${INPUT_DOCUMENT}    ${DOCUMENT}
-        Fill Element By Text    ${INPUT_PHONE}    ${PHONE}
-        Click Element By Type    ${CHECK_SAVE_DATA}    checkbox
-        Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox
-        Click Element By Type   ${BTN_GO_SHIPPING}    button   
-        Wait Until Element Is Visible   ${BTN_SEND_EMAIL_CODE}    15s
-        Click Element By Type   ${BTN_SEND_EMAIL_CODE}    button
-        Wait Until Element Is Visible  ${BTN_CONFIRM_EMAIL_CODE}    10s
-        Click Element By Type   ${BTN_CONFIRM_EMAIL_CODE}    button
-        #   Obtener OTP desde Mailsac
-        ${OTP}=    Login Mailsac   ${random_email}    ${user_type}
-        Fill Element By Text    ${INPUT_EMAIL_CODE}    ${OTP}
-        Click Element By Type   ${BTN_CONFIRM_LOGIN}    button
+        Fill User Form    ${country}    ${user_type}    ${random_email}
+        Send OTP Email    ${user_type}    ${random_email}
     ELSE IF    '${user_type}' == 'recurrent_user'
         Fill Element By Text    ${INPUT_EMAIL}    ${EMAIL_RECURRENT}
         Click Element By Type    ${INPUT_NAME}    other
+        Send OTP Email    ${user_type}    ${EMAIL_RECURRENT}
+    END
+
+Fill User Form
+    [Documentation]    Llena el formulario de usuario por país
+    [Arguments]    ${country}    ${user_type}    ${mail}
+    IF    '${country}' == 'SV'
+        Fill User Form SV    ${user_type}    ${mail}
+    ELSE IF    '${country}' == 'GT'
+        Fill User Form GT    ${user_type}    ${mail}
+    ELSE IF    '${country}' == 'CR'
+        Fill User Form CR    ${user_type}    ${mail}
+    ELSE IF    '${country}' == 'NI'
+        Fill User Form NI    ${user_type}    ${mail}
+    END
+
+Fill User Form SV
+    [Documentation]   Llena el formulario de nuevo usuario en checkout
+    [Arguments]    ${user_type}    ${mail}
+        Fill Element By Text    ${INPUT_EMAIL}    ${mail}
+        Click Element By Type    ${INPUT_NAME}    other
+        Fill Element By Text    ${INPUT_NAME}    ${NAME}
+        Fill Element By Text    ${INPUT_LAST_NAME}    ${LAST_NAME}
+        Select List Item    ${SELECT_DOCUMENT}    ${DUI}
+        Fill Element By Text    ${INPUT_DOCUMENT}    ${DOCUMENT}
+        Fill Element By Text    ${INPUT_PHONE}    ${PHONE}
+        IF    ${user_type}== 'new_user'    
+            Click Element By Type    ${CHECK_SAVE_DATA}    checkbox          
+        END
+        Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox
+        Click Element By Type    ${BTN_GO_SHIPPING}    button    
+
+Fill User Form GT
+    [Documentation]   Llena el formulario de nuevo usuario en checkout
+    [Arguments]    ${user_type}    ${mail}
+        Fill Element By Text    ${INPUT_EMAIL}    ${mail}
+        Click Element By Type    ${INPUT_NAME}    other
+        Fill Element By Text    ${INPUT_NAME}    ${NAME}
+        Fill Element By Text    ${INPUT_LAST_NAME}    ${LAST_NAME}
+        Select List Item    ${SELECT_DOCUMENT}    ${DUI}
+        Fill Element By Text    ${INPUT_DOCUMENT}    ${DOCUMENT}
+        Fill Element By Text    ${INPUT_PHONE}    ${PHONE}
+        IF    ${user_type}== 'new_user'    
+            Click Element By Type    ${CHECK_SAVE_DATA}    checkbox          
+        END
+        Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox
+        Click Element By Type    ${BTN_GO_SHIPPING}    button     
+
+Fill User Form CR
+    [Documentation]   Llena el formulario de nuevo usuario en checkout
+    [Arguments]    ${user_type}    ${mail}
+        Fill Element By Text    ${INPUT_EMAIL}    ${mail}
+        Click Element By Type    ${INPUT_NAME}    other
+        Fill Element By Text    ${INPUT_NAME}    ${NAME}
+        Fill Element By Text    ${INPUT_LAST_NAME}    ${LAST_NAME}
+        Select List Item    ${SELECT_DOCUMENT}    ${DUI}
+        Fill Element By Text    ${INPUT_DOCUMENT}    ${DOCUMENT}
+        Fill Element By Text    ${INPUT_PHONE}    ${PHONE}
+        IF    ${user_type}== 'new_user'    
+            Click Element By Type    ${CHECK_SAVE_DATA}    checkbox          
+        END
+        Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox
+        Click Element By Type    ${BTN_GO_SHIPPING}    button 
+
+Fill User Form NI
+    [Documentation]   Llena el formulario de nuevo usuario en checkout
+    [Arguments]    ${user_type}    ${mail}
+        Fill Element By Text    ${INPUT_EMAIL}    ${mail}
+        Click Element By Type    ${INPUT_NAME}    other
+        Fill Element By Text    ${INPUT_NAME}    ${NAME}
+        Fill Element By Text    ${INPUT_LAST_NAME}    ${LAST_NAME}
+        Select List Item    ${SELECT_DOCUMENT}    ${DUI}
+        Fill Element By Text    ${INPUT_DOCUMENT}    ${DOCUMENT}
+        Fill Element By Text    ${INPUT_PHONE}    ${PHONE}
+        IF    ${user_type}== 'new_user'    
+            Click Element By Type    ${CHECK_SAVE_DATA}    checkbox          
+        END
+        Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox
+        Click Element By Type    ${BTN_GO_SHIPPING}    button                              
+
+Send OTP Email
+    [Documentation]    Envía el código OTP al correo del usuario para login en checkout
+    [Arguments]    ${user_type}    ${email}
         Wait Until Element Is Visible   ${BTN_SEND_EMAIL_CODE}    10s
         Click Element By Type   ${BTN_SEND_EMAIL_CODE}    button
         Wait Until Element Is Visible  ${BTN_CONFIRM_EMAIL_CODE}    10s
         Click Element By Type   ${BTN_CONFIRM_EMAIL_CODE}    button
-        ${OTP}=    Login Mailsac   ${EMAIL_RECURRENT}    ${user_type}
+        ${OTP}=    Login Mailsac   ${email}    ${user_type}
         Fill Element By Text    ${INPUT_EMAIL_CODE}    ${OTP}
         Click Element By Type   ${BTN_CONFIRM_LOGIN}    button
-    END
 
 Create New Adress In Checkout
     [Documentation]    Metodo para crear una nueva direccion en el checkout
