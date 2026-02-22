@@ -100,60 +100,63 @@ jobs:
               echo "Contenido del directorio:"
               ls -la "$LATEST"
               
-              # Copiar todos los archivos HTML al directorio robot
-              cp "$LATEST"/*.html public/robot/ || true
+              # IMPORTANTE: Copiar TODO el contenido del directorio (incluyendo screenshots)
+              echo "Copiando todos los archivos y directorios..."
+              cp -r "$LATEST"/* public/robot/ 2>/dev/null || true
               
-              # También copiar a la raíz de robot para fácil acceso
-              if [ -f "$LATEST/report.html" ]; then
-                cp "$LATEST/report.html" public/robot/report.html
-                echo "✅ Reporte copiado: public/robot/report.html"
+              # Verificar específicamente los screenshots
+              if [ -d "$LATEST/screenshots" ]; then
+                echo "✅ Directorio de screenshots encontrado"
+                mkdir -p public/robot/screenshots
+                cp -r "$LATEST/screenshots"/* public/robot/screenshots/ 2>/dev/null || true
+                echo "Screenshots copiados: $(ls -la public/robot/screenshots/ | wc -l) archivos"
               else
-                echo "❌ No se encontró report.html en $LATEST"
+                echo "❌ No se encontró directorio de screenshots en $LATEST"
+                # Buscar screenshots en otras ubicaciones
+                find results -name "*.png" -type f | head -10
               fi
               
-              if [ -f "$LATEST/log.html" ]; then
-                cp "$LATEST/log.html" public/robot/log.html
-                echo "✅ Log copiado: public/robot/log.html"
-              else
-                echo "❌ No se encontró log.html en $LATEST"
-              fi
+              # También copiar cualquier archivo PNG que esté en el directorio raíz
+              find "$LATEST" -name "*.png" -type f -exec cp {} public/robot/ \; 2>/dev/null || true
               
-              if [ -f "$LATEST/output.xml" ]; then
-                cp "$LATEST/output.xml" public/robot/output.xml
-                echo "✅ Output.xml copiado"
-              fi
             else
               echo "❌ El directorio $LATEST no existe"
-              echo "Buscando ejecuciones disponibles:"
-              find results/executions -name "*.html" -type f | head -5
             fi
           else
             echo "❌ No se encontró results/executions/latest.txt"
-            echo "Buscando archivos HTML en results/executions:"
-            find results/executions -name "*.html" -type f | head -10
-            
-            # Fallback: buscar cualquier report.html en results
-            echo "=== BUSCANDO REPORTES FALLBACK ==="
-            REPORT_FILE=$(find results -name "report.html" -type f | head -1)
-            if [ -n "$REPORT_FILE" ]; then
-              echo "✅ Encontrado reporte fallback: $REPORT_FILE"
-              cp "$REPORT_FILE" public/robot/report.html
-              # También buscar log.html en el mismo directorio
-              LOG_FILE=$(dirname "$REPORT_FILE")/log.html
-              if [ -f "$LOG_FILE" ]; then
-                cp "$LOG_FILE" public/robot/log.html
-              fi
-            fi
           fi
           
-          # Crear archivo de índice para verificación
-          echo "Archivos en public/robot:" > public/robot/files.txt
-          ls -la public/robot/ >> public/robot/files.txt
+          # Buscar y copiar TODOS los PNG en results (fallback)
+          echo "=== BUSCANDO ARCHIVOS PNG EN RESULTS ==="
+          PNG_FILES=$(find results -name "*.png" -type f)
+          if [ -n "$PNG_FILES" ]; then
+            echo "✅ Encontrados archivos PNG, copiando..."
+            mkdir -p public/robot/screenshots
+            find results -name "*.png" -type f -exec cp {} public/robot/screenshots/ \; 2>/dev/null || true
+            echo "Total PNGs copiados: $(ls -la public/robot/screenshots/ | grep .png | wc -l)"
+          else
+            echo "❌ No se encontraron archivos PNG"
+          fi
           
-          # Verificar que los archivos se copiaron
+          # Crear archivo de inventario para verificación
+          echo "=== INVENTARIO DE ARCHIVOS ===" > public/robot/inventory.txt
+          echo "Archivos HTML:" >> public/robot/inventory.txt
+          ls -la public/robot/*.html 2>/dev/null >> public/robot/inventory.txt || echo "No hay HTMLs" >> public/robot/inventory.txt
+          echo "" >> public/robot/inventory.txt
+          echo "Archivos PNG:" >> public/robot/inventory.txt
+          ls -la public/robot/*.png 2>/dev/null >> public/robot/inventory.txt || echo "No hay PNGs" >> public/robot/inventory.txt
+          echo "" >> public/robot/inventory.txt
+          echo "Directorios:" >> public/robot/inventory.txt
+          ls -la public/robot/ | grep ^d >> public/robot/inventory.txt
+          
+          # Verificación final
           echo "=== VERIFICACIÓN FINAL ==="
           echo "Contenido de public/robot:"
           ls -la public/robot/
+          echo "Archivos PNG en public/robot:"
+          ls -la public/robot/*.png 2>/dev/null || echo "No hay PNGs en public/robot/"
+          echo "Directorios en public/robot:"
+          ls -la public/robot/ | grep ^d
 
       # Deploy a GitHub Pages
       - name: Deploy Reports
