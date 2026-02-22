@@ -51,17 +51,18 @@ def create_execution_directory(env_name):
     os.makedirs(execution_dir, exist_ok=True)
     os.makedirs(f"{execution_dir}/screenshots", exist_ok=True)
     
-    # SOLUCIÓN SIMPLIFICADA: En Windows, no usar symlinks
-    latest_link = "results/executions/latest"
+    # Siempre crear un archivo latest.txt con la ruta
+    latest_file = "results/executions/latest.txt"
+    os.makedirs(os.path.dirname(latest_file), exist_ok=True)
     
-    if os.name == 'nt':  # Windows
-        # En Windows, crear un archivo de texto con la ruta en lugar de symlink
-        latest_file = "results/executions/latest.txt"
-        with open(latest_file, 'w') as f:
-            f.write(execution_dir)
-        print(f"📝 Ruta de última ejecución guardada en: {latest_file}")
-    else:  # Linux/Mac
-        # Manejo de symlink para sistemas Unix
+    with open(latest_file, 'w') as f:
+        f.write(execution_dir)
+    
+    print(f"📝 Ruta de última ejecución guardada en: {latest_file}")
+    
+    # Opcional: También crear symlink en Linux si se desea
+    if os.name != 'nt':  # Linux/Mac
+        latest_link = "results/executions/latest"
         if os.path.exists(latest_link) or os.path.islink(latest_link):
             try:
                 os.remove(latest_link)

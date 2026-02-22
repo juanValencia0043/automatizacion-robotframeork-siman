@@ -44,6 +44,19 @@ jobs:
         run: |
           python run_tests.py ${{ github.event.inputs.environment || 'sandbox' }}
 
+      # Debug - Listar archivos generados
+      - name: Debug - List all results
+        if: always()
+        run: |
+          echo "=== ESTRUCTURA DE DIRECTORIOS ==="
+          ls -la results/
+          echo "=== DIRECTORIO EXECUTIONS ==="
+          ls -la results/executions/ || true
+          echo "=== CONTENIDO DE results/executions/latest.txt ==="
+          cat results/executions/latest.txt 2>/dev/null || echo "No existe latest.txt"
+          echo "=== ARCHIVOS HTML ENCONTRADOS ==="
+          find results -name "*.html" | head -20
+
       # Generar reporte Allure
       - name: Build Allure Report
         if: always()
@@ -56,25 +69,91 @@ jobs:
         if: always()
         run: |
           mkdir -p public
-
+          
           echo "Copiando dashboard..."
           cp -r pages/* public/ || true
-
+          
           echo "Copiando reporte de Allure..."
-          cp -r allure-report public/allure || true
-
+          if [ -d "allure-report" ]; then
+            cp -r allure-report public/allure
+            echo "✅ Allure report copiado"
+          else
+            echo "❌ No se encontró allure-report"
+          fi
+          
           echo "Copiando reporte de Robot Framework..."
           mkdir -p public/robot
-          cp results/executions/latest.txt public/latest.txt || true
-
+          
+          # Verificar si existe el archivo latest.txt
           if [ -f results/executions/latest.txt ]; then
             LATEST=$(cat results/executions/latest.txt)
+            echo "📝 Última ejecución: $LATEST"
+            
+            # Copiar latest.txt a public para referencia
+            cp results/executions/latest.txt public/latest.txt
+            
+            # Verificar si el directorio existe
             if [ -d "$LATEST" ]; then
-              cp -r "$LATEST" public/robot/run
-              cp public/robot/run/report.html public/robot/report.html
-              cp public/robot/run/log.html public/robot/log.html
+              echo "✅ Directorio encontrado: $LATEST"
+              
+              # Listar contenido para depuración
+              echo "Contenido del directorio:"
+              ls -la "$LATEST"
+              
+              # Copiar todos los archivos HTML al directorio robot
+              cp "$LATEST"/*.html public/robot/ || true
+              
+              # También copiar a la raíz de robot para fácil acceso
+              if [ -f "$LATEST/report.html" ]; then
+                cp "$LATEST/report.html" public/robot/report.html
+                echo "✅ Reporte copiado: public/robot/report.html"
+              else
+                echo "❌ No se encontró report.html en $LATEST"
+              fi
+              
+              if [ -f "$LATEST/log.html" ]; then
+                cp "$LATEST/log.html" public/robot/log.html
+                echo "✅ Log copiado: public/robot/log.html"
+              else
+                echo "❌ No se encontró log.html en $LATEST"
+              fi
+              
+              if [ -f "$LATEST/output.xml" ]; then
+                cp "$LATEST/output.xml" public/robot/output.xml
+                echo "✅ Output.xml copiado"
+              fi
+            else
+              echo "❌ El directorio $LATEST no existe"
+              echo "Buscando ejecuciones disponibles:"
+              find results/executions -name "*.html" -type f | head -5
+            fi
+          else
+            echo "❌ No se encontró results/executions/latest.txt"
+            echo "Buscando archivos HTML en results/executions:"
+            find results/executions -name "*.html" -type f | head -10
+            
+            # Fallback: buscar cualquier report.html en results
+            echo "=== BUSCANDO REPORTES FALLBACK ==="
+            REPORT_FILE=$(find results -name "report.html" -type f | head -1)
+            if [ -n "$REPORT_FILE" ]; then
+              echo "✅ Encontrado reporte fallback: $REPORT_FILE"
+              cp "$REPORT_FILE" public/robot/report.html
+              # También buscar log.html en el mismo directorio
+              LOG_FILE=$(dirname "$REPORT_FILE")/log.html
+              if [ -f "$LOG_FILE" ]; then
+                cp "$LOG_FILE" public/robot/log.html
+              fi
             fi
           fi
+          
+          # Crear archivo de índice para verificación
+          echo "Archivos en public/robot:" > public/robot/files.txt
+          ls -la public/robot/ >> public/robot/files.txt
+          
+          # Verificar que los archivos se copiaron
+          echo "=== VERIFICACIÓN FINAL ==="
+          echo "Contenido de public/robot:"
+          ls -la public/robot/
 
       # Deploy a GitHub Pages
       - name: Deploy Reports
