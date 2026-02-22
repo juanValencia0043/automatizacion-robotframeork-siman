@@ -51,21 +51,28 @@ jobs:
         with:
           allure_results: results/allure-results
 
-      # Preparar carpeta para GitHub Pages
+      # Preparar contenido para GitHub Pages
       - name: Prepare GitHub Pages content
         if: always()
         run: |
-          mkdir public
-          
+          mkdir -p public
+
+          echo "Copiando dashboard..."
+          cp -r pages/* public/ || true
+
           echo "Copiando reporte de Allure..."
-          cp -r allure-report public/allure
-          
+          cp -r allure-report public/allure || true
+
           echo "Copiando reporte de Robot Framework..."
-          mkdir public/robot
+          mkdir -p public/robot
           cp results/executions/latest.txt public/latest.txt || true
-          
-          LATEST=$(cat results/executions/latest.txt)
-          cp -r $LATEST/* public/robot/
+
+          if [ -f results/executions/latest.txt ]; then
+            LATEST=$(cat results/executions/latest.txt)
+            if [ -d "$LATEST" ]; then
+              cp -r $LATEST/* public/robot/
+            fi
+          fi
 
       # Deploy a GitHub Pages
       - name: Deploy Reports
