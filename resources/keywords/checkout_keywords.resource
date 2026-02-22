@@ -54,7 +54,7 @@ Fill User Form SV
         Select List Item    ${SELECT_DOCUMENT}    ${DUI}
         Fill Element By Text    ${INPUT_DOCUMENT}    ${DOCUMENT}
         Fill Element By Text    ${INPUT_PHONE}    ${PHONE}
-        IF    ${user_type}== 'new_user'    
+        IF    $user_type == 'new_user'    
             Click Element By Type    ${CHECK_SAVE_DATA}    checkbox          
         END
         Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox
@@ -70,7 +70,7 @@ Fill User Form GT
         Select List Item    ${SELECT_DOCUMENT}    ${DUI}
         Fill Element By Text    ${INPUT_DOCUMENT}    ${DOCUMENT}
         Fill Element By Text    ${INPUT_PHONE}    ${PHONE}
-        IF    ${user_type}== 'new_user'    
+        IF    $user_type == 'new_user'    
             Click Element By Type    ${CHECK_SAVE_DATA}    checkbox          
         END
         Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox
@@ -86,7 +86,7 @@ Fill User Form CR
         Select List Item    ${SELECT_DOCUMENT}    ${DUI}
         Fill Element By Text    ${INPUT_DOCUMENT}    ${DOCUMENT}
         Fill Element By Text    ${INPUT_PHONE}    ${PHONE}
-        IF    ${user_type}== 'new_user'    
+        IF    $user_type == 'new_user'    
             Click Element By Type    ${CHECK_SAVE_DATA}    checkbox          
         END
         Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox
@@ -102,7 +102,7 @@ Fill User Form NI
         Select List Item    ${SELECT_DOCUMENT}    ${DUI}
         Fill Element By Text    ${INPUT_DOCUMENT}    ${DOCUMENT}
         Fill Element By Text    ${INPUT_PHONE}    ${PHONE}
-        IF    ${user_type}== 'new_user'    
+        IF    $user_type == 'new_user'    
             Click Element By Type    ${CHECK_SAVE_DATA}    checkbox          
         END
         Click Element By Type    ${CHECK_PRIVACY_TERMS}    checkbox

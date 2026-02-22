@@ -1,7 +1,9 @@
 *** Settings ***
-Library     DateTime    SeleniumLibrary
+Library     DateTime
 Library     String
 Library     SeleniumLibrary
+Library     AllureLibrary
+Library    OperatingSystem
 Resource    ../../resources/locators/login_vtex_locators.resource
 Resource    ../../resources/locators/general_locators.resource
 Resource    ../../resources/keywords/mailsac_keywords.resource
@@ -367,5 +369,11 @@ Login Vtex with Google
     Click Element By Type    ${BTN_CONTINUE_VTEX_LOGIN}    button
 
 Capture Screenshot For Allure
-    [Documentation]    Captura un screenshot y lo adjunta a Allure
-    Capture Page Screenshot
+    ${file}=    Set Variable    failure_${TEST NAME}.png
+    ${path}=    Join Path    ${SCREENSHOT_DIR}    ${file}
+    Capture Page Screenshot    ${path}
+    Run Keyword And Ignore Error
+    ...    Attach File
+    ...    ${path}
+    ...    name=Failure Screenshot
+    ...    attachment_type=PNG
