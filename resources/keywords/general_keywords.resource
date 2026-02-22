@@ -1,5 +1,5 @@
 *** Settings ***
-Library     DateTime
+Library     DateTime    SeleniumLibrary
 Library     String
 Library     SeleniumLibrary
 Resource    ../../resources/locators/login_vtex_locators.resource
@@ -365,3 +365,7 @@ Login Vtex with Google
     Wait Until Element Is Visible    ${INPUT_VTEX_LOGIN}    30s
     Fill Element By Text    ${INPUT_VTEX_LOGIN}    ${email}
     Click Element By Type    ${BTN_CONTINUE_VTEX_LOGIN}    button
+
+Capture Screenshot For Allure
+    [Documentation]    Captura un screenshot y lo adjunta a Allure
+    Capture Page Screenshot
