@@ -12,7 +12,6 @@ on:
         required: true
         default: "sandbox"
 
-# Permisos necesarios para desplegar a GitHub Pages
 permissions:
   contents: write
   pages: write
@@ -45,40 +44,31 @@ jobs:
         run: |
           python run_tests.py ${{ github.event.inputs.environment || 'sandbox' }}
 
-      - name: Load Allure history
-        if: always()
-        continue-on-error: true
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: gh-pages
-
+      # Generar reporte Allure
       - name: Build Allure Report
         if: always()
         uses: simple-elf/allure-report-action@master
         with:
           allure_results: results/allure-results
-          allure_history: allure-history
-          keep_reports: 20
-          report_url: https://juanvalencia0043.github.io/automatizacion-robotframeork-siman/
 
-      # NUEVO: preparar ambos reportes para GitHub Pages
-      - name: Prepare reports for GitHub Pages
+      # Preparar carpeta para GitHub Pages
+      - name: Prepare GitHub Pages content
         if: always()
         run: |
           mkdir public
-          mkdir public/allure
+          
+          echo "Copiando reporte de Allure..."
+          cp -r allure-report public/allure
+          
+          echo "Copiando reporte de Robot Framework..."
           mkdir public/robot
+          cp results/executions/latest.txt public/latest.txt || true
+          
+          LATEST=$(cat results/executions/latest.txt)
+          cp -r $LATEST/* public/robot/
 
-          # Copiar reporte Allure
-          cp -r allure-history/* public/allure/
-
-          # Copiar reportes de Robot Framework
-          cp results/executions/latest/log.html public/robot/ || true
-          cp results/executions/latest/report.html public/robot/ || true
-          cp results/executions/latest/output.xml public/robot/ || true
-
-      - name: Deploy Report to GitHub Pages
+      # Deploy a GitHub Pages
+      - name: Deploy Reports
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
