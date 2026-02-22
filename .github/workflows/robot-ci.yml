@@ -70,7 +70,9 @@ jobs:
           if [ -f results/executions/latest.txt ]; then
             LATEST=$(cat results/executions/latest.txt)
             if [ -d "$LATEST" ]; then
-              cp -r $LATEST/* public/robot/
+              cp -r "$LATEST" public/robot/run
+              cp public/robot/run/report.html public/robot/report.html
+              cp public/robot/run/log.html public/robot/log.html
             fi
           fi
 
