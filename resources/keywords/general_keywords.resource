@@ -367,13 +367,3 @@ Login Vtex with Google
     Wait Until Element Is Visible    ${INPUT_VTEX_LOGIN}    30s
     Fill Element By Text    ${INPUT_VTEX_LOGIN}    ${email}
     Click Element By Type    ${BTN_CONTINUE_VTEX_LOGIN}    button
-
-Capture Screenshot For Allure
-    ${file}=    Set Variable    failure_${TEST NAME}.png
-    ${path}=    Join Path    ${SCREENSHOT_DIR}    ${file}
-    Capture Page Screenshot    ${path}
-    Run Keyword And Ignore Error
-    ...    Attach File
-    ...    ${path}
-    ...    name=Failure Screenshot
-    ...    attachment_type=PNG

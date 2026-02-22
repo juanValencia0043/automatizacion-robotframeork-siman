@@ -42,8 +42,6 @@ jobs:
           CI: "true"
           BROWSER: chrome
           HEADLESS: "true"
-          # Aquí puedes añadir tus secretos si los necesitas:
-          # PASSWORD: ${{ secrets.PASSWORD }}
         run: |
           python run_tests.py ${{ github.event.inputs.environment || 'sandbox' }}
 
@@ -64,11 +62,27 @@ jobs:
           keep_reports: 20
           report_url: https://juanvalencia0043.github.io/automatizacion-robotframeork-siman/
 
+      # NUEVO: preparar ambos reportes para GitHub Pages
+      - name: Prepare reports for GitHub Pages
+        if: always()
+        run: |
+          mkdir public
+          mkdir public/allure
+          mkdir public/robot
+
+          # Copiar reporte Allure
+          cp -r allure-history/* public/allure/
+
+          # Copiar reportes de Robot Framework
+          cp results/executions/latest/log.html public/robot/ || true
+          cp results/executions/latest/report.html public/robot/ || true
+          cp results/executions/latest/output.xml public/robot/ || true
+
       - name: Deploy Report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: allure-history
+          publish_dir: public
           publish_branch: gh-pages
-          force_orphan: true # Crea la rama si no existe o la sobreescribe
+          force_orphan: true

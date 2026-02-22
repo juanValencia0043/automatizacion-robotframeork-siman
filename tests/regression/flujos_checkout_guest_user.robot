@@ -8,9 +8,7 @@ Resource            ../../resources/locators/home_locators.resource
 
 Suite Setup    Disable SSL Warnings
 
-Test Teardown    Run Keywords
-...    Run Keyword If Test Failed    Capture Screenshot For Allure
-...    AND    Close Browser
+Test Teardown    Run Keywords    Close Browser
 *** Test Cases ***
 Test Checkout Small Ticket New User
     [Tags]    CSC-8202  delivery_siman
