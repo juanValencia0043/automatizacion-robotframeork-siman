@@ -52,10 +52,14 @@ jobs:
           ls -la results/
           echo "=== DIRECTORIO EXECUTIONS ==="
           ls -la results/executions/ || true
-          echo "=== CONTENIDO DE results/executions/latest.txt ==="
-          cat results/executions/latest.txt 2>/dev/null || echo "No existe latest.txt"
+          echo "=== BUSCANDO ARCHIVOS LATEST ==="
+          find results -name "latest.txt" -type f | head -5
+          echo "=== CONTENIDO DE LOS ARCHIVOS LATEST ==="
+          find results -name "latest.txt" -type f -exec cat {} \; -exec echo "" \;
           echo "=== ARCHIVOS HTML ENCONTRADOS ==="
           find results -name "*.html" | head -20
+          echo "=== ARCHIVOS PNG ENCONTRADOS ==="
+          find results -name "*.png" | head -20
 
       # Generar reporte Allure
       - name: Build Allure Report
@@ -69,94 +73,158 @@ jobs:
         if: always()
         run: |
           mkdir -p public
-          
+
           echo "Copiando dashboard..."
-          cp -r pages/* public/ || true
-          
+          if [ -d "pages" ]; then
+            cp -r pages/* public/ 2>/dev/null || true
+            echo "✅ Dashboard copiado"
+          fi
+
           echo "Copiando reporte de Allure..."
           if [ -d "allure-report" ]; then
-            cp -r allure-report public/allure
-            echo "✅ Allure report copiado"
+            mkdir -p public/allure
+            cp -r allure-report/* public/allure/ 2>/dev/null || true
+            echo "✅ Allure report copiado a public/allure/"
           else
             echo "❌ No se encontró allure-report"
           fi
-          
-          echo "Copiando reporte de Robot Framework..."
+
+          echo "Copiando reportes de Robot Framework..."
           mkdir -p public/robot
-          
-          # Verificar si existe el archivo latest.txt
-          if [ -f results/executions/latest.txt ]; then
-            LATEST=$(cat results/executions/latest.txt)
-            echo "📝 Última ejecución: $LATEST"
+
+          # Buscar el archivo latest.txt en la estructura correcta
+          LATEST_FILE=""
+          if [ -f "results/executions/latest.txt" ]; then
+            LATEST_FILE="results/executions/latest.txt"
+          elif [ -f "results/latest.txt" ]; then
+            LATEST_FILE="results/latest.txt"
+          else
+            LATEST_FILE=$(find results -name "latest.txt" -type f | head -1)
+          fi
+
+          if [ -n "$LATEST_FILE" ] && [ -f "$LATEST_FILE" ]; then
+            LATEST=$(cat "$LATEST_FILE")
+            echo "📝 Última ejecución (desde $LATEST_FILE): $LATEST"
+            cp "$LATEST_FILE" public/latest.txt
             
-            # Copiar latest.txt a public para referencia
-            cp results/executions/latest.txt public/latest.txt
+            # Verificar si la ruta en latest.txt es relativa o absoluta
+            if [ ! -d "$LATEST" ] && [ -d "results/executions/$(basename "$LATEST")" ]; then
+              LATEST="results/executions/$(basename "$LATEST")"
+              echo "📝 Ruta ajustada: $LATEST"
+            fi
             
-            # Verificar si el directorio existe
             if [ -d "$LATEST" ]; then
               echo "✅ Directorio encontrado: $LATEST"
               
-              # Listar contenido para depuración
-              echo "Contenido del directorio:"
-              ls -la "$LATEST"
+              # Obtener el nombre del directorio
+              DIR_NAME=$(basename "$LATEST")
               
-              # IMPORTANTE: Copiar TODO el contenido del directorio (incluyendo screenshots)
-              echo "Copiando todos los archivos y directorios..."
-              cp -r "$LATEST"/* public/robot/ 2>/dev/null || true
+              # Copiar TODO el contenido de la última ejecución a /robot/latest/
+              echo "Copiando última ejecución a public/robot/latest/"
+              mkdir -p public/robot/latest
+              cp -r "$LATEST"/* public/robot/latest/ 2>/dev/null || true
               
-              # Verificar específicamente los screenshots
-              if [ -d "$LATEST/screenshots" ]; then
-                echo "✅ Directorio de screenshots encontrado"
-                mkdir -p public/robot/screenshots
-                cp -r "$LATEST/screenshots"/* public/robot/screenshots/ 2>/dev/null || true
-                echo "Screenshots copiados: $(ls -la public/robot/screenshots/ | wc -l) archivos"
-              else
-                echo "❌ No se encontró directorio de screenshots en $LATEST"
-                # Buscar screenshots en otras ubicaciones
-                find results -name "*.png" -type f | head -10
+              # Copiar archivos individuales a la raíz para acceso directo
+              if [ -f "$LATEST/report.html" ]; then
+                cp "$LATEST/report.html" public/robot/report.html
+                echo "✅ report.html copiado a raíz"
+              fi
+              if [ -f "$LATEST/log.html" ]; then
+                cp "$LATEST/log.html" public/robot/log.html
+                echo "✅ log.html copiado a raíz"
+              fi
+              if [ -f "$LATEST/output.xml" ]; then
+                cp "$LATEST/output.xml" public/robot/output.xml
               fi
               
-              # También copiar cualquier archivo PNG que esté en el directorio raíz
-              find "$LATEST" -name "*.png" -type f -exec cp {} public/robot/ \; 2>/dev/null || true
+              # Verificar screenshots
+              if [ -d "$LATEST/screenshots" ]; then
+                echo "✅ Directorio screenshots encontrado"
+                mkdir -p public/robot/latest/screenshots
+                cp -r "$LATEST/screenshots"/* public/robot/latest/screenshots/ 2>/dev/null || true
+                echo "   Screenshots copiados: $(ls -1 public/robot/latest/screenshots/ 2>/dev/null | wc -l)"
+              fi
               
-            else
-              echo "❌ El directorio $LATEST no existe"
-            fi
-          else
-            echo "❌ No se encontró results/executions/latest.txt"
-          fi
-          
-          # Buscar y copiar TODOS los PNG en results (fallback)
-          echo "=== BUSCANDO ARCHIVOS PNG EN RESULTS ==="
-          PNG_FILES=$(find results -name "*.png" -type f)
-          if [ -n "$PNG_FILES" ]; then
-            echo "✅ Encontrados archivos PNG, copiando..."
-            mkdir -p public/robot/screenshots
-            find results -name "*.png" -type f -exec cp {} public/robot/screenshots/ \; 2>/dev/null || true
-            echo "Total PNGs copiados: $(ls -la public/robot/screenshots/ | grep .png | wc -l)"
-          else
-            echo "❌ No se encontraron archivos PNG"
-          fi
-          
-          # Crear archivo de inventario para verificación
-          echo "=== INVENTARIO DE ARCHIVOS ===" > public/robot/inventory.txt
-          echo "Archivos HTML:" >> public/robot/inventory.txt
-          ls -la public/robot/*.html 2>/dev/null >> public/robot/inventory.txt || echo "No hay HTMLs" >> public/robot/inventory.txt
-          echo "" >> public/robot/inventory.txt
-          echo "Archivos PNG:" >> public/robot/inventory.txt
-          ls -la public/robot/*.png 2>/dev/null >> public/robot/inventory.txt || echo "No hay PNGs" >> public/robot/inventory.txt
-          echo "" >> public/robot/inventory.txt
-          echo "Directorios:" >> public/robot/inventory.txt
-          ls -la public/robot/ | grep ^d >> public/robot/inventory.txt
-          
+              # Copiar cualquier PNG suelto
+              find "$LATEST" -name "*.png" -type f -exec cp {} public/robot/latest/ \; 2>/dev/null || true
+              
+              # Crear archivo HTML de redirección
+              cat > public/robot/index.html << EOF
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <meta http-equiv="refresh" content="0; url=./latest/report.html">
+              <title>Robot Framework Reports</title>
+          </head>
+          <body>
+              <p>Redirigiendo al <a href="./latest/report.html">último reporte</a>...</p>
+          </body>
+          </html>
+          EOF
+                        echo "✅ Redirección creada en public/robot/index.html"
+                        
+                      else
+                        echo "❌ El directorio $LATEST no existe"
+                      fi
+                    else
+                      echo "❌ No se encontró archivo latest.txt"
+            
+            # Fallback: buscar el directorio más reciente con report.html
+            echo "Buscando el directorio más reciente con report.html..."
+            LATEST_DIR=$(find results/executions -name "report.html" -type f | xargs dirname | sort -r | head -1)
+            
+            if [ -n "$LATEST_DIR" ] && [ -d "$LATEST_DIR" ]; then
+              echo "✅ Usando directorio más reciente: $LATEST_DIR"
+              DIR_NAME=$(basename "$LATEST_DIR")
+              
+              mkdir -p public/robot/latest
+              cp -r "$LATEST_DIR"/* public/robot/latest/ 2>/dev/null || true
+              cp "$LATEST_DIR/report.html" public/robot/report.html 2>/dev/null || true
+              cp "$LATEST_DIR/log.html" public/robot/log.html 2>/dev/null || true
+              
+              if [ -d "$LATEST_DIR/screenshots" ]; then
+                mkdir -p public/robot/latest/screenshots
+                cp -r "$LATEST_DIR/screenshots"/* public/robot/latest/screenshots/ 2>/dev/null || true
+              fi
+              
+              cat > public/robot/index.html << EOF
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta http-equiv="refresh" content="0; url=./latest/report.html">
+                <title>Robot Framework Reports</title>
+            </head>
+            <body>
+                <p>Redirigiendo al <a href="./latest/report.html">último reporte</a>...</p>
+            </body>
+            </html>
+            EOF
+                        fi
+                      fi
+
+          # Búsqueda global de PNGs
+          echo "=== BUSCANDO ARCHIVOS PNG ==="
+          PNG_COUNT=0
+          mkdir -p public/robot/all_screenshots
+          find results -name "*.png" -type f | while read png; do
+            cp "$png" public/robot/all_screenshots/ 2>/dev/null && PNG_COUNT=$((PNG_COUNT + 1))
+          done
+          echo "✅ $PNG_COUNT PNGs copiados a public/robot/all_screenshots/"
+
           # Verificación final
           echo "=== VERIFICACIÓN FINAL ==="
           echo "Contenido de public/robot:"
           ls -la public/robot/
-          echo "Archivos PNG en public/robot:"
-          ls -la public/robot/*.png 2>/dev/null || echo "No hay PNGs en public/robot/"
-          echo "Directorios en public/robot:"
-          ls -la public/robot/ | grep ^d
+          echo ""
+          echo "Contenido de public/robot/latest:"
+          if [ -d "public/robot/latest" ]; then
+            ls -la public/robot/latest/ | head -10
+            echo "Total archivos en latest: $(ls -1 public/robot/latest/ | wc -l)"
+          else
+            echo "No hay directorio latest"
+          fi
+          echo ""
+          echo "Total PNGs: $(find public/robot -name "*.png" -type f | wc -l)"
 
       # Deploy a GitHub Pages
       - name: Deploy Reports
