@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Siman Automation - sandbox" tests="1" errors="0" failures="1" skipped="0" time="80.053" timestamp="2026-02-23T00:44:48.258000">
+<testsuite name="Flujos Checkout Guest User" tests="1" errors="0" failures="1" skipped="0" time="80.017" timestamp="2026-02-23T00:44:48.270000">
+<testcase classname="Siman Automation - sandbox.Flujos Checkout Guest User" name="Test Checkout Small Ticket New User" time="79.735">
+<failure message="Element 'id=payment-group-custom205PaymentGroupPaymentGroup' not visible after 30 seconds." type="AssertionError"/>
+</testcase>
+<properties>
+<property name="Documentation" value="Verifica flujos principales en Checkout."/>
+</properties>
+</testsuite>
+</testsuite>

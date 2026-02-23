@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siman · Reports</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        /* ambient light effect */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(0,0,0,0.02), transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 500;
+            color: #111111;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+            text-align: center;
+        }
+
+        .sub {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #6b6b6b;
+            margin-bottom: 4rem;
+            text-align: center;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 1.5rem;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .card {
+            flex: 0 1 280px;
+            background: transparent;
+            border-radius: 32px;
+            padding: 2.5rem 1.5rem;
+            position: relative;
+            backdrop-filter: blur(2px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
+        }
+
+        /* efecto de borde animado */
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 32px;
+            padding: 1.5px;
+            background: radial-gradient(circle at 0% 0%, transparent 0%, #e6e6e6 50%, transparent 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.6s ease, background 0.6s ease;
+            pointer-events: none;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+            background: radial-gradient(circle at 50% 0%, #888, #e6e6e6 70%, transparent 100%);
+            animation: borderGlow 2.5s infinite alternate;
+        }
+
+        @keyframes borderGlow {
+            0% {
+                background: radial-gradient(circle at 30% 0%, #aaa, #e6e6e6 60%, transparent 80%);
+            }
+            50% {
+                background: radial-gradient(circle at 70% 0%, #888, #ddd 70%, transparent 90%);
+            }
+            100% {
+                background: radial-gradient(circle at 40% 0%, #999, #e0e0e0 65%, transparent 85%);
+            }
+        }
+
+        .card:hover {
+            background: #ffffff;
+            transform: translateY(-6px) scale(1.02);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: #1a1a1a;
+            font-size: 1.25rem;
+            font-weight: 460;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem;
+            transition: color 0.2s;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* iconos SVG mejorados */
+        .card a svg {
+            width: 56px;
+            height: 56px;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+        }
+
+        .card:hover a svg {
+            transform: scale(1.08);
+        }
+
+        .card a span:last-child {
+            border-bottom: 1px dotted transparent;
+            transition: border-color 0.2s;
+            font-size: 1.1rem;
+            letter-spacing: 0.3px;
+        }
+
+        .card:hover a span:last-child {
+            border-bottom-color: #888;
+        }
+
+        /* separador sutil */
+        .separator {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin: 2rem 0 0.5rem;
+            color: #d4d4d4;
+            font-size: 0.7rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .separator span {
+            opacity: 0.5;
+        }
+
+        /* micro-interacción extra */
+        .footer-note {
+            margin-top: 4rem;
+            font-size: 0.8rem;
+            color: #b0b0b0;
+            font-weight: 400;
+        }
+
+        .footer-note a {
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .footer-note a:hover {
+            border-bottom-color: #333;
+        }
+
+        /* adaptación para modo oscuro */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #121212;
+            }
+            body::before {
+                background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.02), transparent 70%);
+            }
+            h1 {
+                color: #efefef;
+            }
+            .sub {
+                color: #9e9e9e;
+                border-bottom-color: #2a2a2a;
+            }
+            .card::before {
+                background: radial-gradient(circle at 0% 0%, transparent 0%, #3a3a3a 50%, transparent 100%);
+            }
+            @keyframes borderGlow {
+                0% {
+                    background: radial-gradient(circle at 30% 0%, #666, #3a3a3a 60%, transparent 80%);
+                }
+                50% {
+                    background: radial-gradient(circle at 70% 0%, #555, #3a3a3a 70%, transparent 90%);
+                }
+                100% {
+                    background: radial-gradient(circle at 40% 0%, #666, #444 65%, transparent 85%);
+                }
+            }
+            .card:hover {
+                background: #1c1c1c;
+            }
+            .card a {
+                color: #eaeaea;
+            }
+            .card a svg {
+                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            }
+            .card a svg path {
+                stroke: #eaeaea;
+            }
+            .separator {
+                color: #3a3a3a;
+            }
+            .footer-note {
+                color: #5a5a5a;
+            }
+            .footer-note a {
+                color: #c0c0c0;
+                border-bottom-color: #444;
+            }
+            .footer-note a:hover {
+                border-bottom-color: #aaa;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Siman</h1>
+    <div class="sub">Automation reports</div>
+
+    <div class="container">
+        <!-- Tarjeta Allure con icono personalizado -->
+        <div class="card">
+            <a href="allure/index.html">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 12L11 15L16 9" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="9" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 3V7M12 17V21M3 12H7M17 12H21" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                </svg>
+                <span>Allure report</span>
+            </a>
+        </div>
+
+        <!-- Tarjeta Robot Framework con icono personalizado -->
+        <div class="card">
+            <a href="robot/report.html">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="8" r="3" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="6" cy="16" r="2.5" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="18" cy="16" r="2.5" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 11V14M9 19L12 17L15 19" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5 14L3 16M19 14L21 16" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                </svg>
+                <span>Robot report</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="separator">
+        <span>✦</span> <span>validar reporte de ejecución</span> <span>✦</span>
+    </div>
+
+    <div class="footer-note">
+        <a href="#" onclick="return false;">⏎ siman quality</a> — <span>v.1</span>
+    </div>
+
+</body>
+</html>
